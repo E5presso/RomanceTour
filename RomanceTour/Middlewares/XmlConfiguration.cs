@@ -67,6 +67,7 @@ namespace RomanceTour.Middlewares
 			SecretKey = config["configuration"]["ncloud"]["secret-key"].InnerText,
 			From = config["configuration"]["ncloud"]["from"].InnerText
 		};
+		public static string KakaoAPI => config["configuration"]["kakao"]["api-key"].InnerText;
 
 		static XmlConfiguration()
 		{

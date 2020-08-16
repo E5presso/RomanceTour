@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RomanceTour", "RomanceTour\RomanceTour.csproj", "{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RomanceTour", "RomanceTour\RomanceTour.csproj", "{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{59386B73-8B71-4CE7-ABF4-59307CDAC6ED}"
 EndProject

@@ -13,7 +13,6 @@ namespace RomanceTour.Middlewares
 			if (!Directory.Exists(XmlConfiguration.FileDirectory)) Directory.CreateDirectory(XmlConfiguration.FileDirectory);
 			if (!Directory.Exists(XmlConfiguration.LogDirectory)) Directory.CreateDirectory(XmlConfiguration.LogDirectory);
 			using var db = new RomanceTourDbContext();
-			db.ChangeMode(EntityMode.Revert);
 			db.ChangeMode(EntityMode.Normal);
 		}
 	}

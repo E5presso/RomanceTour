@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<domain>https://www.romancetour.ml/</domain>
-	<key>7f307a2510b259a162679c2e6933dcf7</key>
+	<key>
+	</key>
 	<directories>
 		<root>D:\RomanceTour</root>
 		<form>D:\RomanceTour\Forms</form>
@@ -32,4 +33,7 @@
 		<sceret-key>8p7Wt6dm07SgXWaNsbaEH36zbxE0HsMomyTMhocF</sceret-key>
 		<from>01064308733</from>
 	</ncloud>
+	<kakao>
+		<api-key>e9c264ffe6d09d9178478c1eb1afb5d2</api-key>
+	</kakao>
 </configuration>

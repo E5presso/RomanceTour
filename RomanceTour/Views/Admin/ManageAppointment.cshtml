@@ -1,0 +1,410 @@
+﻿@{
+	ViewData["DATA"] = "ManageAppointment";
+	ViewData["TITLE"] = "예약관리";
+	List<Category> list = Model;
+	List<DateSessionStatus> sessionStatus = Enum.GetValues(typeof(DateSessionStatus))
+	.Cast<DateSessionStatus>()
+	.ToList();
+	List<AppointmentStatus> appointmentStatus = Enum.GetValues(typeof(AppointmentStatus))
+	.Cast<AppointmentStatus>()
+	.ToList();
+	List<Departure> departures = ViewBag.Departure;
+	List<PriceRule> rules = ViewBag.PriceRule;
+}
+
+<link rel="stylesheet" href="~/lib/ion-rangeslider/css/ion.rangeSlider.css" />
+<script src="~/lib/ion-rangeslider/js/ion.rangeSlider.js"></script>
+
+<link rel="stylesheet" href="~/views/admin/manage-appointment.css" />
+<script src="~/views/admin/manage-appointment.js"></script>
+
+<div class="page-back">
+	<button class="btn second go-back">
+		<span class="fa fa-arrow-left btn-icon"></span>
+		<span class="btn-text">
+			이전 페이지
+		</span>
+	</button>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="section col-12 col-md-12 col-xl-4">
+			<div class="search-area">
+				<select id="product-category" class="form-control search-option-1">
+					<option value="0">전체 여행</option>
+					@foreach (var category in list)
+					{
+						<option value="@category.Id">@category.Name</option>
+					}
+					<option value="confirmed">출발 확정</option>
+				</select>
+				<div class="search-bar-second search-user">
+					<input type="search" id="product-keyword" class="form-control search-text has-shadow" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+			</div>
+			<div class="list-area">
+				<table id="product-list" class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									썸네일
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									상품 제목
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									상품 부제목
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-md-7 col-xl-4">
+			<div class="search-area">
+				<select id="session-status" class="form-control search-option-1">
+					<option value="-1">전체날짜</option>
+					@foreach (var status in sessionStatus)
+					{
+						switch (status)
+						{
+							case DateSessionStatus.AVAILABLE:
+							{
+								<option value="@((int)status)">예약가능</option>
+								break;
+							}
+							case DateSessionStatus.APPROVED:
+							{
+								<option value="@((int)status)">출발확정</option>
+								break;
+							}
+							case DateSessionStatus.CANCELED:
+							{
+								<option value="@((int)status)">예약취소</option>
+								break;
+							}
+							case DateSessionStatus.FULLED:
+							{
+								<option value="@((int)status)">예약마감</option>
+								break;
+							}
+						}
+					}
+				</select>
+				<div class="search-option dropdown">
+					<button class="btn btn-basic" id="search-option-dropdown" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+						<span class="btn-icon fa fa-filter"></span>
+						<span class="btn-text">
+							검색필터
+						</span>
+					</button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="search-option-dropdown">
+						<div class="dropdown-item form-group">
+							<label>예약인원</label>
+							<input type="text" id="appointment-range" class="range-slider" />
+						</div>
+						<div class="dropdown-item form-group">
+							<label>결제인원</label>
+							<input type="text" id="paid-range" class="range-slider" />
+						</div>
+						<div class="dropdown-item form-group">
+							<label>날짜범위 지정</label>
+							<input type="text" data-multiple-dates-separator=" ~ " id="from-date" class="date-picker form-control small-input" placeholder="날짜를 선택해주세요" readonly="readonly" />
+						</div>
+						<div class="dropdown-item form-group btn-group">
+							<button id="option-apply" class="btn btn-reversed">
+								<span class="btn-icon fa fa-check"></span>
+								<span class="btn-text">
+									적용하기
+								</span>
+							</button>
+							<button id="option-reset" class="btn btn-reversed">
+								<span class="btn-icon fa fa-redo"></span>
+								<span class="btn-text">
+									초기화
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-area">
+				<table id="session-list" class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									날짜
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									예약인원
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									결제완료
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									상태
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-md-5 col-xl-4">
+			<div class="info-area">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12 control-set">
+							<label>날짜</label>
+							<input type="text" id="session-info-date" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>예약인원</label>
+							<input type="text" id="session-info-appointment" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>결제완료</label>
+							<input type="text" id="session-info-paid" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>단위인원</label>
+							<input type="number" id="session-input-group" class="form-control colorized" placeholder="차량 당 인원을 입력하세요" value="0" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>필요차량</label>
+							<input type="text" id="session-info-bus" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>탑승지</label>
+							<select id="session-input-departure" class="form-control colorized" disabled>
+								@foreach (var departure in departures)
+								{
+									<option value="@departure.Id">@departure.Name</option>
+								}
+							</select>
+						</div>
+						<div class="col-12 control-set">
+							<label>탑승인원</label>
+							<input type="text" id="session-info-departure" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>옵션</label>
+							<select id="session-input-rule" class="form-control colorized" disabled>
+								@foreach (var rule in rules)
+								{
+									<option value="@rule.Id">@rule.RuleName</option>
+								}
+							</select>
+						</div>
+						<div class="col-12 control-set">
+							<label>신청인원</label>
+							<input type="text" id="session-info-rule" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>매출</label>
+							<input type="text" id="session-info-sales" class="form-control" readonly="readonly" disabled />
+						</div>
+						<div class="col-12 control-set">
+							<label>상태</label>
+							<select id="session-input-status" class="form-control colorized" disabled>
+								@foreach (var status in sessionStatus)
+								{
+									switch (status)
+									{
+										case DateSessionStatus.AVAILABLE:
+										{
+											<option value="@((int)status)">예약가능</option>
+											break;
+										}
+										case DateSessionStatus.APPROVED:
+										{
+											<option value="@((int)status)">출발확정</option>
+											break;
+										}
+										case DateSessionStatus.CANCELED:
+										{
+											<option value="@((int)status)">예약취소</option>
+											break;
+										}
+										case DateSessionStatus.FULLED:
+										{
+											<option value="@((int)status)">예약마감</option>
+											break;
+										}
+									}
+								}
+							</select>
+						</div>
+						<div class="col-12 control-set">
+							<button id="session-save" class="btn btn-third" disabled>
+								<span class="btn-text">
+									저장
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="section col-12 col-md-8 col-xl-9">
+			<div class="search-area">
+				<select id="appointment-status" class="form-control search-option-1">
+					<option value="-1">전체예약</option>
+					@foreach (var status in appointmentStatus)
+					{
+						switch (status)
+						{
+							case AppointmentStatus.READY_TO_PAY:
+							{
+								<option value="@((int)status)">입금대기</option>
+								break;
+							}
+							case AppointmentStatus.CONFIRMED:
+							{
+								<option value="@((int)status)">입금완료</option>
+								break;
+							}
+							case AppointmentStatus.CANCELED:
+							{
+								<option value="@((int)status)">예약취소</option>
+								break;
+							}
+						}
+					}
+				</select>
+				<div class="search-bar-second search-user">
+					<input type="search" id="appointment-keyword" class="form-control search-text has-shadow" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+			</div>
+			<div class="list-area">
+				<table id="appointment-list" class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									예약코드
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									예약자명
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									예약인원
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									회원여부
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									예약상태
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									휴대폰번호
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									주소지
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									결제가격
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									예금주명
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									은행
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									계좌번호
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-md-4 col-xl-3">
+			<div class="info-area d-flex align-items-center">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12 control-set">
+							<label>예약상태</label>
+							<select id="appointment-input-status" class="form-control" disabled>
+								@foreach (var status in appointmentStatus)
+								{
+									switch (status)
+									{
+										case AppointmentStatus.READY_TO_PAY:
+										{
+											<option value="@((int)status)">입금대기</option>
+											break;
+										}
+										case AppointmentStatus.CONFIRMED:
+										{
+											<option value="@((int)status)">입금완료</option>
+											break;
+										}
+										case AppointmentStatus.CANCELED:
+										{
+											<option value="@((int)status)">예약취소</option>
+											break;
+										}
+									}
+								}
+							</select>
+						</div>
+						<div class="col-12 control-set">
+							<button id="appointment-save" class="btn btn-third" disabled>
+								<span class="btn-text">
+									저장
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

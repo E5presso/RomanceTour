@@ -1,0 +1,232 @@
+﻿@{
+	ViewData["DATA"] = "Home";
+	ViewData["TITLE"] = "홈";
+	List<Category> categories = ViewBag.List;
+	List<Product> products = Model;
+}
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<link rel="stylesheet" href="~/views/home/index.css" />
+<script src="~/views/home/index.js"></script>
+
+<div class="main-area">
+	<div class="background-image-area">
+		<div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img class="background-image" src="~/shared/img/1.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/2.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/3.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/4.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/5.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/6.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/7.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/8.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/9.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/10.jpg" alt="First slide">
+				</div>
+				<div class="carousel-item">
+					<img class="background-image" src="~/shared/img/11.jpg" alt="First slide">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="shadow-box">
+		<div class="text-area">
+			<span class="search-area-title">
+				오늘은 어디로 놀러가볼까?
+			</span>
+		</div>
+		<div class="search-area-body container-fluid">
+			<div class="row">
+				<div class="form-group col-xm-12 col-md-6 col-xl-3">
+					<select id="product-category" class="form-control">
+						<option value="0">전체 여행</option>
+						@foreach (var category in categories)
+						{
+							<option value="@category.Id">@category.Name</option>
+						}
+					</select>
+				</div>
+				<div class="form-group col-sm-12 col-md-6 col-xl-3">
+					<input id="from-date" class="form-control date-picker" readonly="readonly" type="text" placeholder="출발날짜" />
+				</div>
+				<div class="form-group col-12 col-xl-4">
+					<input id="product-keyword" class="form-control" type="search" placeholder="검색어" />
+				</div>
+				<div class="form-group col-sm-12 col-xl-2">
+					<button id="search-product" class="btn third" type="submit">
+						<span class="d-none d-xl-block btn-icon fa fa-search"></span>
+						<span class="d-block d-xl-none btn-text">검색</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tour-list-area">
+		<div class="day-tour">
+			<div class="top-tip">
+				<label>당일 여행</label>
+				<button class="btn see-more">
+					<span class="btn-icon fa fa-plus"></span>
+					<span class="btn-text">
+						더보기
+					</span>
+				</button>
+			</div>
+			<div class="swiper-container product-list">
+				<div class="swiper-wrapper">
+					@foreach (var product in products.Where(x => x.CategoryId == 1).Take(10))
+					{
+						<div id="product-@product.Id" class="swiper-slide product-item">
+							<input type="hidden" value="@product.Id" />
+							<img class="product-thumbnail" src="@product.Thumbnail" />
+							<div class="product-cover">
+								<span class="product-title">
+									@product.Title
+								</span>
+								<span class="product-description">
+									"@product.SubTitle"
+								</span>
+							</div>
+						</div>
+					}
+				</div>
+				<button class="swiper-btn swiper-button-prev">
+					<span class="btn-icon fa fa-chevron-left"></span>
+				</button>
+				<button class="swiper-btn swiper-button-next">
+					<span class="btn-icon fa fa-chevron-right"></span>
+				</button>
+			</div>
+		</div>
+		<div class="night-tour">
+			<div class="top-tip">
+				<label>숙박 여행</label>
+				<button class="btn see-more">
+					<span class="btn-icon fa fa-plus"></span>
+					<span class="btn-text">
+						더보기
+					</span>
+				</button>
+			</div>
+			<div class="swiper-container product-list">
+				<div class="swiper-wrapper">
+					@foreach (var product in products.Where(x => x.CategoryId == 2).Take(10))
+					{
+						<div id="product-@product.Id" class="swiper-slide product-item">
+							<input type="hidden" value="@product.Id" />
+							<img class="product-thumbnail" src="@product.Thumbnail" />
+							<div class="product-cover">
+								<span class="product-title">
+									@product.Title
+								</span>
+								<span class="product-description">
+									"@product.SubTitle"
+								</span>
+							</div>
+						</div>
+					}
+				</div>
+				<button class="swiper-btn swiper-button-prev">
+					<span class="btn-icon fa fa-chevron-left"></span>
+				</button>
+				<button class="swiper-btn swiper-button-next">
+					<span class="btn-icon fa fa-chevron-right"></span>
+				</button>
+			</div>
+		</div>
+		<div class="island-tour">
+			<div class="top-tip">
+				<label>섬 여행</label>
+				<button class="btn see-more">
+					<span class="btn-icon fa fa-plus"></span>
+					<span class="btn-text">
+						더보기
+					</span>
+				</button>
+			</div>
+			<div class="swiper-container product-list">
+				<div class="swiper-wrapper">
+					@foreach (var product in products.Where(x => x.CategoryId == 3).Take(10))
+					{
+						<div id="product-@product.Id" class="swiper-slide product-item">
+							<input type="hidden" value="@product.Id" />
+							<img class="product-thumbnail" src="@product.Thumbnail" />
+							<div class="product-cover">
+								<span class="product-title">
+									@product.Title
+								</span>
+								<span class="product-description">
+									"@product.SubTitle"
+								</span>
+							</div>
+						</div>
+					}
+				</div>
+				<button class="swiper-btn swiper-button-prev">
+					<span class="btn-icon fa fa-chevron-left"></span>
+				</button>
+				<button class="swiper-btn swiper-button-next">
+					<span class="btn-icon fa fa-chevron-right"></span>
+				</button>
+			</div>
+			<div class="jeju-tour">
+				<div class="top-tip">
+					<label>제주도 여행</label>
+					<button class="btn see-more">
+						<span class="btn-icon fa fa-plus"></span>
+						<span class="btn-text">
+							더보기
+						</span>
+					</button>
+				</div>
+				<div class="swiper-container product-list">
+					<div class="swiper-wrapper">
+						@foreach (var product in products.Where(x => x.CategoryId == 4).Take(10))
+						{
+							<div id="product-@product.Id" class="swiper-slide product-item">
+								<input type="hidden" value="@product.Id" />
+								<img class="product-thumbnail" src="@product.Thumbnail" />
+								<div class="product-cover">
+									<span class="product-title">
+										@product.Title
+									</span>
+									<span class="product-description">
+										"@product.SubTitle"
+									</span>
+								</div>
+							</div>
+						}
+					</div>
+					<button class="swiper-btn swiper-button-prev">
+						<span class="btn-icon fa fa-chevron-left"></span>
+					</button>
+					<button class="swiper-btn swiper-button-next">
+						<span class="btn-icon fa fa-chevron-right"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

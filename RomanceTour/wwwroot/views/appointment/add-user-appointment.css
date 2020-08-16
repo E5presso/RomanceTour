@@ -1,0 +1,400 @@
+﻿.datepicker--cell
+{
+	overflow: hidden !important;
+}
+
+	.datepicker--cell.-selected-
+	{
+		background: #777777 !important;
+	}
+
+	.datepicker--cell.-focus-
+	{
+		background: #ACACAC !important;
+	}
+
+	.datepicker--cell.-selected-.-focus-
+	{
+		background: #131313 !important;
+	}
+
+.datepicker--day-name
+{
+	color: #03588C !important;
+}
+
+.datepicker--button
+{
+	color: #03588C !important;
+}
+
+.date-picker
+{
+	cursor: initial;
+}
+
+body
+{
+	overflow: hidden;
+}
+
+.full-screen-area
+{
+	width: 100%;
+	height: 100%;
+}
+
+.carousel, .carousel-inner, .carousel-item
+{
+	width: 100%;
+	height: 100%;
+}
+
+.background-image
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.shadow-box
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	background: rgba(18, 18, 18, 0.5);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+
+.appointment-area
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	width: 100%;
+	height: 100%;
+}
+
+.appointment-form
+{
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	width: 100%;
+	max-width: 840px;
+	overflow-y: auto;
+}
+
+	.appointment-form::-webkit-scrollbar
+	{
+		width: 0;
+	}
+
+	.appointment-form .form-group
+	{
+		width: 100%;
+	}
+
+.form-divider
+{
+	width: 100%;
+	padding: 20px;
+	margin-bottom: 10px;
+	border-radius: 0.25rem;
+	border: 1px solid #FCFCFC;
+}
+
+	.form-divider > .row
+	{
+		padding: 0;
+	}
+
+.form-divider-with-no-border
+{
+	width: 100%;
+	padding: 0;
+}
+
+.dropdown-toggle, .filter-option,
+.dropdown-toggle:hover, .filter-option:hover,
+.dropdown-toggle:active, .filter-option:active,
+.dropdown-toggle:focus, .filter-option:focus
+{
+	background: rgba(2, 56, 89, 0.1);
+	color: #FCFCFC;
+}
+
+.dropdown-menu
+{
+	background: #023859;
+	width: 100%;
+}
+
+.dropdown-item
+{
+	color: #FCFCFC;
+	transition: background 0.3s;
+	width: 100%;
+	padding: 0px 10px 5px 10px;
+}
+
+	.dropdown-item > .text
+	{
+		max-width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		margin: 0 !important;
+		font-size: 1.0rem;
+	}
+
+	.dropdown-item:hover
+	{
+		background: #0378A6;
+		color: #FCFCFC;
+	}
+
+.btn-light:not(:disabled):not(.disabled):active, .btn-light:not(:disabled):not(.disabled).active, .show > .btn-light.dropdown-toggle
+{
+	background: none;
+}
+
+.bs-searchbox > .form-control
+{
+	background: #FCFCFC !important;
+	color: #023859 !important;
+}
+
+.check-mark
+{
+	font-size: 1.0rem;
+}
+
+.form-group label
+{
+	color: #FCFCFC;
+	margin-bottom: 5px;
+}
+
+.form-group .form-control
+{
+	background: rgba(2, 56, 89, 0.1);
+	font-size: 1.2rem;
+}
+
+.form-group > .btn
+{
+	border: 1px solid #FCFCFC;
+}
+
+.form-control, .form-group > .form-control::-webkit-input-placeholder,
+.numeric-updown > *, .form-control:focus
+{
+	color: #FCFCFC;
+	-webkit-appearance: none;
+}
+
+option
+{
+	background: #023859;
+}
+
+.third
+{
+	display: flex;
+	width: 100%;
+	height: 100%;
+	padding: 9px;
+	justify-content: center;
+	align-items: center;
+	background: rgba(2, 56, 89, 0.1);
+}
+
+	.third > .btn-icon
+	{
+		margin-right: 10px;
+	}
+
+	.third > *
+	{
+		color: #FCFCFC;
+		font-size: 1.3rem;
+		transition: color 0.3s, text-shadow 0.3s;
+	}
+
+	.third:not(:disabled):hover > *
+	{
+		color: #F2B705;
+		text-shadow: 0 0 10px #F2B705;
+	}
+
+	.third:focus
+	{
+		border: 1px solid #F2B705;
+	}
+
+.fourth
+{
+	display: flex;
+	width: 100%;
+	padding: 9px;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #FCFCFC !important;
+	background: rgba(2, 56, 89, 0.1);
+}
+
+	.fourth > .btn-icon
+	{
+		margin-right: 10px;
+	}
+
+	.fourth > *
+	{
+		color: #FCFCFC;
+		font-size: 1.3rem;
+		transition: color 0.3s, text-shadow 0.3s;
+	}
+
+	.fourth:hover > *
+	{
+		color: #F2B705;
+		text-shadow: 0 0 10px #F2B705;
+	}
+
+.price-title, #price-value
+{
+	font-size: 1.5rem;
+	color: #FCFCFC;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	white-space: nowrap;
+}
+
+.btn-increment, .btn-decrement, .input-spinner
+{
+	border: 1px solid #FCFCFC;
+	height: 45px;
+}
+
+	.btn-increment > strong, .btn-decrement > strong
+	{
+		color: #FCFCFC;
+	}
+
+	.btn-increment:hover, .btn-decrement:hover
+	{
+		border: 1px solid #FCFCFC;
+	}
+
+
+.explanation-area
+{
+	display: block;
+	margin-bottom: 5px;
+}
+
+.explanation-group
+{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 5px;
+}
+
+.explanation-text, .explanation-icon
+{
+	font-size: 1.1rem;
+}
+
+.explanation-text
+{
+	color: #D0D0D0;
+	white-space: nowrap;
+	margin-right: 10px;
+}
+
+.date-cell
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.date-cell-day
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.0rem;
+	font-weight: initial;
+	color: #FCFCFC;
+}
+
+.date-cell-status
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.7rem;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.date-cell-disabled
+{
+	opacity: 0.3;
+}
+
+	.date-cell-disabled > .date-cell-day
+	{
+		font-size: 1.0rem;
+		color: #131313;
+	}
+
+.date-available
+{
+	color: rgba(0, 200, 0, 0.5);
+	background: rgba(0, 200, 0, 0.5);
+}
+
+.date-approved
+{
+	color: rgba(0, 0, 200, 0.6);
+	background: rgba(0, 0, 200, 0.6);
+}
+
+.date-fulled
+{
+	color: rgba(200, 0, 0, 0.6);
+	background: rgba(200, 0, 0, 0.6);
+}
+
+.date-canceled
+{
+	color: rgba(200, 200, 0, 0.6);
+	background: rgba(200, 200, 0, 0.6);
+}
+
+.date-normal > .date-cell-day
+{
+	color: #03588C;
+}

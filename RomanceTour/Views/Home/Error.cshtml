@@ -1,0 +1,41 @@
+﻿@{
+	ViewData["DATA"] = "Error";
+	ViewData["TITLE"] = "서비스 오류";
+	string back = ViewBag.Back;
+}
+
+<link rel="stylesheet" href="~/shared/css/full-screen.css" />
+<link rel="stylesheet" href="~/views/home/error.css" />
+<script src="~/views/home/error.js"></script>
+
+<div class="full-screen-area">
+	<div class="kernel-wall">
+		<span>using System;</span>
+		<span>&nbsp;</span>
+		<span>namespace ILove</span>
+		<span>{</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;public class You</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;{</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private static void Main(string[] args)</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console.WriteLine("사랑해 지은아!");</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;}</span>
+		<span>}</span>
+	</div>
+	<div class="cover-wall">
+		<img class="wall-img" src="~/shared/img/wall.svg" />
+		<img class="ladder-img" src="~/shared/img/character.svg" />
+	</div>
+	<div class="wall-text">
+		<div class="text-area">
+			<span class="main-text">앗! 오류가 발생했는데요!</span>
+			<span class="sub-text">못 본걸로 해주시면 언능 고칠게요 ㅠㅅㅠ</span>
+		</div>
+		<a href="@Url.Action("Index", "Home")">
+			<span class="go-back">
+				홈으로 돌아가기
+			</span>
+		</a>
+	</div>
+</div>

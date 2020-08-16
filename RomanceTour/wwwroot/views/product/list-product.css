@@ -1,0 +1,312 @@
+﻿.date-picker:read-only
+{
+	background: #FCFCFC;
+}
+
+.datepicker
+{
+	z-index: 1001;
+}
+
+.datepicker--cell.-selected-
+{
+	background: #fff !important;
+	color: #F2B705 !important;
+	border: 1px solid #F2B705 !important;
+}
+
+	.datepicker--cell.-selected-.-current-
+	{
+		background: #fff !important;
+		color: #F2B705 !important;
+		border: 1px solid #F2B705 !important;
+	}
+
+	.datepicker--cell.-selected-.-focus-
+	{
+		background: #F2B705 !important;
+		color: #fff !important;
+	}
+
+.datepicker--day-name
+{
+	color: #03588C !important;
+}
+
+.datepicker--button
+{
+	color: #03588C !important;
+}
+
+.irs span
+{
+	transition: none;
+	font-size: 0.9rem !important;
+}
+
+.custom-control-label::before, .custom-control-label::after
+{
+	top: 0.05rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before
+{
+	border-color: #023859;
+	background-color: #023859;
+}
+
+.product-search
+{
+	width: 100%;
+	background: #ECECEC;
+	box-shadow: 0px 5px 5px rgba(18, 18, 18, 0.3);
+	padding: 10px;
+}
+
+.row
+{
+	margin: 0;
+}
+
+.date-picker
+{
+	cursor: initial;
+}
+
+.form-group
+{
+	margin: 0;
+	padding: 5px;
+}
+
+.search-option
+{
+	width: 100%;
+	height: 100%;
+}
+
+.dropdown-menu
+{
+	width: 345px;
+	transition: none;
+	padding: 25px;
+}
+
+.dropdown-item:active, .dropdown-item:focus, .dropdown-item:hover
+{
+	background: none;
+}
+
+	.dropdown-item:active > label, .dropdown-item:focus > label, .dropdown-item:hover > label
+	{
+		color: #131313;
+	}
+
+.btn-basic
+{
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	background: #FCFCFC;
+	border: 1px solid #CED4DA;
+}
+
+	.btn-basic > *
+	{
+		color: #023859;
+	}
+
+	.btn-basic > .btn-icon
+	{
+		margin-right: 5px;
+	}
+
+.btn-reversed
+{
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	background: #023859;
+	border: 1px solid #CED4DA;
+	transition: background 0.3s;
+}
+
+	.btn-reversed:hover
+	{
+		background: #03588C;
+	}
+
+	.btn-reversed > *
+	{
+		color: #FCFCFC;
+	}
+
+	.btn-reversed > .btn-icon
+	{
+		margin-right: 5px;
+	}
+
+.product-sort
+{
+	width: 100%;
+	padding: 10px 15px 10px 15px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+	align-items: center;
+	border-bottom: 1px solid rgba(18, 18, 18, 0.3);
+}
+
+.control-size-fixed
+{
+	width: 120px;
+	background: #023859;
+	color: #FCFCFC;
+}
+
+.product-list
+{
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 400px);
+	grid-gap: 20px;
+	justify-content: space-evenly;
+	align-content: flex-start;
+	flex-flow: row wrap;
+	padding: 20px;
+}
+
+.product-item
+{
+	width: 400px;
+	height: 300px;
+	border-radius: 0.25rem;
+	overflow: hidden;
+	box-shadow: 3px 3px 5px rgba(13, 13, 13, 0.5);
+	cursor: pointer;
+}
+
+	.product-item:hover .product-thumbnail
+	{
+		transform: scale(1.05);
+		opacity: 0.9;
+	}
+
+@media all and (max-width: 576px)
+{
+	.btn-basic > .btn-icon
+	{
+		margin: 0;
+	}
+
+	.product-list
+	{
+		display: flex;
+	}
+
+	.product-item
+	{
+		width: 100%;
+		margin: 10px 0px 10px 0px;
+	}
+
+		.product-item:first-child
+		{
+			margin: 0px 0px 10px 0px;
+		}
+
+		.product-item:last-child
+		{
+			margin: 10px 0px 0px 0px;
+		}
+}
+
+.product-thumbnail
+{
+	width: 100%;
+	height: 60%;
+	object-fit: cover;
+	transition: transform 0.3s, filter 0.3s, opacity 0.3s;
+}
+
+.product-info
+{
+	width: 100%;
+	height: 40%;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.product-item .container-fluid
+{
+	padding: 10px;
+	margin: 0;
+}
+
+.product-item .row
+{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.product-item .col
+{
+	padding: 0;
+	margin: 0;
+	margin-bottom: 5px;
+}
+
+.product-title, .product-subtitle
+{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+	.product-title .inner-frame
+	{
+		max-width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.product-subtitle .inner-frame
+	{
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		font-size: 1.1rem;
+	}
+
+.product-date, .product-price, .product-confirmed
+{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+	.product-confirmed .inner-frame
+	{
+		padding: 5px;
+		border: 2px solid #F2B705;
+		color: #F2B705;
+	}
+
+.product-sub-area
+{
+	padding: 0 !important;
+}

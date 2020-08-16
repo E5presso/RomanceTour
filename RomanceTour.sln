@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RomanceTour", "RomanceTour\RomanceTour.csproj", "{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{59386B73-8B71-4CE7-ABF4-59307CDAC6ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{70FA5A67-3A4A-405B-8F6F-A0063201B6B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB2566C-73B6-47C3-91A6-4453B33A3EE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59386B73-8B71-4CE7-ABF4-59307CDAC6ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59386B73-8B71-4CE7-ABF4-59307CDAC6ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59386B73-8B71-4CE7-ABF4-59307CDAC6ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59386B73-8B71-4CE7-ABF4-59307CDAC6ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70FA5A67-3A4A-405B-8F6F-A0063201B6B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70FA5A67-3A4A-405B-8F6F-A0063201B6B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70FA5A67-3A4A-405B-8F6F-A0063201B6B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70FA5A67-3A4A-405B-8F6F-A0063201B6B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8EE22FA-8584-441C-8422-6E3D129BCE3B}
+	EndGlobalSection
+EndGlobal

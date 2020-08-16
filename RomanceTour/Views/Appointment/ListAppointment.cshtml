@@ -1,0 +1,146 @@
+﻿@{
+	ViewData["DATA"] = "ListAppointment";
+	ViewData["TITLE"] = "예약확인";
+	string Back = ViewBag.Back;
+	List<Appointment> list = ViewBag.Appointments;
+}
+
+<link rel="stylesheet" href="~/shared/css/full-screen.css" />
+<link rel="stylesheet" href="~/shared/css/transition.css" />
+<link rel="stylesheet" href="~/views/appointment/list-appointment.css" />
+<script src="~/views/appointment/list-appointment.js"></script>
+
+<div class="full-screen-area">
+	<div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img class="background-image" src="~/shared/img/1.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/2.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/3.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/4.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/5.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/6.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/7.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/8.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/9.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/10.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/11.jpg" alt="First slide">
+			</div>
+		</div>
+	</div>
+	<div class="shadow-box">
+		@if (list.Count > 0)
+		{
+			<div class="title-area">
+				<span class="title">
+					예약 확인
+				</span>
+			</div>
+			<ul class="appointment-list">
+				@foreach (Appointment appointment in list)
+				{
+					<li class="appointment-item">
+						<input type="hidden" class="appointment-id" value="@appointment.Id" />
+						<input type="hidden" class="is-user-appointment" value="@appointment.IsUserAppointment.ToString()" />
+						<img class="item-thumbnail" src="@appointment.DateSession.Product.Thumbnail" />
+						<div class="item-info container-fluid">
+							<div class="row">
+								<div class="has-margin d-flex col-md-5 justify-content-md-start col-lg-6">
+									<span>
+										예약자 :
+										@if (appointment.IsUserAppointment)
+										{
+											@appointment.User.Name
+										}
+										else
+										{
+											@appointment.Name
+										}
+									</span>
+								</div>
+								<div class="has-margin d-flex col-md-7 justify-content-md-end col-lg-6 justify-content-lg-start">
+									<span>
+										상품명 : @appointment.DateSession.Product.Title
+									</span>
+								</div>
+								<div class="has-margin d-flex col-md-7 justify-content-md-start col-lg-6">
+									<span>
+										출발날짜 : @appointment.DateSession.Date.ToShortDateString()
+									</span>
+								</div>
+								<div class="has-margin d-flex col-md-5 justify-content-md-end col-lg-6 justify-content-lg-start">
+									<span>
+										금액 : &#8361;@string.Format("{0:n0}", appointment.Price)
+									</span>
+								</div>
+								<div class="has-margin d-flex col-12 justify-content-start">
+									<span>
+										예약상태 :
+										@switch (appointment.Status)
+										{
+											case AppointmentStatus.CANCELED:
+											{
+												<span class="red-stamp">@("예약 취소")</span>
+												break;
+											}
+											case AppointmentStatus.CONFIRMED:
+											{
+												<span class="green-stamp">@("예약 완료")</span>
+												break;
+											}
+											case AppointmentStatus.READY_TO_PAY:
+											{
+												<span class="grey-stamp">@("입금 대기")</span>
+												break;
+											}
+										}
+										@if (appointment.Status == AppointmentStatus.CONFIRMED && 
+											(appointment.DateSession.Status == DateSessionStatus.APPROVED || 
+											appointment.DateSession.Status == DateSessionStatus.FULLED))
+										{
+											<span class="yellow-stamp">@("출발 확정")</span>
+										}
+									</span>
+								</div>
+							</div>
+						</div>
+					</li>
+				}
+			</ul>
+		}
+		else
+		{
+			<div class="full-box">
+				<span class="big-text">
+					예약내역이 존재하지 않습니다.
+				</span>
+				<a class="link" href="@Back">
+					<span class="link-icon fa fa-arrow-left"></span>
+					<span class="link-text">
+						돌아가기
+					</span>
+				</a>
+			</div>
+		}
+	</div>
+</div>

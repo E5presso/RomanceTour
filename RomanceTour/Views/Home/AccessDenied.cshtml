@@ -1,0 +1,11 @@
+﻿@{
+	ViewData["DATA"] = "AccessDenied";
+	ViewData["TITLE"] = "접근 거부";
+}
+
+<script>
+	$(document).ready(function () {
+		alert("접근이 거부되었습니다.");
+		window.location.href = "/Home/Index";
+	});
+</script>

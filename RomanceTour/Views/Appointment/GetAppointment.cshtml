@@ -1,0 +1,172 @@
+﻿@{
+	ViewData["DATA"] = "GetAppointment";
+	ViewData["TITLE"] = "예약확인";
+	string Back = ViewBag.Back;
+	Appointment appointment = ViewBag.Appointment;
+}
+
+<div class="full-screen-area">
+	<div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img class="background-image" src="~/shared/img/1.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/2.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/3.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/4.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/5.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/6.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/7.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/8.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/9.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/10.jpg" alt="First slide">
+			</div>
+			<div class="carousel-item">
+				<img class="background-image" src="~/shared/img/11.jpg" alt="First slide">
+			</div>
+		</div>
+	</div>
+	<div class="shadow-box">
+		<div class="card-area">
+			<div id="printable-area" class="info-area">
+				<span class="title">
+					예약 확인서
+				</span>
+				<span class="info-section">
+					예약번호 :
+					<span id="appointment-id" class="copy-text">@string.Format("{0:D10}", appointment.Id)</span>
+					<span class="copy-btn fa fa-copy"></span>
+				</span>
+				<span class="info-section">
+					상품명 :
+					<a class="link-text" href="/Product/GetProduct?id=@appointment.DateSession.Product.Id">
+						@appointment.DateSession.Product.Title
+					</a>
+				</span>
+				<span class="info-section">
+					예약자 : @(appointment.IsUserAppointment ? appointment.User.Name : appointment.Name)
+				</span>
+				<span class="info-section">
+					출발날짜 : @appointment.DateSession.Date.ToShortDateString()
+				</span>
+				@foreach (Person person in appointment.Person)
+				{
+					var ammount = person.Ammount;
+					var productPrice = appointment.DateSession.Product.Price;
+					var price = person.Option.SingleOrDefault(x => x.PriceRule.RuleType == PriceRuleType.PERCENT_AS).PriceRule;
+					var options = person.Option.Where(x => x.PriceRule.RuleType != PriceRuleType.PERCENT_AS).Select(x => x.PriceRule);
+					var sum = 0;
+					<span class="info-group">
+						<span class="sub-title bold-text">
+							@price.RuleName : @(person.Ammount)명
+						</span>
+						<span class="sub-info-section">
+							탑승지 : @person.Departure.Name
+						</span>
+						<span class="kakao-map-container">
+							<input type="hidden" class="departure-name" value="@person.Departure.Name" />
+							<input type="hidden" class="latitude" value="@person.Departure.X" />
+							<input type="hidden" class="longtitude" value="@person.Departure.Y" />
+						</span>
+						<span class="sub-info-section">
+							@{sum += (productPrice / 100 * price.Price) * ammount;}
+							금액 : &#8361;@string.Format("{0:n0}", (productPrice / 100 * price.Price) * ammount)
+						</span>
+						@foreach (PriceRule option in options)
+						{
+							if (option.RuleType == PriceRuleType.STATIC_PLUS)
+							{
+								<span class="sub-info-section">
+									@{sum += option.Price * ammount;}
+									+ @option.RuleName &#8361;@string.Format("{0:n0}", option.Price * ammount)
+								</span>
+							}
+							else if (option.RuleType == PriceRuleType.STATIC_MINUS)
+							{
+								<span class="sub-info-section">
+									@{sum -= option.Price * ammount;}
+									- @option.RuleName &#8361;@string.Format("{0:n0}", option.Price * ammount)
+								</span>
+							}
+						}
+						<span class="sub-info-section">
+							합계 : &#8361;@string.Format("{0:n0}", sum)
+						</span>
+					</span>
+				}
+				<span class="info-group">
+					<span class="sub-title bold-text">
+						입금계좌
+					</span>
+					@foreach (ProductBilling billing in appointment.DateSession.Product.ProductBilling)
+					{
+						<span class="sub-info-section">
+							@billing.Billing.Bank @billing.Billing.Number
+						</span>
+					}
+				</span>
+				<span class="info-section bold-text">
+					<span class="high-lighted">
+						총 결제 금액 : &#8361;@string.Format("{0:n0}", appointment.Price)
+					</span>
+				</span>
+				<span class="info-section bold-text">
+					상태 :
+					@switch (appointment.Status)
+					{
+						case AppointmentStatus.CANCELED:
+						{
+							<span class="red-stamp">@("예약 취소")</span>
+							break;
+						}
+						case AppointmentStatus.CONFIRMED:
+						{
+							<span class="green-stamp">@("예약 완료")</span>
+							break;
+						}
+						case AppointmentStatus.READY_TO_PAY:
+						{
+							<span class="grey-stamp">@("입금 대기")</span>
+							break;
+						}
+					}
+					@if (appointment.Status == AppointmentStatus.CONFIRMED &&
+					(appointment.DateSession.Status == DateSessionStatus.APPROVED ||
+					appointment.DateSession.Status == DateSessionStatus.FULLED))
+					{
+						<span class="yellow-stamp">@("출발 확정")</span>
+					}
+				</span>
+				<button class="print-btn btn">
+					<span class="btn-icon fa fa-print"></span>
+					<span class="btn-text">
+						인쇄하기
+					</span>
+				</button>
+			</div>
+			<div class="go-back">
+				<span class="btn-icon fa fa-arrow-left"></span>
+				<span class="btn-text">
+					돌아가기
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

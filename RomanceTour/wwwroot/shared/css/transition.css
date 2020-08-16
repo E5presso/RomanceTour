@@ -1,0 +1,4 @@
+﻿article img, article span, article div, article ul, article li
+{
+	transition: all 0.3s;
+}

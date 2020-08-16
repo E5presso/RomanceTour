@@ -1,0 +1,76 @@
+﻿@{
+	ViewData["DATA"] = "ManageProduct";
+	ViewData["TITLE"] = "상품관리";
+	List<Category> list = Model;
+}
+
+<link rel="stylesheet" href="~/views/admin/manage-product.css" />
+<script src="~/views/admin/manage-product.js"></script>
+
+<div class="page-back">
+	<button class="btn second go-back">
+		<span class="fa fa-arrow-left btn-icon"></span>
+		<span class="btn-text">
+			이전 페이지
+		</span>
+	</button>
+	<button class="btn fourth write-product">
+		<span class="fa fa-edit btn-icon"></span>
+		<span class="btn-text">
+			작성
+		</span>
+	</button>
+</div>
+<div class="search-area">
+	<select id="category" class="form-control search-option-1">
+		<option value="0">전체 여행</option>
+		@foreach (var category in list)
+		{
+			<option value="@category.Id">@category.Name</option>
+		}
+	</select>
+	<select id="option" class="form-control search-option-2">
+		<option value="0">상품명</option>
+		<option value="1">가격</option>
+	</select>
+	<div class="search-bar-second search-user">
+		<input type="search" id="search-keyword" class="form-control search-text" placeholder="검색어 입력" />
+		<button class="btn second user-search-btn">
+			<span class="fa fa-search"></span>
+		</button>
+	</div>
+</div>
+<div class="table-responsive">
+	<table class="table table-borderless table-striped">
+		<thead>
+			<tr>
+				<th class="d-none d-xl-table-cell">
+					<span class="table-header">
+						썸네일
+					</span>
+				</th>
+				<th class="d-table-cell">
+					<span class="table-header">
+						상품명
+					</span>
+				</th>
+				<th class="d-table-cell">
+					<span class="table-header">
+						분류
+					</span>
+				</th>
+				<th class="d-none d-md-table-cell">
+					<span class="table-header">
+						가격
+					</span>
+				</th>
+				<th class="d-table-cell">
+					<span class="table-header">
+						작업
+					</span>
+				</th>
+			</tr>
+		</thead>
+		<tbody class="product-list"></tbody>
+	</table>
+</div>

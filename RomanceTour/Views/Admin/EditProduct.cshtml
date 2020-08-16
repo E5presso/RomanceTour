@@ -1,0 +1,194 @@
+﻿@{
+    ViewData["DATA"] = "WriteProduct";
+    ViewData["TITLE"] = "상품작성";
+
+    List<Billing> billings = ViewBag.Billing;
+    List<Category> categories = ViewBag.Category;
+    List<PriceRule> PriceRules = ViewBag.PriceRule;
+    List<Departure> departures = ViewBag.Departure;
+    List<Host> hosts = ViewBag.Host;
+    Product product = Model;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<link rel="stylesheet" href="~/views/admin/edit-product.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script src="~/lib/ckeditor/ckeditor.js"></script>
+<script src="~/views/admin/edit-product.js"></script>
+
+<input type="hidden" id="product-id" value="@product.Id" />
+<div class="top-area">
+    <button class="btn second go-back">
+        <span class="fa fa-arrow-left btn-icon"></span>
+        <span class="btn-text">
+            이전 페이지
+        </span>
+    </button>
+    <button class="btn submit-post">
+        <span class="btn-icon fa fa-edit"></span>
+        <span class="btn-text">
+            편집
+        </span>
+    </button>
+</div>
+<div class="info-area container-fluid">
+    <div class="row">
+        <div class="form-group col-12 col-md-6 col-xl-12">
+            <label>제목</label>
+            <input type="text" id="title" class="form-control" placeholder="제목" value="@product.Title" />
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label>부제목</label>
+            <input type="text" id="sub-title" class="form-control" placeholder="부제목" value="@product.SubTitle" />
+        </div>
+        <div class="form-group col-5 col-xl-3">
+            <label>카테고리</label>
+            <select id="category" class="form-control">
+                @foreach (Category category in categories)
+                {
+                    if (product.CategoryId == category.Id)
+                    {
+                        <option value="@category.Id" selected>@category.Name</option>
+					}
+					else
+					{
+                        <option value="@category.Id">@category.Name</option>
+					}
+				}
+            </select>
+        </div>
+        <div class="form-group col-7 col-xl-3">
+            <label>썸네일</label>
+            <div class="custom-file">
+                <input type="file" id="thumbnail-image" class="custom-file-input" accept=".jpg, .jpeg, .png" />
+                <label class="custom-file-label" for="Image">선택된 파일 없음</label>
+            </div>
+        </div>
+        <div class="form-group col-5 col-md-12">
+            <label>상품가격</label>
+            <input type="number" id="price" class="form-control" placeholder="상품 가격" value="@product.Price" />
+        </div>
+        <div class="form-group col-12 col-md-6 col-xl-5">
+            <label>가격정책</label>
+			<select id="price-rule" class="form-control multiple-select" multiple data-live-search="true">
+				@foreach (PriceRule PriceRule in PriceRules)
+				{
+					switch (PriceRule.RuleType)
+					{
+						case PriceRuleType.PERCENT_AS:
+						{
+							if (product.ProductPriceRule.SingleOrDefault(x => x.PriceRuleId == PriceRule.Id) != null)
+							{
+								<option value="@PriceRule.Id" selected>@PriceRule.RuleName : @PriceRule.Price%</option>
+							}
+							else
+							{
+								<option value="@PriceRule.Id">@PriceRule.RuleName : @PriceRule.Price%</option>
+							}
+							break;
+						}
+						case PriceRuleType.STATIC_PLUS:
+						{
+							if (product.ProductPriceRule.SingleOrDefault(x => x.PriceRuleId == PriceRule.Id) != null)
+							{
+								<option value="@PriceRule.Id" selected>@PriceRule.RuleName + @PriceRule.Price&#8361;</option>
+							}
+							else
+							{
+								<option value="@PriceRule.Id">@PriceRule.RuleName + @PriceRule.Price&#8361;</option>
+							}
+							break;
+						}
+						case PriceRuleType.STATIC_MINUS:
+						{
+							if (product.ProductPriceRule.SingleOrDefault(x => x.PriceRuleId == PriceRule.Id) != null)
+							{
+								<option value="@PriceRule.Id" selected>@PriceRule.RuleName - @PriceRule.Price&#8361;</option>
+							}
+							else
+							{
+								<option value="@PriceRule.Id">@PriceRule.RuleName - @PriceRule.Price&#8361;</option>
+							}
+							break;
+						}
+					}
+				}
+			</select>
+        </div>
+        <div class="form-group col-12 col-md-6 col-xl-4">
+            <label>탑승지</label>
+            <select id="departure" class="form-control multiple-select" multiple data-live-search="true">
+                @foreach (Departure departure in departures)
+                {
+                    if (product.ProductDeparture.SingleOrDefault(x => x.DepartureId == departure.Id) != null)
+                    {
+                        <option value="@departure.Id" selected>@departure.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@departure.Id">@departure.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group col-12 col-md-6 col-xl-4">
+            <label>제휴업체</label>
+            <select id="host" class="form-control multiple-select" multiple data-live-search="true">
+                <optgroup label="숙소">
+                    @foreach (Host host in hosts)
+                    {
+                        if (host.Type == 0)
+                        {
+                            if (product.ProductHost.SingleOrDefault(x => x.HostId == host.Id) != null)
+                            {
+                                <option value="@host.Id" selected>@host.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@host.Id">@host.Name</option>
+                            }
+                        }
+                    }
+                </optgroup>
+                <optgroup label="식당">
+                    @foreach (Host host in hosts)
+                    {
+                        if (host.Type == 1)
+                        {
+                            if (product.ProductHost.SingleOrDefault(x => x.HostId == host.Id) != null)
+                            {
+                                <option value="@host.Id" selected>@host.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@host.Id">@host.Name</option>
+                            }
+                        }
+                    }
+                </optgroup>
+            </select>
+        </div>
+        <div class="form-group col-12 col-md-6 col-xl-4">
+            <label>입금계좌</label>
+            <select id="billing" class="form-control multiple-select" multiple data-live-search="true">
+                @foreach (Billing billing in billings)
+                {
+                    if (product.ProductBilling.SingleOrDefault(x => x.BillingId == billing.Id) != null)
+                    {
+                        <option value="@billing.Id" selected>@billing.Name : @billing.Bank @billing.Number</option>
+                    }
+                    else
+                    {
+                        <option value="@billing.Id">@billing.Name : @billing.Bank @billing.Number</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group col-12">
+            <label>예약날짜</label>
+            <input type="text" id="available-appointment" class="form-control date-picker" readonly="readonly" />
+        </div>
+    </div>
+</div>
+<textarea name="editor"></textarea>

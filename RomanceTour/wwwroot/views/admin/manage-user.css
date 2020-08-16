@@ -1,0 +1,183 @@
+﻿.page-back
+{
+	width: 100%;
+	padding: 20px 40px 10px 40px;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.go-back
+{
+	padding: 0;
+	margin-right: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+	.go-back > *
+	{
+		color: #023859;
+		margin-right: 10px;
+		font-size: 1.5rem;
+		transition: color 0.3s;
+	}
+
+	.go-back:hover > *
+	{
+		color: #B0C8EB;
+		text-shadow: none;
+	}
+
+.search-area
+{
+	width: 100%;
+	padding: 10px 40px 0px 40px;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.search-option
+{
+	width: 100px;
+	border: 1px solid #B0C8EB;
+	background: #B0C8EB;
+	color: #FCFCFC;
+	margin-right: 5px;
+}
+.search-user
+{
+	width: 100%;
+}
+
+	.search-user > .search-text
+	{
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.search-user > .user-search-btn
+	{
+		width: 50px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.search-user > .user-search-btn > *
+	{
+		color: #B0C8EB;
+		transition: color 0.3s, text-shadow 0.3s;
+	}
+
+.form-control
+{
+	transition: box-shadow 0.3s;
+}
+.form-control:focus
+{
+	box-shadow: 0 0 10px #B0C8EB;
+}
+
+.search-bar-second
+{
+	display: flex;
+	flex-flow: row nowrap;
+	background: #FCFCFC;
+	border-radius: 0.25rem;
+	transition: box-shadow 0.3s;
+	border: 1px solid #B0C8EB;
+	transition: border 0.3s, box-shadow 0.3s;
+}
+
+table
+{
+	display: flex;
+	flex-flow: column;
+	width: 100%;
+}
+
+thead
+{
+	flex: 0 0 auto;
+	background: #B0C8EB;
+}
+
+tbody
+{
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+tr
+{
+	width: 100%;
+	display: table;
+	table-layout: fixed;
+}
+
+.table-responsive
+{
+	width: 100%;
+	padding: 10px 40px 0px 40px;
+}
+
+.table
+{
+	max-height: 500px;
+	overflow-y: auto;
+	margin: 0;
+}
+
+.table-header
+{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	white-space: nowrap;
+	color: #FCFCFC;
+}
+.table-body
+{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.1rem;
+	white-space: nowrap;
+}
+
+.third
+{
+	padding: 0;
+	margin-right: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+	.third > .btn-icon
+	{
+		font-size: 1.1rem;
+		transition: color 0.3s;
+	}
+
+.config-user > .btn-icon
+{
+	color: #023859;
+}
+.config-user:hover > .btn-icon
+{
+	color: #B0C8EB;
+	text-shadow: none;
+}
+.remove-user > .btn-icon
+{
+	color: #FF4430;
+}
+.remove-user:hover > .btn-icon
+{
+	color: #FF7C71;
+	text-shadow: none;
+}

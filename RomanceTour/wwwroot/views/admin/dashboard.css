@@ -1,0 +1,139 @@
+﻿.full-screen-area
+{
+	width: 100%;
+	height: 100%;
+}
+
+.shadow-box
+{
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+}
+
+.row
+{
+	width: 100%;
+	height: 100%;
+}
+
+.section
+{
+	padding: 10px;
+}
+
+.third
+{
+	width: 100%;
+	height: 100%;
+}
+
+.section:nth-child(1) > .third
+{
+	background: #B0C8EB;
+}
+
+.section:nth-child(2) > .third
+{
+	background: #D0B8F5;
+}
+
+.section:nth-child(3) > .third
+{
+	background: #FFC3BD;
+}
+
+.section:nth-child(4) > .third
+{
+	background: #BCE8DE;
+}
+
+.third
+{
+	padding: 20px;
+	display: flex;
+	flex-flow: column;
+	justify-content: stretch;
+	align-items: stretch;
+	display: -webkit-flex;
+	-webkit-flex-flow: column;
+	-webkit-justify-content: stretch;
+	-webkit-align-items: stretch;
+}
+
+	.third > .inner
+	{
+		flex: 1;
+		-webkit-flex: 1;
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
+		display: -webkit-flex;
+		-webkit-flex-flow: column;
+		-webkit-justify-content: center;
+		-webkit-align-items: center;
+		border: 2px solid #FCFCFC;
+		border-radius: 0.25rem;
+		padding: 10px;
+		transition: box-shadow 0.3s;
+	}
+
+	.third:hover > .inner
+	{
+		box-shadow: 0px 0px 10px #FCFCFC, 0px 0px 10px #FCFCFC inset;
+	}
+	.third > .inner > .btn-icon
+	{
+		color: #FCFCFC;
+		font-size: 3.0rem;
+		text-shadow: none;
+		transition: text-shadow 0.3s;
+		margin-bottom: 10px;
+	}
+	.third > .inner > .btn-text
+	{
+		color: #FCFCFC;
+		font-size: 2.0rem;
+		display: none;
+		opacity: 0;
+		transition: text-shadow 0.3s, opacity 0.3s;
+	}
+	.third:hover > .inner > .btn-icon
+	{
+		text-shadow: 0px 0px 10px #FCFCFC;
+	}
+	.third:hover > .inner > .btn-text
+	{
+		opacity: 1;
+		text-shadow: 0px 0px 10px #FCFCFC;
+	}
+
+@media all and (min-width: 768px)
+{
+	.third > .inner > .btn-icon
+	{
+		font-size: 4.0rem;
+	}
+
+	.third > .inner > .btn-text
+	{
+		font-size: 2.0rem;
+	}
+}
+@media all and (min-width: 992px)
+{
+	.third > .inner > .btn-icon
+	{
+		font-size: 5.0rem;
+	}
+	.third > .inner > .btn-text
+	{
+		font-size: 3.0rem;
+	}
+}

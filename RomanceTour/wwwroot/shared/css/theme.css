@@ -1,0 +1,401 @@
+﻿.st0
+{
+	transition: fill 0.3s;
+	fill: #F2B705;
+	stroke-miterlimit: 10;
+}
+
+.st1
+{
+	transition: fill 0.3s, text-shadow 0.3s;
+	fill: #FCFCFC;
+}
+
+.st2
+{
+	font-family: 'Jua', sans-serif;
+}
+
+.st3
+{
+	font-size: 220px;
+}
+
+.st4
+{
+	fill-rule: evenodd;
+	clip-rule: evenodd;
+}
+
+.logo:hover .st0
+{
+	fill: #FCFCFC;
+}
+
+.logo:hover .st1
+{
+	fill: #F2B705;
+	text-shadow: 0px 0px 10px #F2B705;
+}
+
+span, img, label, text
+{
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn
+{
+	font-size: 1.2rem;
+	padding: 0.375rem 0.75rem;
+	margin: 0;
+	border-radius: 0.25rem;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-o-box-shadow: none;
+	-ms-box-shadow: none;
+	transition: none;
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	-ms-transition: none;
+}
+
+	.btn:hover
+	{
+		box-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-o-box-shadow: none;
+		-ms-box-shadow: none;
+	}
+
+span, label, .form-control, .menu-btn > .btn-text, th, td, strong, a
+{
+	font-family: 'Jua', sans-serif;
+	font-size: 1.4rem;
+}
+
+header
+{
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.top-menu, .gnb
+{
+	transition: background 0.3s;
+}
+
+.navbar
+{
+	background: #023859;
+	box-shadow: 0px 5px 5px rgba(18, 18, 18, 0.3);
+}
+
+.logo
+{
+	width: 180px;
+	box-sizing: border-box;
+	object-fit: contain;
+}
+
+.top-menu
+{
+	background: #010F3B;
+}
+
+	.top-menu > .menu-btn > *
+	{
+		font-size: 1.0rem;
+	}
+
+.btn-text
+{
+	white-space: nowrap;
+}
+
+.menu-btn > *
+{
+	color: #FCFCFC;
+	font-size: 1.0rem;
+	transition: color 0.3s, text-shadow 0.3s, box-shadow 0.3s;
+}
+
+.menu-btn:hover > *
+{
+	color: #F2B705;
+	text-shadow: 0 0 10px #F2B705;
+}
+
+.user-area > .btn
+{
+	width: 20%;
+	margin: 0;
+}
+
+	.user-area > .btn > .btn-icon
+	{
+		font-size: 2.0rem;
+		margin-bottom: 5px;
+	}
+
+	.user-area > .btn > .btn-text
+	{
+		font-size: 1.2rem;
+		white-space: nowrap;
+	}
+
+.navbar-toggler:focus,
+.navbar-toggler:active
+{
+	outline: 0;
+	box-shadow: inset 0 0 #ddd;
+}
+
+.navbar-toggler span
+{
+	display: block;
+	background: #FCFCFC;
+	height: 3px;
+	width: 25px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+	transform: rotate(0deg);
+	position: relative;
+	left: 0;
+	opacity: 1;
+}
+
+	.navbar-toggler span:nth-child(2)
+	{
+		-webkit-transition: height 0.3s;
+		-moz-transition: height 0.3s;
+		-o-transition: height 0.3s;
+		transition: height 0.3s;
+	}
+
+	.navbar-toggler span:nth-child(1),
+	.navbar-toggler span:nth-child(3)
+	{
+		-webkit-transition: transform 0.3s;
+		-moz-transition: transform 0.3s;
+		-o-transition: transform 0.3s;
+		transition: transform 0.3s;
+	}
+
+.navbar-toggler:not(.collapsed) span:nth-child(1)
+{
+	position: absolute;
+	left: initial;
+	top: 36px;
+	-webkit-transform: rotate(135deg);
+	-moz-transform: rotate(135deg);
+	-o-transform: rotate(135deg);
+	transform: rotate(135deg);
+	opacity: 0.9;
+}
+
+.navbar-toggler:not(.collapsed) span:nth-child(2)
+{
+	height: 0;
+}
+
+.navbar-toggler:not(.collapsed) span:nth-child(3)
+{
+	position: absolute;
+	left: initial;
+	top: 36px;
+	-webkit-transform: rotate(-135deg);
+	-moz-transform: rotate(-135deg);
+	-o-transform: rotate(-135deg);
+	transform: rotate(-135deg);
+	opacity: 0.9;
+}
+
+.nav-item
+{
+	margin-left: 5px;
+}
+
+.nav-link > *
+{
+	color: #FCFCFC;
+	transition: color 0.3s, text-shadow 0.3s;
+}
+
+.nav-link:hover > *
+{
+	color: #F2B705;
+	text-shadow: 0px 0px 10px #F2B705;
+}
+
+.navbar-collapse
+{
+	z-index: 1000;
+	transition: height 0.3s;
+}
+
+.search-bar
+{
+	display: flex;
+	flex-flow: row nowrap;
+	background: #FCFCFC;
+	border-radius: 0.25rem;
+}
+
+@media all and (min-width: 1200px)
+{
+	.search-bar
+	{
+		width: 280px;
+	}
+}
+
+.search-btn
+{
+	width: 40px;
+}
+
+	.search-btn > *
+	{
+		color: #023859;
+		transition: color 0.3s, text-shadow 0.3s;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: center;
+		align-items: center;
+	}
+
+.search-bar
+{
+	transition: box-shadow 0.3s;
+}
+
+.search-text
+{
+	border: 0;
+	font-size: 1.2rem;
+}
+
+
+#loading
+{
+	background: rgba(18, 18, 18, 0.75);
+}
+
+#loading-icon
+{
+	font-size: 10.0rem;
+	color: #F2B705;
+	margin-bottom: 30px;
+	text-shadow: 0px 0px 10px #F2B705;
+}
+
+#loading-message
+{
+	font-size: 1.5rem;
+	color: #FCFCFC;
+	white-space: nowrap;
+}
+
+.form-group > .form-control, .form-group > * > .form-control
+{
+	transition: box-shadow 0.3s, border 0.3s;
+}
+
+	.form-group > .form-control:focus, .form-group > * > .form-control:focus
+	{
+		border: 1px solid #F2B705;
+		box-shadow: 0px 0px 10px #F2B705;
+	}
+
+.form-group > .third:focus
+{
+	box-shadow: 0px 0px 10px #F2B705;
+}
+
+#splash
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 9999;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	background: #023859;
+	overflow: hidden;
+}
+
+.splash-logo
+{
+	width: 50%;
+	margin-bottom: 20px;
+}
+
+	#splash, .splash-logo .st0, .splash-logo g, .splash-logo .st4, .splash-title, .splash-text
+	{
+		display: none;
+	}
+
+.splash-title
+{
+	width: 50%;
+	font-size: 4.0rem;
+	color: #FCFCFC;
+	margin-bottom: 10px;
+	white-space: nowrap;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.splash-text
+{
+	width: 50%;
+	font-size: 3.0rem;
+	color: #FCFCFC;
+	white-space: nowrap;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.highlighted
+{
+	font-size: 1.0em;
+	background: #F2B705;
+}
+
+button[type=submit]
+{
+	transition: border 0.3s, box-shadow 0.3s;
+}
+
+	button[type=submit] .btn-text
+	{
+		color: #FCFCFC;
+		transition: color 0.3s, text-shadow 0.3s;
+	}
+
+	button[type=submit]:not(:disabled):hover
+	{
+		border: 1px solid #F2B705;
+		box-shadow: 0px 0px 10px #F2B705;
+	}
+
+		button[type=submit]:not(:disabled):hover .btn-text
+		{
+			color: #F2B705;
+			text-shadow: 0px 0px 10px #F2B705;
+		}

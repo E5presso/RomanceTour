@@ -1,0 +1,115 @@
+﻿@{
+	ViewData["DATA"] = "ListProduct";
+	ViewData["TITLE"] = "상품검색";
+
+	List<Category> CategoryList = ViewBag.CategoryList;
+
+	int category = ViewBag.Category;
+	DateTime? date = ViewBag.Date;
+	string keyword = ViewBag.Keyword;
+	bool? confirmed = ViewBag.Confirmed;
+
+	long converted = date != null ? ((DateTime)date).ConvertToJavascriptDate() : DateTime.Now.ConvertToJavascriptDate();
+}
+
+<link rel="stylesheet" href="~/lib/ion-rangeslider/css/ion.rangeSlider.css" />
+<script src="~/lib/ion-rangeslider/js/ion.rangeSlider.js"></script>
+
+<link rel="stylesheet" href="~/shared/css/transition.css" />
+<link rel="stylesheet" href="~/views/product/list-product.css" />
+<script src="~/views/product/list-product.js"></script>
+
+<input type="hidden" id="category" value="@category" />
+@if (date != null)
+{
+	<input type="hidden" id="date" value="@converted" />
+}
+<input type="hidden" id="keyword" value="@keyword" />
+<input type="hidden" id="confirmed" value="@confirmed" />
+
+<div class="product-search container-fluid">
+	<div class="row">
+		<div class="form-group col-4 col-md-3 col-xl-2">
+			<select id="category-select" class="form-control control-basic">
+				<option value="0">전체 여행</option>
+				@foreach (var item in CategoryList)
+				{
+					if (item.Id == category)
+					{
+						<option value="@item.Id" selected>@item.Name</option>
+					}
+					else
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+				}
+			</select>
+		</div>
+		<div class="form-group col-6 col-md-7 col-xl-8">
+			<input id="product-keyword" class="form-control" type="search" placeholder="검색어" />
+		</div>
+		<div class="form-group col-2">
+			<div class="search-option">
+				<button class="btn btn-basic" id="search-option-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="btn-icon fa fa-filter"></span>
+					<span class="btn-text d-none d-xl-inline">
+						검색옵션
+					</span>
+				</button>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="search-option-dropdown">
+					<div class="dropdown-item form-group">
+						<label>가격 범위</label>
+						<input type="text" id="price-range" class="range-slider" />
+					</div>
+					<div class="dropdown-item form-group">
+						<label>출발 날짜</label>
+						<input type="text" id="from-date" class="date-picker form-control" placeholder="날짜를 선택해주세요" readonly="readonly" />
+					</div>
+					<div class="dropdown-item form-group">
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" id="product-confirmed" class="custom-control-input">
+							<label class="custom-control-label" for="product-confirmed">출발확정만 확인</label>
+						</div>
+					</div>
+					<div class="dropdown-item form-group btn-group">
+						<button id="option-apply" class="btn btn-reversed">
+							<span class="btn-icon fa fa-check"></span>
+							<span class="btn-text">
+								적용하기
+							</span>
+						</button>
+						<button id="option-reset" class="btn btn-reversed">
+							<span class="btn-icon fa fa-redo"></span>
+							<span class="btn-text">
+								초기화
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="product-sort">
+	<select id="sorting-select" class="form-control control-size-fixed">
+		<option value="0">
+			최신순
+		</option>
+		<option value="1">
+			오래된순
+		</option>
+		<option value="2">
+			높은가격순
+		</option>
+		<option value="3">
+			낮은가격순
+		</option>
+		<option value="4">
+			빠른날짜순
+		</option>
+		<option value="5">
+			늦은날짜순
+		</option>
+	</select>
+</div>
+<ul class="product-list"></ul>

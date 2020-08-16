@@ -1,0 +1,370 @@
+﻿.datepicker--cell.-selected-
+{
+	background: #fff !important;
+	color: #F2B705 !important;
+	border: 1px solid #F2B705 !important;
+}
+
+	.datepicker--cell.-selected-.-current-
+	{
+		background: #fff !important;
+		color: #F2B705 !important;
+		border: 1px solid #F2B705 !important;
+	}
+
+	.datepicker--cell.-selected-.-focus-
+	{
+		background: #F2B705 !important;
+		color: #fff !important;
+	}
+
+.datepicker--day-name
+{
+	color: #03588C !important;
+}
+
+.datepicker--button
+{
+	color: #03588C !important;
+}
+
+.background-image
+{
+	width: 100%;
+	height: 600px;
+	object-fit: cover;
+}
+
+.shadow-box
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 600px;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	background: rgba(18, 18, 18, 0.5);
+}
+
+.text-area
+{
+	width: 100%;
+	height: 100px;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.search-area-title
+{
+	color: #FCFCFC;
+	font-size: 2.0rem;
+}
+
+label
+{
+	color: #FCFCFC;
+	margin-bottom: 5px;
+}
+
+.search-area-body
+{
+	width: 80%;
+	padding: 20px;
+	border-radius: 0.25rem;
+	border: 1px solid #FCFCFC;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.form-group
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: flex-end;
+	align-items: flex-start;
+	margin-bottom: 0px;
+}
+
+.date-picker
+{
+	cursor: initial;
+}
+
+@media all and (max-width: 1199px)
+{
+	.form-group
+	{
+		margin-bottom: 1rem;
+	}
+
+		.form-group:last-child
+		{
+			margin-bottom: 0px;
+		}
+}
+
+.second
+{
+	background: #FCFCFC;
+}
+
+	.second > *
+	{
+		color: #023859;
+		font-size: 1.3rem;
+	}
+
+	.second:hover > *
+	{
+		color: #F2B705;
+	}
+
+.third
+{
+	width: 100%;
+	height: 100%;
+}
+
+	.third > *
+	{
+		color: #FCFCFC;
+		font-size: 1.3rem;
+		transition: color 0.3s, text-shadow 0.3s;
+	}
+
+	.third:hover > *
+	{
+		color: #F2B705;
+		text-shadow: 0px 0px 10px #F2B705;
+	}
+
+.row
+{
+	width: 100%;
+}
+
+.form-group > .form-control, .third
+{
+	background: rgba(2, 56, 89, 0.1);
+}
+
+.form-group > .btn
+{
+	border: 1px solid #FCFCFC;
+}
+
+option
+{
+	background: #023859;
+}
+
+.form-control, .form-group > .form-control::-webkit-input-placeholder,
+.numeric-updown > *, .form-control:focus
+{
+	color: #FCFCFC;
+	-webkit-appearance: none;
+}
+
+.navbar .form-control
+{
+	color: #023859;
+}
+
+.top-tip
+{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	border-bottom: 1px solid #023859;
+	padding: 10px;
+}
+
+.see-more
+{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+	.see-more > *
+	{
+		color: #023859;
+		transition: color 0.3s;
+	}
+
+	.see-more:hover > *
+	{
+		color: #03588C;
+	}
+
+	.see-more .btn-icon
+	{
+		margin-right: 10px;
+	}
+
+.tour-list-area
+{
+	padding: 20px;
+}
+
+	.tour-list-area label
+	{
+		padding: 10px;
+		color: #023859;
+		font-size: 2.0rem;
+		width: 100%;
+	}
+
+.product-list
+{
+	padding: 10px;
+}
+
+.product-item
+{
+	flex: none;
+	margin: 10px;
+	position: relative;
+	width: 280px;
+	height: 210px;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 3px 3px 5px rgba(13, 13, 13, 0.5);
+	cursor: pointer;
+	text-align: center;
+}
+
+.product-thumbnail
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.product-cover
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 20px;
+	background: linear-gradient(to bottom, rgba(13, 13, 13, 0), rgba(13, 13, 13, 0.8));
+	display: flex;
+	flex-flow: column;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+	.product-cover:before
+	{
+		content: " ";
+		border-radius: 15px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to bottom, rgba(13, 13, 13, 0.1), rgba(13, 13, 13, 0.6));
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+
+.product-item:hover .product-cover:before
+{
+	opacity: 0.6;
+}
+
+.product-title
+{
+	z-index: 2;
+	color: #FCFCFC;
+	font-size: 1.6rem;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.product-description
+{
+	z-index: 2;
+	color: #FCFCFC;
+	font-size: 1.1rem;
+	text-align: center;
+	display: none;
+}
+
+.more-background
+{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	background: #023859;
+}
+
+.more-icon
+{
+	color: #FCFCFC;
+	font-size: 4.0rem;
+	margin-bottom: 5px;
+	transition: color 0.3s, text-shadow 0.3s;
+}
+
+.more-text
+{
+	color: #FCFCFC;
+	font-size: 1.8rem;
+	transition: color 0.3s, text-shadow 0.3s;
+}
+
+.see-more:hover .more-icon, .see-more:hover .more-text
+{
+	color: #F2B705;
+	text-shadow: 0px 0px 10px #F2B705;
+}
+
+.swiper-btn
+{
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	border: none;
+	background: rgba(252, 252, 252, 0.5);
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	transition: opacity 0.3s;
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	padding: 0px;
+}
+
+	.swiper-btn::after
+	{
+		content: none;
+	}
+
+	.swiper-btn .btn-icon
+	{
+		color: rgba(13, 13, 13, 0.5);
+		font-size: 2.0rem;
+	}
+
+.swiper-button-disabled
+{
+	opacity: 0 !important;
+}

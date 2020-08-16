@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["DATA"] = "LoginRequired";
+    ViewData["TITLE"] = "로그인 필요";
+}
+
+<script>
+	$(document).ready(function () {
+		alert("로그인이 필요한 서비스입니다.");
+		window.location.href = "/User/Login";
+	});
+</script>

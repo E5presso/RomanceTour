@@ -1,0 +1,145 @@
+﻿@{
+    Product product = Model;
+    ViewData["DATA"] = "GetProduct";
+    ViewData["TITLE"] = product.Title;
+
+    var isLoggedIn = Context.Session.GetInt32(Session.Id) != null;
+    var sessionId = Context.Session.GetInt32(Session.Id);
+}
+
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="~/shared/css/transition.css" />
+<link rel="stylesheet" href="~/views/product/get-product.css" />
+<script src="~/views/product/get-product.js"></script>
+
+<input type="hidden" id="product-id" value="@product.Id" />
+<input type="hidden" id="form-url" value="@product.Form" />
+@if (isLoggedIn && Session.IsAdministrator(sessionId))
+{
+    <button class="btn float-btn edit-product">
+        <span class="btn-icon fa fa-edit"></span>
+        <span class="btn-text">
+            편집하기
+        </span>
+    </button>
+}
+else
+{
+    <button id="make-appointment" class="btn second-float-btn">
+        <span class="btn-icon fa fa-clipboard-check"></span>
+        <span class="btn-text">
+            예약하기
+        </span>
+    </button>
+}
+<div class="info-area">
+    <img class="background" src="@product.Thumbnail" />
+    <div class="shadow-box container-fluid no-padding">
+        <div class="guide-area">
+            <div class="guide-unit bounce">
+                <span class="guide-text">
+                    아래에 내용이 있어요!
+                </span>
+                <span class="guide-icon fa fa-arrow-down"></span>
+            </div>
+        </div>
+        <div class="row area-divider no-padding">
+            <div class="product-cover col-12 col-md-5 col-lg-4 col-xl-3 no-padding">
+                <img class="thumbnail-image" src="@product.Thumbnail" />
+                <div class="title-area">
+                    <span class="product-title">
+                        "@product.Title"
+                    </span>
+                    <span class="product-subtitle">
+                        @product.SubTitle
+                    </span>
+                </div>
+            </div>
+            <div class="product-info col-12 col-md-7 col-lg-8 col-xl-9 no-padding container-fluid">
+                <div class="row area-divider">
+                    <span class="info-section col-12 col-lg-6">
+                        여행종류 : @product.Category.Name
+                    </span>
+                    <span class="info-section col-12 col-lg-6">
+                        가격 : &#8361;@string.Format("{0:n0}", product.Price)
+                    </span>
+                    @if (product.ProductDeparture.Count() == 0)
+                    {
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">탑승지</label>
+                            <span class="info-item">탑승지 없음</span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">탑승지</label>
+                            @foreach (var departure in product.ProductDeparture)
+                            {
+                                <span class="info-item">@departure.Departure.Name</span>
+                            }
+                        </span>
+                    }
+                    @if (product.ProductBilling.Count() == 0)
+                    {
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">입금계좌</label>
+                            <span class="info-item">입금계좌 없음</span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">입금계좌</label>
+                            @foreach (var billing in product.ProductBilling)
+                            {
+                                <span class="info-item">@billing.Billing.Name : @billing.Billing.Bank @billing.Billing.Number</span>
+                            }
+                        </span>
+                    }
+                    @if (product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.STATIC_PLUS).Count() == 0)
+					{
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">선택옵션</label>
+                            <span class="info-item">선택옵션 없음</span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">선택옵션</label>
+                            @foreach (var PriceRule in product.ProductPriceRule)
+                            {
+                                if (PriceRule.PriceRule.RuleType == PriceRuleType.STATIC_PLUS)
+                                {
+                                    <span class="info-item">&bull; @PriceRule.PriceRule.RuleName + &#8361;@string.Format("{0:n0}", PriceRule.PriceRule.Price)</span>
+                                }
+                            }
+                        </span>
+                    }
+                    @if (product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.STATIC_MINUS).Count() == 0)
+					{
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">할인혜택</label>
+                            <span class="info-item">할인혜택 없음</span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="info-section col-12 info-list">
+                            <label class="info-label">할인혜택</label>
+                            @foreach (var PriceRule in product.ProductPriceRule)
+                            {
+                                if (PriceRule.PriceRule.RuleType == PriceRuleType.STATIC_MINUS)
+                                {
+                                    <span class="info-item">&bull; @PriceRule.PriceRule.RuleName - &#8361;@string.Format("{0:n0}", PriceRule.PriceRule.Price)</span>
+                                }
+                            }
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="form-area"></div>

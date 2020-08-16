@@ -1,0 +1,55 @@
+﻿@{
+	ViewData["DATA"] = "Dashboard";
+	ViewData["TITLE"] = "대쉬보드";
+}
+
+<link rel="stylesheet" href="~/shared/css/full-screen.css" />
+<link rel="stylesheet" href="~/views/admin/dashboard.css" />
+<script src="~/views/admin/dashboard.js"></script>
+
+<div class="full-screen-area">
+	<div class="shadow-box container-fluid">
+		<div class="row">
+			<div class="section col-sm-12 col-lg-3">
+				<button class="btn third manage-user">
+					<div class="inner">
+						<span class="btn-icon fa fa-user-tag"></span>
+						<span class="btn-text">
+							회원관리
+						</span>
+					</div>
+				</button>
+			</div>
+			<div class="section col-sm-12 col-lg-3">
+				<button class="btn third manage-product">
+					<div class="inner">
+						<span class="btn-icon fa fa-box-open"></span>
+						<span class="btn-text">
+							상품관리
+						</span>
+					</div>
+				</button>
+			</div>
+			<div class="section col-sm-12 col-lg-3">
+				<button class="btn third manage-appointment">
+					<div class="inner">
+						<span class="btn-icon fa fa-clipboard-list"></span>
+						<span class="btn-text">
+							예약관리
+						</span>
+					</div>
+				</button>
+			</div>
+			<div class="section col-sm-12 col-lg-3">
+				<button class="btn third manage-etc">
+					<div class="inner">
+						<span class="btn-icon fa fa-cog"></span>
+						<span class="btn-text">
+							기타관리
+						</span>
+					</div>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

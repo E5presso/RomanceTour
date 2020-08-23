@@ -38,26 +38,14 @@ namespace RomanceTour.Middlewares
 		public static string FileDirectory => config["configuration"]["directories"]["file"].InnerText;
 		public static string LogDirectory => config["configuration"]["directories"]["log"].InnerText;
 
-		public static Administrator[] Administrators
+		public static Administrator Administrator => new Administrator
 		{
-			get
-			{
-				var administrators = new List<Administrator>();
-				var list = config["configuration"]["administrators"].GetElementsByTagName("account");
-				for (int i = 0; i < list.Count; i++)
-				{
-					administrators.Add(new Administrator
-					{
-						Id = Convert.ToInt32(list.Item(i)["sessionid"].InnerText),
-						UserName = list.Item(i)["username"].InnerText,
-						Password = list.Item(i)["password"].InnerText,
-						HashSalt = list.Item(i)["hashsalt"].InnerText,
-						Name = list.Item(i)["name"].InnerText
-					});
-				}
-				return administrators.ToArray();
-			}
-		}
+			Id = int.Parse(config["configuration"]["administrator"]["session-id"].InnerText),
+			UserName = config["configuration"]["administrator"]["username"].InnerText,
+			Password = config["configuration"]["administrator"]["password"].InnerText,
+			HashSalt = config["configuration"]["administrator"]["hashsalt"].InnerText,
+			Name = config["configuration"]["administrator"]["name"].InnerText
+		};
 		public static NCloudAPI NCloudAPI => new NCloudAPI
 		{
 			URL = config["configuration"]["ncloud"]["url"].InnerText,

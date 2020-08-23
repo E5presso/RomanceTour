@@ -10,6 +10,6 @@ namespace RomanceTour
 	{
 		public const string Id = "SessionID";
 		public const string Name = "UserName";
-		public static bool IsAdministrator(int? userId) => XmlConfiguration.Administrators.SingleOrDefault(x => x.Id == userId) != null;
+		public static bool IsAdministrator(int? userId) => XmlConfiguration.Administrator.Id == userId;
 	}
 }

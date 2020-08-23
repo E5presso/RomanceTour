@@ -68,7 +68,7 @@ namespace RomanceTour.Middlewares
 				await db.SaveChangesAsync().ConfigureAwait(false);
 				if (userId != null)
 				{
-					if (Session.IsAdministrator(userId)) queue.Write((now, $"[LOG]\t{now}\t{XmlConfiguration.Administrators.SingleOrDefault(x => x.Id == userId).UserName}@{ip}\t{($"{controller}/{action}")}{parameter}"));
+					if (Session.IsAdministrator(userId)) queue.Write((now, $"[LOG]\t{now}\t{XmlConfiguration.Administrator.UserName}@{ip}\t{($"{controller}/{action}")}{parameter}"));
 					else queue.Write((now, $"[LOG]\t{now}\t{db.User.SingleOrDefault(x => x.Id == userId).UserName}@{ip}\t{($"{controller}/{action}")}{parameter}"));
 				}
 				else queue.Write((now, $"[LOG]\t{now}\t{ip}\t\t{($"{controller}/{action}")}{parameter}"));

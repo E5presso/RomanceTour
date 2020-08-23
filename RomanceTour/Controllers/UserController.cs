@@ -94,7 +94,7 @@ namespace RomanceTour.Controllers
 		{
 			try
 			{
-				if (XmlConfiguration.Administrators.SingleOrDefault(x => x.UserName == user.UserName) != null) return Json(new Response
+				if (XmlConfiguration.Administrator.UserName == user.UserName) return Json(new Response
 				{
 					Result = ResultType.SUCCESS,
 					Model = false
@@ -129,7 +129,7 @@ namespace RomanceTour.Controllers
 		{
 			try
 			{
-				if (XmlConfiguration.Administrators.SingleOrDefault(x => x.UserName == user.UserName) != null) return Json(new Response
+				if (XmlConfiguration.Administrator.UserName == user.UserName) return Json(new Response
 				{
 					Result = ResultType.SUCCESS,
 					Model = false
@@ -171,7 +171,7 @@ namespace RomanceTour.Controllers
 		{
 			try
 			{
-				if (XmlConfiguration.Administrators.SingleOrDefault(x => x.UserName == user.UserName) != null) return Json(new Response
+				if (XmlConfiguration.Administrator.UserName == user.UserName) return Json(new Response
 				{
 					Result = ResultType.SUCCESS,
 					Model = false
@@ -221,8 +221,8 @@ namespace RomanceTour.Controllers
 		{
 			try
 			{
-				var admin = XmlConfiguration.Administrators.SingleOrDefault(x => x.UserName == user.UserName);
-				if (admin != null)
+				var admin = XmlConfiguration.Administrator;
+				if (admin.UserName == user.UserName)
 				{
 					if (admin.Password == Hash.SHA256(user.Password, admin.HashSalt))
 					{

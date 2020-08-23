@@ -144,7 +144,7 @@ namespace RomanceTour.Controllers
                     if (matched != null)
                     {
                         if (password != null)
-						{
+                        {
                             if (matched.Password == Hash.SHA256(password, matched.HashSalt))
                             {
                                 matched = await db.Appointment
@@ -169,7 +169,7 @@ namespace RomanceTour.Controllers
                             else return RedirectToAction("AccessDenied", "Home");
                         }
                         else
-						{
+                        {
                             ViewBag.Id = id;
                             return View();
                         }
@@ -251,6 +251,7 @@ namespace RomanceTour.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
         public async Task<IActionResult> SearchAppointment(int id)
         {
             try

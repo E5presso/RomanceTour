@@ -6,9 +6,10 @@ namespace RomanceTour.Models
 {
     public enum UserStatus
     {
-        GREEN,  // 정상 유저
-        YELLOW, // 경고 유저
-        RED     // 정지 유저
+        GREEN,  // 정상 계정
+        YELLOW, // 경고 계정
+        RED,    // 정지 계정
+        GREY    // 휴면 계정      
     }
     public partial class User
     {

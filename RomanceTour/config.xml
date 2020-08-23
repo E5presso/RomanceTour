@@ -9,22 +9,13 @@
 		<file>D:\RomanceTour\Files</file>
 		<log>D:\RomanceTour\Logs</log>
 	</directories>
-	<administrators>
-		<account>
-			<sessionid>0</sessionid>
-			<username>admin</username>
-			<password>5e198dcba79dc2976d303ef874ada5085afa44871766aa59650c612b3403a77f</password>
-			<hashsalt>29a65adb82b66b3b31e2f26efa4fd60f</hashsalt>
-			<name>총괄 관리자</name>
-		</account>
-		<account>
-			<sessionid>-1</sessionid>
-			<username>testadmin</username>
-			<password>19b2cc83b33815ede853dc6eb6c2c242a94398137ec002799c9afde98a067056</password>
-			<hashsalt>2ca3329baa4d7be1e0864326ab32b52b</hashsalt>
-			<name>관리자 테스트 계정</name>
-		</account>
-	</administrators>
+	<administrator>
+		<session-id>0</session-id>
+		<username>root</username>
+		<password>5e198dcba79dc2976d303ef874ada5085afa44871766aa59650c612b3403a77f</password>
+		<hashsalt>29a65adb82b66b3b31e2f26efa4fd60f</hashsalt>
+		<name>루트 관리자 계정</name>
+	</administrator>
 	<ncloud>
 		<url>https://sens.apigw.ntruss.com</url>
 		<uri>/sms/v2/services/{0}/messages</uri>

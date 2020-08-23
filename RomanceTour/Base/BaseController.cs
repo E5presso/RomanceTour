@@ -32,7 +32,7 @@ namespace RomanceTour
 		protected string Action => ControllerContext.RouteData.Values["action"].ToString();
 		protected string Back => Request != null ? Request.Headers["Referer"].ToString() : string.Empty;
 
-		protected bool IsAdministrator => XmlConfiguration.Administrators.SingleOrDefault(x => x.Id == SessionId) != null;
+		protected bool IsAdministrator => XmlConfiguration.Administrator.Id == SessionId;
 
 		protected void AddSession(int id, string name)
 		{

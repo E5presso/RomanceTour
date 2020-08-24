@@ -232,28 +232,31 @@ $(document).ready(function () {
 		{
 			if (ValidatePhone(value))
 			{
-				$(".phone").siblings("label").html("유효한 번호입니다.");
-				$(".phone").siblings("label").removeClass("text-danger");
-				$(".phone").siblings("label").addClass("text-success");
+				$(".phone").parent().siblings("label").html("유효한 번호입니다.");
+				$(".phone").parent().siblings("label").removeClass("text-danger");
+				$(".phone").parent().siblings("label").addClass("text-success");
 				$(".phone").removeClass("is-invalid");
 				$(".phone").addClass("is-valid");
+				$(".validate-phone").prop("disabled", false);
 			}
 			else
 			{
-				$(".phone").siblings("label").html("유효하지 않은 번호입니다.");
-				$(".phone").siblings("label").removeClass("text-success");
-				$(".phone").siblings("label").addClass("text-danger");
+				$(".phone").parent().siblings("label").html("유효하지 않은 번호입니다.");
+				$(".phone").parent().siblings("label").removeClass("text-success");
+				$(".phone").parent().siblings("label").addClass("text-danger");
 				$(".phone").removeClass("is-valid");
 				$(".phone").addClass("is-invalid");
+				$(".validate-phone").prop("disabled", true);
 			}
 		}
 		else
 		{
 			$(".phone").removeClass("is-invalid");
 			$(".phone").removeClass("is-valid");
-			$(".phone").siblings("label").html("휴대폰 번호");
-			$(".phone").siblings("label").removeClass("text-danger");
-			$(".phone").siblings("label").removeClass("text-success");
+			$(".phone").parent().siblings("label").html("휴대폰 번호");
+			$(".phone").parent().siblings("label").removeClass("text-danger");
+			$(".phone").parent().siblings("label").removeClass("text-success");
+			$(".validate-phone").prop("disabled", true);
 		}
 		ValidateForm();
 	});

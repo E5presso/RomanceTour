@@ -309,6 +309,7 @@ header
 .form-group > .form-control, .form-group > * > .form-control
 {
 	transition: box-shadow 0.3s, border 0.3s;
+	border: 1px solid #FCFCFC;
 }
 
 	.form-group > .form-control:focus, .form-group > * > .form-control:focus
@@ -399,3 +400,8 @@ button[type=submit]
 			color: #F2B705;
 			text-shadow: 0px 0px 10px #F2B705;
 		}
+
+.is-invalid, .text-danger
+{
+	border-color: #ff0000 !important;
+}

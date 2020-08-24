@@ -123,22 +123,40 @@
 	flex-flow: row nowrap;
 }
 
-#verify-email
+.input-bundle
 {
-	width: 120px;
-	margin-left: 10px;
-	border: 1px solid #FCFCFC;
-	transition: color 0.3s, box-shadow 0.3s, border 0.3s;
+	display: flex;
+	flex-flow: row nowrap;
+	width: 100%;
+	color: #FCFCFC;
 }
 
-	#verify-email:hover:enabled
+.phone
+{
+	width: 75%;
+}
+
+.validate-phone
+{
+	width: 25%;
+	height: 38px;
+	margin-left: 10px;
+	transition: border 0.3s, box-shadow 0.3s;
+}
+
+	.validate-phone > .btn-text
 	{
-		color: #F2B705;
+		color: #FCFCFC;
+		transition: color 0.3s;
+	}
+
+	.validate-phone:not(:disabled):hover
+	{
 		border: 1px solid #F2B705;
 		box-shadow: 0px 0px 10px #F2B705;
 	}
 
-	#verify-email:hover:disabled
-	{
-		color: #FCFCFC;
-	}
+		.validate-phone:not(:disabled):hover > .btn-text
+		{
+			color: #F2B705;
+		}

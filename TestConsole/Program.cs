@@ -1,4 +1,4 @@
-﻿using Core.Network.Sms;
+﻿using Core.Network.NCloud;
 
 using System;
 
@@ -15,7 +15,7 @@ namespace TestConsole
 			string secretKey = "8p7Wt6dm07SgXWaNsbaEH36zbxE0HsMomyTMhocF";
 			string from = "01064308733";
 
-			SmsMessage message = new SmsMessage(url, uri, serviceId, accessKey, secretKey, from);
+			Sens message = new Sens(url, uri, serviceId, accessKey, secretKey, from);
 			(var status, var response) = message.SendMessage(new Message
 			{
 				To = new string[] { "01080792838" },

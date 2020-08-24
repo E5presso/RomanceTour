@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<domain>https://www.romancetour.ml/</domain>
-	<key>
-	</key>
+	<key></key>
 	<directories>
 		<root>D:\RomanceTour</root>
 		<form>D:\RomanceTour\Forms</form>

@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Core.Network.Sms
+namespace Core.Network.NCloud
 {
 	/// <summary>
 	/// 전송할 SMS 메세지의 내용을 구성합니다.
@@ -19,10 +20,6 @@ namespace Core.Network.Sms
 		/// </summary>
 		public string[] To { get; set; }
 		/// <summary>
-		/// 발송할 메세지의 제목을 가져오거나 설정합니다.
-		/// </summary>
-		public string Subject { get; set; }
-		/// <summary>
 		/// 발송할 메세지의 본문을 가져오거나 설정합니다.
 		/// </summary>
 		public string Content { get; set; }
@@ -30,7 +27,7 @@ namespace Core.Network.Sms
 	/// <summary>
 	/// 네이버 클라우드 플랫폼(NCloud)의 SENS 서비스를 활용한 SMS 웹 발송 기능을 구현합니다.
 	/// </summary>
-	public class SmsMessage
+	public class Sens
 	{
 		/// <summary>
 		/// SENS 서비스의 API URL을 가져옵니다.
@@ -58,7 +55,7 @@ namespace Core.Network.Sms
 		public string From { get; private set; }
 
 		/// <summary>
-		/// SmsMessage 클래스를 초기화합니다.
+		/// Sens 클래스를 초기화합니다.
 		/// </summary>
 		/// <param name="url">서비스 URL을 지정합니다.</param>
 		/// <param name="uri">서비스 URL를 지정합니다.</param>
@@ -66,7 +63,7 @@ namespace Core.Network.Sms
 		/// <param name="accessKey">Access Key를 지정합니다.</param>
 		/// <param name="secretKey">Secret-Key를 지정합니다.</param>
 		/// <param name="from">발송 시 사용할 전화번호를 지정합니다.</param>
-		public SmsMessage(string url, string uri, string serviceId, string accessKey, string secretKey, string from)
+		public Sens(string url, string uri, string serviceId, string accessKey, string secretKey, string from)
 		{
 			URL = url;
 			URI = string.Format(uri, serviceId);
@@ -81,46 +78,49 @@ namespace Core.Network.Sms
 		/// </summary>
 		/// <param name="message">발송할 메세지를 지정합니다.</param>
 		/// <returns>발송 결과를 반환합니다.</returns>
-		public (HttpStatusCode, dynamic) SendMessage(Message message)
+		public async Task<(HttpStatusCode, dynamic)> SendMessage(Message message)
 		{
-			long timestamp = GetTimeStamp();
-			string signature = GetSignature(timestamp);
+			try
+			{
+				long timestamp = GetTimeStamp();
+				string signature = GetSignature(timestamp);
 
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{URL}{URI}");
-			request.Method = "POST";
-			request.Headers.Add("Content-Type", "application/json; charset=utf-8");
-			request.Headers.Add("x-ncp-apigw-timestamp", timestamp.ToString());
-			request.Headers.Add("x-ncp-iam-access-key", AccessKey);
-			request.Headers.Add("x-ncp-apigw-signature-v2", signature);
-			var body = new
-			{
-				type = "SMS",
-				contentType = "COMM",
-				countryCode = "82",
-				from = From,
-				subject = message.Subject,
-				content = message.Content,
-				messages = new List<object>()
-			};
-			foreach (var x in message.To)
-			{
-				body.messages.Add(new
+				HttpWebRequest request = WebRequest.Create($"{URL}{URI}") as HttpWebRequest;
+				request.Method = "POST";
+				request.Headers.Add("Content-Type", "application/json; charset=utf-8");
+				request.Headers.Add("x-ncp-apigw-timestamp", timestamp.ToString());
+				request.Headers.Add("x-ncp-iam-access-key", AccessKey);
+				request.Headers.Add("x-ncp-apigw-signature-v2", signature);
+				var body = new
 				{
-					to = x
-				});
+					type = "SMS",
+					contentType = "COMM",
+					countryCode = "82",
+					from = From,
+					content = message.Content,
+					messages = new List<object>()
+				};
+				foreach (var x in message.To)
+				{
+					body.messages.Add(new
+					{
+						to = x
+					});
+				}
+				byte[] binary = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(body));
+
+				using var requestStream = await request.GetRequestStreamAsync();
+				await requestStream.WriteAsync(binary, 0, binary.Length);
+				requestStream.Close();
+
+				HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
+				var statusCode = response.StatusCode;
+				using var responseStream = response.GetResponseStream();
+				using var reader = new StreamReader(responseStream);
+				string responseMessage = await reader.ReadToEndAsync();
+				return (statusCode, JsonSerializer.Deserialize(responseMessage));
 			}
-			byte[] binary = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(body));
-
-			using var requestStream = request.GetRequestStream();
-			requestStream.Write(binary, 0, binary.Length);
-			requestStream.Close();
-
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			var statusCode = response.StatusCode;
-			using var responseStream = response.GetResponseStream();
-			using var reader = new StreamReader(responseStream);
-			string responseMessage = reader.ReadToEnd();
-			return (statusCode, JsonSerializer.Deserialize(responseMessage));
+			catch { throw; }
 		}
 
 		private long GetTimeStamp()

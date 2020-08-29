@@ -125,7 +125,7 @@ namespace RomanceTour.Controllers
 				});
 			}
 		}
-		public async Task<IActionResult> CreateAccount(User user)
+		public async Task<IActionResult> CreateAccount(string token, User user)
 		{
 			try
 			{
@@ -140,14 +140,25 @@ namespace RomanceTour.Controllers
 					var matched = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
 					if (matched == null)
 					{
-						user.HashSalt = Key.GenerateString(32);
-						user.Password = Hash.SHA256(user.Password, user.HashSalt);
-						db.User.Add(user);
-						await db.SaveChangesAsync();
-						return Json(new Response
+						string phone = PhoneVerifier.Retrieve(token);
+						if (phone != null && phone == user.Phone)
+						{
+							user.HashSalt = Key.GenerateString(32);
+							user.Password = Hash.SHA256(user.Password, user.HashSalt);
+							db.User.Add(user);
+							await db.SaveChangesAsync();
+							var registered = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
+							AddSession(registered.Id, registered.Name);
+							return Json(new Response
+							{
+								Result = ResultType.SUCCESS,
+								Model = true
+							});
+						}
+						else return Json(new Response
 						{
 							Result = ResultType.SUCCESS,
-							Model = true
+							Model = false
 						});
 					}
 					else return Json(new Response
@@ -388,6 +399,72 @@ namespace RomanceTour.Controllers
 				else return Json(new Response
 				{
 					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+
+		public async Task<IActionResult> VerifyPhone(string phone)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				int count = db.Verification.Count(x => x.TimeStamp.Date == DateTime.Now.Date && x.IpAddress == IPAddress);
+				if (count <= XmlConfiguration.Verification.MaxRequest)
+				{
+					var result = await PhoneVerifier.CreateVerification(phone);
+					if (result == VerificationResult.SUCCESS)
+					{
+						db.Verification.Add(new Models.Verification
+						{
+							IpAddress = IPAddress,
+							TimeStamp = DateTime.Now
+						});
+						await db.SaveChangesAsync();
+					}
+					return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = result
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = VerificationResult.MAX_REQUEST_REACHED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+		public async Task<IActionResult> Challenge(string phone, string code)
+		{
+			try
+			{
+				(var Result, var Token) = PhoneVerifier.Challenge(phone, code);
+				return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = new
+					{
+						Result,
+						Token
+					}
 				});
 			}
 			catch (Exception e)

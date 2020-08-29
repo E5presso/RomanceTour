@@ -129,14 +129,15 @@
 	flex-flow: row nowrap;
 	width: 100%;
 	color: #FCFCFC;
+	margin: 0px;
 }
 
-.phone
+.phone, .code
 {
 	width: 75%;
 }
 
-.validate-phone
+.validate-phone, .challenge
 {
 	width: 25%;
 	height: 38px;
@@ -144,19 +145,24 @@
 	transition: border 0.3s, box-shadow 0.3s;
 }
 
-	.validate-phone > .btn-text
+	.validate-phone > .btn-text, .challenge > .btn-text
 	{
 		color: #FCFCFC;
 		transition: color 0.3s;
 	}
 
-	.validate-phone:not(:disabled):hover
+	.validate-phone:not(:disabled):hover, .challenge:not(:disabled):hover
 	{
 		border: 1px solid #F2B705;
 		box-shadow: 0px 0px 10px #F2B705;
 	}
 
-		.validate-phone:not(:disabled):hover > .btn-text
+		.validate-phone:not(:disabled):hover > .btn-text, .challenge:not(:disabled):hover > .btn-text
 		{
 			color: #F2B705;
 		}
+
+.validation-code
+{
+	display: none;
+}

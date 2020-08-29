@@ -60,6 +60,7 @@ namespace RomanceTour.Models
         public virtual DbSet<Push> Push { get; set; }
         public virtual DbSet<Review> Review { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Verification> Verification { get; set; }
 
         public RomanceTourDbContext()
         {
@@ -666,6 +667,17 @@ namespace RomanceTour.Models
                     .HasColumnType("varchar(64)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+            });
+            modelBuilder.Entity<Verification>(entity =>
+            {
+                entity.Property(e => e.IpAddress)
+                    .IsRequired()
+                    .HasColumnName("IpAddress")
+                    .HasColumnType("varchar(64)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.TimeStamp).HasColumnType("datetime");
             });
             modelBuilder.UseEncryption(encryptor);
             OnModelCreatingPartial(modelBuilder);

@@ -1,4 +1,13 @@
 ﻿var isPopupOpened = false;
+var VerificationResult = {
+	SUCCESS: "SUCCESS",							// 발송 성공 시
+	FAILURE: "FAILURE",							// 발송 실패 시
+	TOO_MUCH_REQUEST: "TOO_MUCH_REQUEST",		// 너무 빠른 요청
+	MAX_REQUEST_REACHED: "MAX_REQUEST_REACHED"	// 일일 요청한도 도달
+};
+var token = "";
+var timeLimit = 3 * 60;
+var timer;
 
 function Initialize() {
 	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
@@ -40,13 +49,87 @@ function ValidateForm() {
 	}, 10);
 }
 
-function UpdateAccountCallback(model) {
+function CreateAccountCallback(model) {
 	if (model)
 	{
 		alert("회원가입이 완료되었습니다.");
 		window.location.href = "/Home/Index";
 	}
 	else alert("이미 존재하는 사용자입니다.");
+}
+function VerifyPhoneCallback(model) {
+	$(".phone").prop("disabled", false);
+	switch (model)
+	{
+		case VerificationResult.SUCCESS: {
+			timeLimit = 3 * 60;
+			clearInterval(timer);
+			timer = setInterval(function () {
+				if (timeLimit > 0)
+				{
+					timeLimit--;
+					$(".validation-code").children("label").text(`인증번호 [${Math.floor(timeLimit / 60).zf(2)}:${(timeLimit % 60).zf(2)}]`);
+				}
+				else
+				{
+					clearInterval(timer);
+					$(".validation-code").children("label").removeClass("text-danger");
+					$(".code").removeClass("is-invalid");
+					$(".code").val("");
+					$(".challenge").prop("disabled", true);
+					$(".validation-code").slideUp(DURATION);
+					$(".phone").focus();
+				}
+			}, 1000);
+			$(".validation-code").children("label").removeClass("text-danger");
+			$(".code").removeClass("is-invalid");
+			$(".code").val("");
+			$(".challenge").prop("disabled", true);
+			alert("인증요청 문자를 발송했습니다.");
+			$(".validation-code").slideDown(DURATION);
+			$(".code").focus();
+			break;
+		}
+		case VerificationResult.FAILURE: {
+			window.location.href = "/Home/Error";
+			break;
+		}
+		case VerificationResult.TOO_MUCH_REQUEST: {
+			alert("너무 빠른 인증요청입니다.\n잠시 후에 다시 시도해주세요.");
+			break;
+		}
+		case VerificationResult.MAX_REQUEST_REACHED: {
+			alert("일일 인증요청한도에 도달했습니다.");
+			break;
+		}
+	}
+}
+function ChallengeCallback(model) {
+	$(".code").prop("disabled", false);
+	if (model.Result)
+	{
+		token = model.Token;
+		alert("휴대폰 인증에 성공하였습니다.");
+		$(".phone").prop("disabled", true);
+		$(".validate-phone").prop("disabled", true);
+		$(".validation-code").slideUp(DURATION);
+		$(".phone").parent().siblings("label").html("인증된 번호입니다.");
+		$(".phone").parent().siblings("label").removeClass("text-danger");
+		$(".phone").parent().siblings("label").addClass("text-success");
+		$(".phone").removeClass("is-invalid");
+		$(".phone").addClass("is-valid");
+	}
+	else
+	{
+		alert("잘못된 인증번호입니다.");
+		$(".code").parent().siblings("label").html("잘못된 인증번호입니다.");
+		$(".code").parent().siblings("label").removeClass("text-success");
+		$(".code").parent().siblings("label").addClass("text-danger");
+		$(".code").addClass("is-invalid");
+		$(".code").removeClass("is-valid");
+		$(".validate-phone").prop("disabled", false);
+		$(".code").focus();
+	}
 }
 
 $(document).ready(function () {
@@ -232,11 +315,11 @@ $(document).ready(function () {
 		{
 			if (ValidatePhone(value))
 			{
-				$(".phone").parent().siblings("label").html("유효한 번호입니다.");
-				$(".phone").parent().siblings("label").removeClass("text-danger");
-				$(".phone").parent().siblings("label").addClass("text-success");
-				$(".phone").removeClass("is-invalid");
-				$(".phone").addClass("is-valid");
+				$(".phone").parent().siblings("label").html("인증이 필요합니다.");
+				$(".phone").parent().siblings("label").removeClass("text-success");
+				$(".phone").parent().siblings("label").addClass("text-danger");
+				$(".phone").removeClass("is-valid");
+				$(".phone").addClass("is-invalid");
 				$(".validate-phone").prop("disabled", false);
 			}
 			else
@@ -282,21 +365,50 @@ $(document).ready(function () {
 	});
 	$(".create-account").on("click", function (e) {
 		e.preventDefault();
-
-		var id = $(".id").val();
-		var password = $(".password").val();
-		var name = $(".name").val();
-		var address = $(".address").val();
-		var phone = $(".phone").val();
-		var birthday = $(".birthday").val();
-		Ajax("/User/CreateAccount", {
-			UserName: id,
-			Password: password,
-			Name: name,
-			Address: address,
-			Phone: phone,
-			Birthday: birthday
-		}, UpdateAccountCallback);
+		if (token == "")
+		{
+			alert("휴대폰 인증을 완료해주세요.");
+			$(".phone").focus();
+		}
+		else
+		{
+			var id = $(".id").val();
+			var password = $(".password").val();
+			var name = $(".name").val();
+			var address = $(".address").val();
+			var phone = $(".phone").val();
+			var birthday = $(".birthday").val();
+			Ajax("/User/CreateAccount", {
+				token: token,
+				user: {
+					UserName: id,
+					Password: password,
+					Name: name,
+					Address: address,
+					Phone: phone,
+					Birthday: birthday
+				}
+			}, CreateAccountCallback);
+		}
+	});
+	$(".validate-phone").on("click", function () {
+		$(".phone").prop("disabled", true);
+		Ajax("/User/VerifyPhone", {
+			phone: $(".phone").val()
+		}, VerifyPhoneCallback);
+	});
+	$(".code").on("keyup", function () {
+		$(".code").val($(".code").val().replace(/[^0-9]/gi, ""));
+		var value = $(".code").val();
+		if (value.length == 6) $(".challenge").prop("disabled", false);
+		else $(".challenge").prop("disabled", true);
+	});
+	$(".challenge").on("click", function () {
+		$(".code").prop("disabled", true);
+		Ajax("/User/Challenge", {
+			phone: $(".phone").val(),
+			code: $(".code").val()
+		}, ChallengeCallback);
 	});
 
 	$(".id").focus();

@@ -16,10 +16,19 @@ namespace RomanceTour.Middlewares
 	{
 		public string URL { get; set; }
 		public string URI { get; set; }
+		public string RequestURI { get; set; }
+		public string MessageURI { get; set; }
 		public string ServiceId { get; set; }
 		public string AccessKey { get; set; }
 		public string SecretKey { get; set; }
 		public string From { get; set; }
+	}
+	public class Verification
+	{
+		public string Template { get; set; }
+		public int TimeLimit { get; set; }
+		public int CodeLength { get; set; }
+		public int MaxRequest { get; set; }
 	}
 	public static class XmlConfiguration
 	{
@@ -52,9 +61,17 @@ namespace RomanceTour.Middlewares
 			URI = config["configuration"]["ncloud"]["uri"].InnerText,
 			ServiceId = config["configuration"]["ncloud"]["service-id"].InnerText,
 			AccessKey = config["configuration"]["ncloud"]["access-key"].InnerText,
-			SecretKey = config["configuration"]["ncloud"]["secret-key"].InnerText,
+			SecretKey = config["configuration"]["ncloud"]["sceret-key"].InnerText,
 			From = config["configuration"]["ncloud"]["from"].InnerText
 		};
+		public static Verification Verification => new Verification
+		{
+			Template = config["configuration"]["verification"]["template"].InnerText,
+			TimeLimit = int.Parse(config["configuration"]["verification"]["time-limit"].InnerText),
+			CodeLength = int.Parse(config["configuration"]["verification"]["code-length"].InnerText),
+			MaxRequest = int.Parse(config["configuration"]["verification"]["max-request"].InnerText)
+		};
+
 		public static string KakaoAPI => config["configuration"]["kakao"]["api-key"].InnerText;
 
 		static XmlConfiguration()

@@ -59,7 +59,7 @@ function ValidateForm() {
 		else $(".update-account").prop("disabled", true);
 	}, 10);
 }
-function UpdateAccountCallback(model) {
+function CreateAccountCallback(model) {
 	if (model)
 	{
 		alert("정보수정이 완료되었습니다.");
@@ -293,7 +293,7 @@ $(document).ready(function () {
 			Address: address,
 			Phone: phone,
 			Birthday: birthday
-		}, UpdateAccountCallback);
+		}, CreateAccountCallback);
 	});
 
 	$(".name").trigger("keyup");

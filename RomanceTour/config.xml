@@ -26,4 +26,10 @@
 	<kakao>
 		<api-key>e9c264ffe6d09d9178478c1eb1afb5d2</api-key>
 	</kakao>
+	<verification>
+		<template>[낭만투어] 인증번호 : [{0}]를 입력해주세요.</template>
+		<time-limit>3</time-limit>
+		<code-length>6</code-length>
+		<max-request>10</max-request>
+	</verification>
 </configuration>

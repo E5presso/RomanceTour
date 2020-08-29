@@ -16,12 +16,10 @@ namespace TestConsole
 			string from = "01064308733";
 
 			Sens message = new Sens(url, uri, serviceId, accessKey, secretKey, from);
-			(var status, var response) = message.SendMessage(new Message
-			{
-				To = new string[] { "01080792838" },
-				Content = "[낭만투어] SMS 메세지 발송을 테스트합니다."
-			});
-			Console.WriteLine($"STATUS : {status}\tRESPONSE : {response}");
+			bool result = message.SendMessage("01064308733", "[낭만투어] SMS 메세지 발송을 테스트합니다.").Result;
+			if (result) Console.WriteLine("전송 완료!");
+			else Console.WriteLine("전송 실패...");
+			Console.ReadKey();
 		}
 	}
 }

@@ -11,33 +11,11 @@ using System.Threading.Tasks;
 namespace Core.Network.NCloud
 {
 	/// <summary>
-	/// 메세지 발송결과를 정의합니다.
-	/// </summary>
-	public class Result
-	{
-		/// <summary>
-		/// 수신 대상자의 연락처를 가져옵니다.
-		/// </summary>
-		public string To { get; set; }
-		/// <summary>
-		/// 결과정보를 가져옵니다.
-		/// </summary>
-		public string Name { get; set; }
-		/// <summary>
-		/// 상태코드를 가져옵니다.
-		/// </summary>
-		public string Code { get; set; }
-		/// <summary>
-		/// 결과메세지를 가져옵니다.
-		/// </summary>
-		public string Message { get; set; }
-	}
-	/// <summary>
 	/// 네이버 클라우드 플랫폼(NCloud)의 SENS 서비스를 활용한 SMS 웹 발송 기능을 구현합니다.
 	/// </summary>
 	public class Sens
 	{
-		private string uri;
+		private readonly string uri;
 
 		/// <summary>
 		/// SENS 서비스의 API URL을 가져옵니다.
@@ -127,7 +105,7 @@ namespace Core.Network.NCloud
 				using var reader = new StreamReader(responseStream);
 				string responseMessage = await reader.ReadToEndAsync();
 				dynamic result = JsonSerializer.Deserialize(responseMessage);
-				return statusCode == HttpStatusCode.Accepted ? true : false;
+				return statusCode == HttpStatusCode.Accepted;
 			}
 			catch { return false; }
 		}
@@ -180,7 +158,7 @@ namespace Core.Network.NCloud
 				using var reader = new StreamReader(responseStream);
 				string responseMessage = await reader.ReadToEndAsync();
 				dynamic result = JsonSerializer.Deserialize(responseMessage);
-				return statusCode == HttpStatusCode.Accepted ? true : false;
+				return statusCode == HttpStatusCode.Accepted;
 			}
 			catch { return false; }
 		}
@@ -233,7 +211,7 @@ namespace Core.Network.NCloud
 				using var reader = new StreamReader(responseStream);
 				string responseMessage = await reader.ReadToEndAsync();
 				dynamic result = JsonSerializer.Deserialize(responseMessage);
-				return statusCode == HttpStatusCode.Accepted ? true : false;
+				return statusCode == HttpStatusCode.Accepted;
 			}
 			catch { return false; }
 		}

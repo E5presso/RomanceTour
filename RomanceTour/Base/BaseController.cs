@@ -49,14 +49,21 @@ namespace RomanceTour
 
 		public override async void OnActionExecuting(ActionExecutingContext context)
 		{
-			string ip = IPAddress;
-			int? userId = SessionId;
-			string controller = Directory;
-			string action = Action;
-			string parameter = context.HttpContext.Request.QueryString.ToString();
+			try
+			{
+				string ip = IPAddress;
+				int? userId = SessionId;
+				string controller = Directory;
+				string action = Action;
+				string parameter = context.HttpContext.Request.QueryString.ToString();
 
-			await LogManager.LogAsync(ip, userId, controller, action, parameter);
-			base.OnActionExecuting(context);
+				await LogManager.LogAsync(ip, userId, controller, action, parameter);
+				base.OnActionExecuting(context);
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+			}
 		}
 	}
 }

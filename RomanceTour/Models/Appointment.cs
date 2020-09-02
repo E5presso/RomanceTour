@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace RomanceTour.Models
 {
@@ -25,12 +24,12 @@ namespace RomanceTour.Models
         public int? UserId { get; set; }
         public string Password { get; set; }
         public string HashSalt { get; set; }
-        [Encrypted] public string Name { get; set; }
-        [Encrypted] public string Phone { get; set; }
-        [Encrypted] public string Address { get; set; }
-        [Encrypted] public string BillingName { get; set; }
-        [Encrypted] public string BillingBank { get; set; }
-        [Encrypted] public string BillingNumber { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string BillingName { get; set; }
+        public string BillingBank { get; set; }
+        public string BillingNumber { get; set; }
         public int Ammount { get; set; }
         public int Price { get; set; }
 

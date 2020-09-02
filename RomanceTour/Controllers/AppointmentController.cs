@@ -758,7 +758,6 @@ namespace RomanceTour.Controllers
                         });
                     if (status != -1) matched = matched.Where(x => x.Status == (AppointmentStatus)status);
                     matched = matched.Where(x =>
-                        EF.Functions.Like(x.Id, $"%{keyword}%") ||
                         EF.Functions.Like(x.Name, $"%{keyword}%") ||
                         EF.Functions.Like(x.Phone, $"%{keyword}%") ||
                         EF.Functions.Like(x.Address, $"%{keyword}%") ||

@@ -56,7 +56,7 @@ namespace RomanceTour.Controllers
 					ViewBag.Back = Back;
 					return View(matched);
 				}
-				else return RedirectToAction("NotFound", "Home");
+				else return RedirectToAction("PageNotFound", "Home");
 			}
 			catch (Exception e)
 			{

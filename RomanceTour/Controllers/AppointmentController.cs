@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Core.Security;
-
+using Core.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -332,6 +332,13 @@ namespace RomanceTour.Controllers
                             var session = product.DateSession.SingleOrDefault(x => x.Date == appointment.Date);
                             if (session != null)
                             {
+                                string link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                                var check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
+                                while (check != null)
+								{
+                                    link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                                    check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
+								}
                                 var item = new Appointment
                                 {
                                     DateSessionId = session.Id,
@@ -342,7 +349,8 @@ namespace RomanceTour.Controllers
                                     BillingName = appointment.BillingName,
                                     BillingBank = appointment.BillingBank,
                                     BillingNumber = appointment.BillingNumber,
-                                    Ammount = appointment.People.Sum(x => x.Ammount)
+                                    Ammount = appointment.People.Sum(x => x.Ammount),
+                                    Link = link
                                 };
                                 foreach (var x in appointment.People)
                                 {
@@ -400,6 +408,7 @@ namespace RomanceTour.Controllers
                                 db.DateSession.Update(session);
 
                                 await db.SaveChangesAsync();
+                                await MessageSender.SendAppointmentMessage(user.Phone, user.Name, product.Title, session.Date, $@"https://romancetour.ml/Appointment/ViewAppointment?link={link}");
                                 return Json(new Response
                                 {
                                     Result = ResultType.SUCCESS,
@@ -444,6 +453,13 @@ namespace RomanceTour.Controllers
                         var session = product.DateSession.SingleOrDefault(x => x.Date == appointment.Date);
                         if (session != null)
                         {
+                            string link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                            var check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
+                            while (check != null)
+                            {
+                                link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                                check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
+                            }
                             var salt = Key.GenerateString(32);
                             var item = new Appointment
                             {
@@ -459,7 +475,8 @@ namespace RomanceTour.Controllers
                                 BillingName = appointment.BillingName,
                                 BillingBank = appointment.BillingBank,
                                 BillingNumber = appointment.BillingNumber,
-                                Ammount = appointment.People.Sum(x => x.Ammount)
+                                Ammount = appointment.People.Sum(x => x.Ammount),
+                                Link = link
                             };
                             foreach (var x in appointment.People)
                             {
@@ -512,6 +529,7 @@ namespace RomanceTour.Controllers
                             db.DateSession.Update(session);
 
                             await db.SaveChangesAsync();
+                            await MessageSender.SendAppointmentMessage(appointment.Phone, appointment.Name, product.Title, session.Date, $@"https://romancetour.ml/Appointment/ViewAppointment?link={link}");
                             return Json(new Response
                             {
                                 Result = ResultType.SUCCESS,
@@ -671,11 +689,11 @@ namespace RomanceTour.Controllers
                 {
                     using var db = new RomanceTourDbContext();
                     var appointment = db.Appointment.Include(x => x.Person).Where(x => x.DateSessionId == id);
-                    var count = await appointment.SumAsync(x => x.Person.Where(x => x.DepartureId == departureId).Sum(x => x.Ammount));
+                    var count = await appointment.Select(x => x.Person.Where(x => x.DepartureId == departureId).Sum(x => x.Ammount)).ToArrayAsync();
                     return Json(new Response
                     {
                         Result = ResultType.SUCCESS,
-                        Model = count
+                        Model = count.Sum()
                     });
                 }
                 else return Json(new Response
@@ -704,11 +722,11 @@ namespace RomanceTour.Controllers
                         .Include(x => x.Person)
                             .ThenInclude(x => x.Option)
                         .Where(x => x.DateSessionId == id);
-                    var count = await appointment.SumAsync(x => x.Person.Where(x => x.Option.SingleOrDefault(x => x.PriceRuleId == PriceRuleId) != null).Sum(x => x.Ammount));
+                    var count = await appointment.Select(x => x.Person.Where(x => x.Option.SingleOrDefault(x => x.PriceRuleId == PriceRuleId) != null).Sum(x => x.Ammount)).ToArrayAsync();
                     return Json(new Response
                     {
                         Result = ResultType.SUCCESS,
-                        Model = count
+                        Model = count.Sum()
                     });
                 }
                 else return Json(new Response
@@ -865,6 +883,34 @@ namespace RomanceTour.Controllers
                     Error = e
                 });
             }
+        }
+
+        public async Task<IActionResult> ViewAppointment(string link)
+		{
+            using var db = new RomanceTourDbContext();
+            var matched = await db.Appointment
+                .Include(x => x.User)
+                .Include(x => x.Person)
+                    .ThenInclude(x => x.Departure)
+                .Include(x => x.Person)
+                    .ThenInclude(x => x.Option)
+                        .ThenInclude(x => x.PriceRule)
+                .Include(x => x.DateSession)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.Category)
+                .Include(x => x.DateSession)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductBilling)
+                            .ThenInclude(x => x.Billing)
+                .SingleOrDefaultAsync(x => x.Link == link);
+
+            if (matched != null)
+            {
+                ViewBag.Back = Back;
+                ViewBag.Appointment = matched;
+                return View("GetAppointment");
+            }
+            else return RedirectToAction("PageNotFound", "Home");
         }
     }
 }

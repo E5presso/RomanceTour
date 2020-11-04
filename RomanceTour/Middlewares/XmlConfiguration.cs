@@ -71,6 +71,8 @@ namespace RomanceTour.Middlewares
 			CodeLength = int.Parse(config["configuration"]["verification"]["code-length"].InnerText),
 			MaxRequest = int.Parse(config["configuration"]["verification"]["max-request"].InnerText)
 		};
+		public static string AppointmentSubject => config["configuration"]["appointment"]["subject"].InnerText;
+		public static string AppointmentTemplate => config["configuration"]["appointment"]["template"].InnerText;
 
 		public static string KakaoAPI => config["configuration"]["kakao"]["api-key"].InnerText;
 

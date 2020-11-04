@@ -32,4 +32,13 @@
 		<code-length>6</code-length>
 		<max-request>10</max-request>
 	</verification>
+	<appointment>
+		<subject>[낭만투어] 예약완료 안내</subject>
+		<template>{0}님, 요청하신 상품에 대한 예약이 완료되었습니다.
+상품명 : {1}
+출발날짜 : {2}
+자세한 사항은 아래의 링크를 눌러 확인해주세요.
+감사합니다.
+{3}</template>
+	</appointment>
 </configuration>

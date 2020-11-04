@@ -71,16 +71,16 @@
 .float-btn
 {
 	position: fixed;
-	bottom: 20px;
-	right: 20px;
+	bottom: 100px;
+	right: 26px;
 	z-index: 800;
 	border-radius: 50%;
 	overflow: hidden;
 	background: rgba(208, 184, 245, 0.5);
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
-	width: 90px;
-	height: 90px;
+	width: 60px;
+	height: 60px;
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
@@ -95,27 +95,28 @@
 
 	.float-btn .btn-icon
 	{
-		font-size: 2rem;
+		font-size: 1.5rem;
 	}
 
 	.float-btn > *
 	{
+		font-size: 0.8rem;
 		color: #FCFCFC;
 	}
 
 .second-float-btn
 {
 	position: fixed;
-	bottom: 20px;
-	right: 20px;
+	bottom: 100px;
+	right: 26px;
 	z-index: 800;
 	border-radius: 50%;
 	overflow: hidden;
 	background: rgba(2, 56, 89, 0.5);
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
-	width: 90px;
-	height: 90px;
+	width: 60px;
+	height: 60px;
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
@@ -130,11 +131,12 @@
 
 	.second-float-btn .btn-icon
 	{
-		font-size: 2rem;
+		font-size: 1.5rem;
 	}
 
 	.second-float-btn > *
 	{
+		font-size: 0.8rem;
 		color: #FCFCFC;
 	}
 

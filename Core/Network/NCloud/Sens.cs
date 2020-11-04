@@ -11,6 +11,25 @@ using System.Threading.Tasks;
 namespace Core.Network.NCloud
 {
 	/// <summary>
+	/// 발송할 메세지 타입을 정의합니다.
+	/// </summary>
+	public enum MessageType
+	{
+		/// <summary>
+		/// SMS 메세지입니다.
+		/// </summary>
+		SMS,
+		/// <summary>
+		/// LMS 메세지입니다.
+		/// </summary>
+		LMS,
+		/// <summary>
+		/// MMS 메세지입니다.
+		/// </summary>
+		MMS
+	}
+
+	/// <summary>
 	/// 네이버 클라우드 플랫폼(NCloud)의 SENS 서비스를 활용한 SMS 웹 발송 기능을 구현합니다.
 	/// </summary>
 	public class Sens
@@ -60,10 +79,12 @@ namespace Core.Network.NCloud
 		/// <summary>
 		/// SMS 메세지를 발송합니다.
 		/// </summary>
+		/// <param name="type">발송할 메세지의 타입을 지정합니다.</param>
+		/// <param name="subject">발송할 메세지의 제목을 지정합니다.</param>
 		/// <param name="to">수신 대상자를 지정합니다.</param>
 		/// <param name="message">발송할 메세지를 지정합니다.</param>
 		/// <returns>발송 요청에 대한 요청식별자를 반환합니다.</returns>
-		public async Task<bool> SendMessage(string to, string message)
+		public async Task<bool> SendMessage(MessageType type, string subject, string to, string message)
 		{
 			try
 			{
@@ -80,10 +101,17 @@ namespace Core.Network.NCloud
 				request.Headers.Add("x-ncp-apigw-signature-v2", signature);
 				var body = new
 				{
-					type = "SMS",
+					type = type switch
+					{
+						MessageType.SMS => "SMS",
+						MessageType.LMS => "LMS",
+						MessageType.MMS => "MMS",
+						_ => ""
+					},
 					contentType = "COMM",
 					countryCode = "82",
 					from = From,
+					subject,
 					content = message,
 					messages = new[]
 					{
@@ -112,10 +140,12 @@ namespace Core.Network.NCloud
 		/// <summary>
 		/// SMS 메세지를 발송합니다.
 		/// </summary>
+		/// <param name="type">발송할 메세지의 타입을 지정합니다.</param>
+		/// <param name="subject">발송할 메세지의 제목을 지정합니다.</param>
 		/// <param name="to">수신 대상자 목록을 지정합니다.</param>
 		/// <param name="message">발송할 메세지를 지정합니다.</param>
 		/// <returns>발송 요청에 대한 요청식별자를 반환합니다.</returns>
-		public async Task<bool> SendMessage(string[] to, string message)
+		public async Task<bool> SendMessage(MessageType type, string subject, string[] to, string message)
 		{
 			try
 			{
@@ -132,10 +162,17 @@ namespace Core.Network.NCloud
 				request.Headers.Add("x-ncp-apigw-signature-v2", signature);
 				var body = new
 				{
-					type = "SMS",
+					type = type switch
+					{
+						MessageType.SMS => "SMS",
+						MessageType.LMS => "LMS",
+						MessageType.MMS => "MMS",
+						_ => ""
+					},
 					contentType = "COMM",
 					countryCode = "82",
 					from = From,
+					subject,
 					content = message,
 					messages = new List<object>()
 				};
@@ -165,10 +202,12 @@ namespace Core.Network.NCloud
 		/// <summary>
 		/// SMS 메세지를 발송합니다.
 		/// </summary>
+		/// <param name="type">발송할 메세지의 타입을 지정합니다.</param>
+		/// <param name="subject">발송할 메세지의 제목을 지정합니다.</param>
 		/// <param name="message">발송할 메세지를 지정합니다.</param>
 		/// <param name="to">수신 대상자 목록을 지정합니다.</param>
 		/// <returns>발송 요청에 대한 요청식별자를 반환합니다.</returns>
-		public async Task<bool> SendMessage(string message, params string[] to)
+		public async Task<bool> SendMessage(MessageType type, string subject, string message, params string[] to)
 		{
 			try
 			{
@@ -185,10 +224,17 @@ namespace Core.Network.NCloud
 				request.Headers.Add("x-ncp-apigw-signature-v2", signature);
 				var body = new
 				{
-					type = "SMS",
+					type = type switch
+					{
+						MessageType.SMS => "SMS",
+						MessageType.LMS => "LMS",
+						MessageType.MMS => "MMS",
+						_ => ""
+					},
 					contentType = "COMM",
 					countryCode = "82",
 					from = From,
+					subject,
 					content = message,
 					messages = new List<object>()
 				};

@@ -37,7 +37,7 @@ namespace RomanceTour.Middlewares
 				if (DateTime.Now - time > new TimeSpan(0, 1, 0))
 				{
 					string code = GenerateVerificationCode();
-					bool result = await sens.SendMessage(phone, string.Format(template, code));
+					bool result = await sens.SendMessage(MessageType.SMS, "[낭만투어] 휴대폰 인증", phone,  string.Format(template, code));
 					if (result)
 					{
 						var now = DateTime.Now;
@@ -52,7 +52,7 @@ namespace RomanceTour.Middlewares
 			else
 			{
 				string code = GenerateVerificationCode();
-				bool result = await sens.SendMessage(phone, string.Format(template, code));
+				bool result = await sens.SendMessage(MessageType.SMS, "[낭만투어] 휴대폰 인증", phone, string.Format(template, code));
 				if (result)
 				{
 					var now = DateTime.Now;

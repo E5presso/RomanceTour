@@ -32,6 +32,7 @@ namespace RomanceTour.Models
         public string BillingNumber { get; set; }
         public int Ammount { get; set; }
         public int Price { get; set; }
+        public string Link { get; set; }
 
         public virtual DateSession DateSession { get; set; }
         public virtual User User { get; set; }

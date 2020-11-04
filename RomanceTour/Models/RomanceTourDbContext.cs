@@ -79,25 +79,27 @@ namespace RomanceTour.Models
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.Property(e => e.Address).HasColumnType("text");
+                entity.Property(e => e.Address).HasColumnType("varchar(max)");
 
-                entity.Property(e => e.BillingBank).HasColumnType("text");
+                entity.Property(e => e.BillingBank).HasColumnType("varchar(max)");
 
-                entity.Property(e => e.BillingName).HasColumnType("text");
+                entity.Property(e => e.BillingName).HasColumnType("varchar(max)");
 
-                entity.Property(e => e.BillingNumber).HasColumnType("text");
+                entity.Property(e => e.BillingNumber).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.HashSalt)
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Name).HasColumnType("text");
+                entity.Property(e => e.Link).HasColumnType("varchar(max)");
+
+                entity.Property(e => e.Name).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(64)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Phone).HasColumnType("text");
+                entity.Property(e => e.Phone).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -128,11 +130,11 @@ namespace RomanceTour.Models
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Number).HasColumnType("text");
+                entity.Property(e => e.Number).HasColumnType("varchar(max)");
             });
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.Property(e => e.Description).HasColumnType("text");
+                entity.Property(e => e.Description).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -165,11 +167,11 @@ namespace RomanceTour.Models
             {
                 entity.Property(e => e.Message)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.StackTrace)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
             });
@@ -180,7 +182,7 @@ namespace RomanceTour.Models
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Data).HasColumnType("text");
+                entity.Property(e => e.Data).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Ipaddress)
                     .IsRequired()
@@ -200,7 +202,7 @@ namespace RomanceTour.Models
             {
                 entity.Property(e => e.Address)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.HostBank)
                     .IsRequired()
@@ -209,7 +211,7 @@ namespace RomanceTour.Models
 
                 entity.Property(e => e.HostBillingNumber)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.HostName)
                     .IsRequired()
@@ -243,7 +245,7 @@ namespace RomanceTour.Models
                     .HasMaxLength(64)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Parameter).HasColumnType("text");
+                entity.Property(e => e.Parameter).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
 
@@ -279,7 +281,7 @@ namespace RomanceTour.Models
             });
             modelBuilder.Entity<PriceRule>(entity =>
             {
-                entity.Property(e => e.Description).HasColumnType("text");
+                entity.Property(e => e.Description).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.RuleName)
                     .IsRequired()
@@ -296,17 +298,17 @@ namespace RomanceTour.Models
             {
                 entity.Property(e => e.Form)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
-                entity.Property(e => e.SubTitle).HasColumnType("text");
+                entity.Property(e => e.SubTitle).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Thumbnail)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Product)
@@ -386,7 +388,7 @@ namespace RomanceTour.Models
             {
                 entity.Property(e => e.Comment)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
 
@@ -404,13 +406,13 @@ namespace RomanceTour.Models
             {
                 entity.Property(e => e.Address)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
-                entity.Property(e => e.BillingBank).HasColumnType("text");
+                entity.Property(e => e.BillingBank).HasColumnType("varchar(max)");
 
-                entity.Property(e => e.BillingName).HasColumnType("text");
+                entity.Property(e => e.BillingName).HasColumnType("varchar(max)");
 
-                entity.Property(e => e.BillingNumber).HasColumnType("text");
+                entity.Property(e => e.BillingNumber).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Birthday).HasColumnType("datetime");
 
@@ -421,7 +423,7 @@ namespace RomanceTour.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -430,7 +432,7 @@ namespace RomanceTour.Models
 
                 entity.Property(e => e.Phone)
                     .IsRequired()
-                    .HasColumnType("text");
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Status)
                     .IsRequired()

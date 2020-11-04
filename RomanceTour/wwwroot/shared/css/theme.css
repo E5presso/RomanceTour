@@ -220,11 +220,6 @@ header
 	opacity: 0.9;
 }
 
-.nav-item
-{
-	margin-left: 5px;
-}
-
 .nav-link > *
 {
 	color: #FCFCFC;

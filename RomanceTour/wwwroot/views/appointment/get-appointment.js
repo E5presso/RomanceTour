@@ -33,6 +33,7 @@ function Print() {
 		});
 		marker.setMap(map);
 		map.setDraggable(false);
+		map.setZoomable(false);
 		kakao.maps.event.addListener(map, "click", function (e) {
 			if (IsMobile) window.open(`kakaomap://look?p=${latitude},${longtitude}`);
 			else window.open(`https://map.kakao.com/link/map/${name},${latitude},${longtitude}`);
@@ -77,6 +78,7 @@ function Print() {
 			});
 			marker.setMap(map);
 			map.setDraggable(false);
+			map.setZoomable(false);
 			kakao.maps.event.addListener(map, "click", function (e) {
 				if (IsMobile) window.open(`kakaomap://look?p=${latitude},${longtitude}`);
 				else window.open(`https://map.kakao.com/link/map/${name},${latitude},${longtitude}`);
@@ -126,6 +128,7 @@ $(document).ready(function () {
 		});
 		marker.setMap(map);
 		map.setDraggable(false);
+		map.setZoomable(false);
 		kakao.maps.event.addListener(map, "click", function (e) {
 			if (IsMobile) window.open(`kakaomap://look?p=${latitude},${longtitude}`);
 			else window.open(`https://map.kakao.com/link/map/${name},${latitude},${longtitude}`);

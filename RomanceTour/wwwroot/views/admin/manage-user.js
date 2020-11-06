@@ -1,6 +1,8 @@
-﻿function FilterProductCallback(model) {
+﻿function FilterProductCallback(model)
+{
 	$(".user-list").html('');
-	$.each(model, function (index, item) {
+	$.each(model, function (index, item)
+	{
 		$(".user-list").append(`
 				<tr id="user-${item.Id}">
 					<td class="d-table-cell">
@@ -40,13 +42,15 @@
 					</td>
 				</tr>
 			`);
-		$(`#user-${item.Id} .remove-user`).on("click", function () {
+		$(`#user-${item.Id} .remove-user`).on("click", function ()
+		{
 			if (confirm("정말로 해당 사용자를 제거하시겠습니까?\n이 동작은 취소할 수 없습니다."))
 			{
 				var id = $(this).parent().parent().parent().attr("id").split("-")[1];
 				Ajax("/User/RemoveUser", {
 					id: id
-				}, function (model) {
+				}, function (model)
+				{
 					if (model) alert("사용자가 정상적으로 제거되었습니다.");
 					else alert("사용자 제거에 실패하였습니다.");
 					Ajax("/User/ListUser", {}, FilterProductCallback);
@@ -56,11 +60,14 @@
 	});
 }
 
-$(document).ready(function () {
-	$(".go-back").on("click", function () {
+$(document).ready(function ()
+{
+	$(".go-back").on("click", function ()
+	{
 		window.location.href = "/Admin/Dashboard";
 	});
-	$(".search-bar-second .search-text").on("focus", function () {
+	$(".search-bar-second .search-text").on("focus", function ()
+	{
 		$(this).parent().css("box-shadow", "0px 0px 10px #B0C8EB");
 		$(this).parent().css("border", "1px solid #B0C8EB");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
@@ -68,7 +75,8 @@ $(document).ready(function () {
 			"text-shadow": "0px 0px 10px #B0C8EB"
 		});
 	});
-	$(".search-bar-second .search-text").on("focusout", function () {
+	$(".search-bar-second .search-text").on("focusout", function ()
+	{
 		$(this).parent().css("box-shadow", "initial");
 		$(this).parent().css("border", "1px solid #B0C8EB");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
@@ -76,7 +84,8 @@ $(document).ready(function () {
 			"text-shadow": "none"
 		});
 	});
-	$(".search-bar-second .search-text").on("keyup", function () {
+	$(".search-bar-second .search-text").on("keyup", function ()
+	{
 		var option = $(".search-option option:selected").val();
 		var keyword = $(this).val();
 		AjaxWithoutLoading("/User/SearchUser", {

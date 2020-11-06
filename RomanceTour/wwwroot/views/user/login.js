@@ -1,10 +1,12 @@
-﻿function Initialize() {
+﻿function Initialize()
+{
 	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 	var padding = parseFloat($(".full-screen-area").css("paddingTop"));
 
 	$("article").height(window.innerHeight - header + collapse - (padding * 2));
-	$(window).resize(function () {
+	$(window).resize(function ()
+	{
 		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 		var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 		var padding = parseFloat($(".full-screen-area").css("paddingTop"));
@@ -12,7 +14,8 @@
 		$("article").height(window.innerHeight - header + collapse - (padding * 2));
 	});
 }
-function ValidateForm() {
+function ValidateForm()
+{
 	var id = $(".id").val();
 	var password = $(".password").val();
 
@@ -20,7 +23,8 @@ function ValidateForm() {
 		$(".check-account").prop("disabled", false);
 	else $(".check-account").prop("disabled", true);
 }
-function CheckAccountCallback(model) {
+function CheckAccountCallback(model)
+{
 	if (model)
 	{
 		var back = $("#back").val();
@@ -35,15 +39,19 @@ function CheckAccountCallback(model) {
 	}
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	Initialize();
-	$(".id").on("keyup", function () {
+	$(".id").on("keyup", function ()
+	{
 		ValidateForm();
 	});
-	$(".password").on("keyup", function () {
+	$(".password").on("keyup", function ()
+	{
 		ValidateForm();
 	});
-	$(".check-account").on("click", function (e) {
+	$(".check-account").on("click", function (e)
+	{
 		e.preventDefault();
 
 		var id = $(".id").val();

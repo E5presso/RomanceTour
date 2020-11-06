@@ -1,4 +1,5 @@
-﻿function Initialize() {
+﻿function Initialize()
+{
 	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 	var padding = parseFloat($(".full-screen-area").css("paddingTop"));
@@ -14,7 +15,8 @@
 		$(".third .btn-text").css("display", "none");
 		$(".third .btn-text").css("opacity", "0");
 	}
-	$(window).resize(function () {
+	$(window).resize(function ()
+	{
 		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 		var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 		var padding = parseFloat($(".full-screen-area").css("paddingTop"));
@@ -33,16 +35,19 @@
 	});
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	$(".third").hover(
-		function () {
+		function ()
+		{
 			if ($(window).width() > 576 && !IsMobile)
 			{
 				$(this).find(".btn-text").stop().slideDown(DURATION);
 				$(this).find(".btn-text").css("opacity", "1");
 			}
 		},
-		function () {
+		function ()
+		{
 			if ($(window).width() > 576 && !IsMobile)
 			{
 				$(this).find(".btn-text").stop().slideUp(DURATION);
@@ -50,19 +55,24 @@ $(document).ready(function () {
 			}
 		}
 	);
-	$(".third").on("click", function () {
+	$(".third").on("click", function ()
+	{
 		if (!IsMobile) $(this).find(".btn-text").stop().slideUp(DURATION);
 	});
-	$(".manage-user").on("click", function () {
+	$(".manage-user").on("click", function ()
+	{
 		window.location.href = "/Admin/ManageUser";
 	});
-	$(".manage-product").on("click", function () {
+	$(".manage-product").on("click", function ()
+	{
 		window.location.href = "/Admin/ManageProduct";
 	});
-	$(".manage-appointment").on("click", function () {
+	$(".manage-appointment").on("click", function ()
+	{
 		window.location.href = "/Admin/ManageAppointment";
 	});
-	$(".manage-etc").on("click", function () {
+	$(".manage-etc").on("click", function ()
+	{
 		window.location.href = "/Admin/ManageEtc";
 	});
 

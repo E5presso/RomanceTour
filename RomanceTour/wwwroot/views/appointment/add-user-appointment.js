@@ -11,23 +11,27 @@ var DateSessionStatus = {
 	CANCELED: "CANCELED"
 };
 var PriceRuleType = {
-	PERCENT_AS: "PERCENT_AS", 
-	PERCENT_PLUS: "PERCENT_PLUS", 
-	PERCENT_MINUS: "PERCENT_MINUS", 
-	STATIC_PLUS: "STATIC_PLUS", 
+	PERCENT_AS: "PERCENT_AS",
+	PERCENT_PLUS: "PERCENT_PLUS",
+	PERCENT_MINUS: "PERCENT_MINUS",
+	STATIC_PLUS: "STATIC_PLUS",
 	STATIC_MINUS: "STATIC_MINUS"
 };
 
-function ValidateName(name) {
+function ValidateName(name)
+{
 	var regex = /^[가-힣]{2,4}$/;
 	return regex.test(name);
 }
-function ValidatePhone(phone) {
+function ValidatePhone(phone)
+{
 	var regex = /(01[016789])([1-9]{1}[0-9]{2,3})([0-9]{4})$/;
 	return regex.test(phone);
 }
-function ValidateForm() {
-	setTimeout(function () {
+function ValidateForm()
+{
+	setTimeout(function ()
+	{
 		if ($(".date-picker").hasClass("is-valid") &&
 			$("#billing-name").hasClass("is-valid"))
 			$("#appointment").prop("disabled", false);
@@ -35,16 +39,19 @@ function ValidateForm() {
 	}, 100);
 }
 
-function CalculatePrice() {
+function CalculatePrice()
+{
 	var totalPrice = 0;
-	$(".person").each(function (index, item) {
+	$(".person").each(function (index, item)
+	{
 		var ageValue = $(item).find(".age").children("option:selected").val();
 		var ageParsed = ageValue.split("-");
 		var agePrice = parseInt(ageParsed[2]);
 		var price = agePrice;
 
 		var optionValue = $(item).find(".option").children("option:selected");
-		$.each(optionValue, function (index, item) {
+		$.each(optionValue, function (index, item)
+		{
 			var optionParsed = $(item).val().split("-");
 			var optionRuleType = optionParsed[1];
 			var optionPrice = parseInt(optionParsed[2]);
@@ -68,14 +75,16 @@ function CalculatePrice() {
 	});
 	$("#price-value").html(`&#8361;${totalPrice.format()}`);
 }
-function Initialize() {
+function Initialize()
+{
 	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 	var padding = parseFloat($(".full-screen-area").css("paddingTop"));
 	var id = parseInt($("#product-id").val());
 
 	$("article").height(window.innerHeight - header + collapse - (padding * 2));
-	$(window).resize(function () {
+	$(window).resize(function ()
+	{
 		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 		var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 		var padding = parseFloat($(".full-screen-area").css("paddingTop"));
@@ -100,8 +109,10 @@ function Initialize() {
 	CalculatePrice();
 }
 
-function GetAvailableCallback(model) {
-	$.each(model, function (index, item) {
+function GetAvailableCallback(model)
+{
+	$.each(model, function (index, item)
+	{
 		var date = new Date(item.Date);
 		var status = item.Status;
 		dates.push({
@@ -113,7 +124,8 @@ function GetAvailableCallback(model) {
 		language: "ko",
 		todayButton: true,
 		clearButton: true,
-		onRenderCell: function (date, cellType) {
+		onRenderCell: function (date, cellType)
+		{
 			switch (cellType)
 			{
 				case "year": {
@@ -220,7 +232,8 @@ function GetAvailableCallback(model) {
 				}
 			}
 		},
-		onSelect: function (fomattedDate, date, inst) {
+		onSelect: function (fomattedDate, date, inst)
+		{
 			if (datepicker.selectedDates.length)
 			{
 				$(".date-picker").siblings("label").html("날짜가 선택되었습니다.");
@@ -242,7 +255,8 @@ function GetAvailableCallback(model) {
 	}).data('datepicker');
 	$("#billing-name").trigger("keyup");
 }
-function AddCallback(model) {
+function AddCallback(model)
+{
 	alert(model.Message);
 	if (model.Result)
 	{
@@ -251,10 +265,12 @@ function AddCallback(model) {
 	}
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	Initialize();
 
-	$("#billing-name").on("keyup", function () {
+	$("#billing-name").on("keyup", function ()
+	{
 		var value = $("#billing-name").val();
 		if (value.length > 0)
 		{
@@ -285,52 +301,63 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".age").on("change", function (e) {
+	$(".age").on("change", function (e)
+	{
 		e.stopPropagation();
 		CalculatePrice();
 	});
-	$(".option").on("change", function (e) {
+	$(".option").on("change", function (e)
+	{
 		e.stopPropagation();
 		CalculatePrice();
 	});
-	$(".ammount").on("change", function (e) {
+	$(".ammount").on("change", function (e)
+	{
 		if ($(this).val().length == 0) $(this).val(1);
 		e.stopPropagation();
 		CalculatePrice();
 	});
-	$(".delete-person").on("click", function () {
+	$(".delete-person").on("click", function ()
+	{
 		if ($(".person").length > 1)
 		{
 			var parent = $(this).parent().parent().parent();
-			parent.slideUp(DURATION, function () {
+			parent.slideUp(DURATION, function ()
+			{
 				parent.remove();
 				CalculatePrice();
 			});
 		}
 		else alert("예약인원은 비어있을 수 없습니다.");
 	});
-	$("#add-person").on("click", function () {
+	$("#add-person").on("click", function ()
+	{
 		$("#people").append(personForm);
 		$(".person:last-child()").attr("id", `person-${personCount}`);
 		$(`#person-${personCount}`).slideDown(DURATION);
-		$(`#person-${personCount}`).find(".age").on("change", function (e) {
+		$(`#person-${personCount}`).find(".age").on("change", function (e)
+		{
 			e.stopPropagation();
 			CalculatePrice();
 		});
-		$(`#person-${personCount}`).find(".option").on("change", function (e) {
+		$(`#person-${personCount}`).find(".option").on("change", function (e)
+		{
 			e.stopPropagation();
 			CalculatePrice();
 		});
-		$(`#person-${personCount}`).find(".ammount").on("change", function (e) {
+		$(`#person-${personCount}`).find(".ammount").on("change", function (e)
+		{
 			if ($(this).val().length == 0) $(this).val(1);
 			e.stopPropagation();
 			CalculatePrice();
 		});
-		$(`#person-${personCount}`).find(".delete-person").on("click", function () {
+		$(`#person-${personCount}`).find(".delete-person").on("click", function ()
+		{
 			if ($(".person").length > 1)
 			{
 				var parent = $(this).parent().parent().parent();
-				parent.slideUp(DURATION, function () {
+				parent.slideUp(DURATION, function ()
+				{
 					parent.remove();
 					CalculatePrice();
 				});
@@ -345,7 +372,8 @@ $(document).ready(function () {
 		CalculatePrice();
 		personCount++;
 	});
-	$("#appointment").on("click", function () {
+	$("#appointment").on("click", function ()
+	{
 		var appointment = new FormData();
 		appointment.append("Id", parseInt($("#product-id").val()));
 		appointment.append("IsUserAppointment", true);
@@ -353,10 +381,12 @@ $(document).ready(function () {
 		appointment.append("BillingName", $("#billing-name").val());
 		appointment.append("BillingBank", $("#billing-bank option:selected").val());
 		appointment.append("BillingNumber", $("#billing-number").val());
-		$(".person").each(function (index1, item1) {
+		$(".person").each(function (index1, item1)
+		{
 			appointment.append(`People[${index1}].Price`, parseInt($(item1).find(".age option:selected").val().split('-')[0]));
 			appointment.append(`People[${index1}].Departure`, parseInt($(item1).find(".departure option:selected").val().split('-')[0]));
-			$(item1).find(".option option:selected").each(function (index2, item2) {
+			$(item1).find(".option option:selected").each(function (index2, item2)
+			{
 				appointment.append(`People[${index1}].Options[${index2}]`, parseInt($(item2).val().split('-')[0]));
 			});
 			appointment.append(`People[${index1}].Ammount`, parseInt($(item1).find(".ammount").val()));
@@ -364,7 +394,8 @@ $(document).ready(function () {
 
 		AjaxForm("/Appointment/AddAppointment", appointment, AddCallback);
 	});
-	$("#cancel").on("click", function () {
+	$("#cancel").on("click", function ()
+	{
 		if (confirm("예약을 취소할 경우 입력한 내용이 지워집니다.\n정말로 취소하시겠습니까?")) window.location.href = back;
 	});
 });

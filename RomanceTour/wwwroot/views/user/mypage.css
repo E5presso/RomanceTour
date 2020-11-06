@@ -60,7 +60,7 @@
 	align-items: center;
 }
 
-@media all and (min-width: 1200px)
+@media all and (min-width: 768px)
 {
 	.profile-area
 	{
@@ -68,11 +68,19 @@
 	}
 }
 
-.user-name
+.time-icon
 {
-	font-size: 2.0rem;
+	font-size: 5.0rem;
+	color: #F2B705;
+	margin-bottom: 20px;
+}
+
+.greeting, .user-name
+{
+	font-size: 1.8rem;
 	white-space: nowrap;
 	color: #FCFCFC;
+	margin-bottom: 5px;
 }
 
 .tool-area
@@ -89,11 +97,18 @@
 .tool-container
 {
 	width: 100%;
+	height: 100%;
+	padding: 10px;
+}
+
+.tool-container > .row
+{
+	margin: 0;
 }
 
 .tool-box-container
 {
-	padding: 30px;
+	padding: 10px;
 }
 
 .tool-box
@@ -102,4 +117,86 @@
 	height: 400px;
 	background: #FCFCFC;
 	border-radius: 0.25rem;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+}
+
+.menu-title
+{
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	font-size: 1.6rem;
+	color: rgb(2, 56, 89);
+}
+
+@media all and (max-width: 767px)
+{
+	.tool-box-container:first-child
+	{
+		margin-top: 100px;
+	}
+}
+
+@media all and (min-width: 768px)
+{
+	.tool-box-container:first-child,
+	.tool-box-container:nth-child(2)
+	{
+		margin-top: 100px;
+	}
+}
+
+@media all and (min-width: 1200px)
+{
+	.tool-box-container:first-child,
+	.tool-box-container:nth-child(2),
+	.tool-box-container:nth-child(3)
+	{
+		margin-top: 100px;
+	}
+}
+
+.my-page-form-group
+{
+	width: 100%;
+	margin: 5px;
+}
+
+.my-page-form-group > label
+{
+	color: rgb(2, 56, 89);
+}
+
+.my-page-form-group > .form-control
+{
+	border: 1px solid rgb(2, 56, 89);
+	font-size: 1.2rem;
+}
+
+.my-page-form-group > .btn
+{
+	width: 100%;
+	background: rgb(2, 56, 89);
+	transition: background 0.3s, border 0.3s;
+}
+
+.my-page-form-group > .btn > .btn-text
+{
+	color: #FCFCFC;
+	transition: color 0.3s;
+}
+
+.my-page-form-group > .btn:not(:disabled):hover
+{
+	background: #FCFCFC;
+	border: 1px solid rgb(2, 56, 89);
+}
+
+.my-page-form-group > .btn:not(:disabled):hover > .btn-text
+{
+	color: rgb(2, 56, 89);
 }

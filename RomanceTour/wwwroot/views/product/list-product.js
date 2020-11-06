@@ -7,18 +7,22 @@ var datepicker;
 var fromAppointment = null;
 var toAppointment = null;
 
-function AppointmentUpdateCallback(data) {
+function AppointmentUpdateCallback(data)
+{
 	fromAppointment = data.from;
 	toAppointment = data.to;
 }
-function AppointmentChangeCallback(data) {
+function AppointmentChangeCallback(data)
+{
 	fromAppointment = data.from;
 	toAppointment = data.to;
 }
 
-function FilterProductCallback(model) {
+function FilterProductCallback(model)
+{
 	$(".product-list").html('');
-	if (model.length > 0) $.each(model, function (index, item) {
+	if (model.length > 0) $.each(model, function (index, item)
+	{
 		var keyword = $("#product-keyword").val();
 		var product = `
 			<li id="product-${item.Id}" class="product-item">
@@ -62,7 +66,8 @@ function FilterProductCallback(model) {
         `;
 		if (keyword) product = product.replaceAll(keyword, `<span class="highlighted">${keyword}</span>`);
 		$(".product-list").append(product);
-		$(`#product-${item.Id}`).on("click", function () {
+		$(`#product-${item.Id}`).on("click", function ()
+		{
 			var id = $(this).attr("id").split("-")[1];
 			window.location.href = `/Product/GetProduct?id=${id}`;
 		});
@@ -71,7 +76,8 @@ function FilterProductCallback(model) {
 	});
 	else $(".product-list").append(`<span>검색조건에 맞는 상품을 찾을 수 없습니다.</span>`);
 }
-function FilterProduct() {
+function FilterProduct()
+{
 	var category = $("#category-select").children("option:selected").val();
 	var sorting = $("#sorting-select").children("option:selected").val();
 	var keyword = $("#product-keyword").val();
@@ -88,7 +94,8 @@ function FilterProduct() {
 		}
 	}, FilterProductCallback);
 }
-function Initialize() {
+function Initialize()
+{
 	$(".range-slider").ionRangeSlider({
 		type: "double",
 		min: min,
@@ -108,11 +115,13 @@ function Initialize() {
 		language: "ko",
 		todayButton: true,
 		clearButton: true,
-		onSelect: function () {
+		onSelect: function ()
+		{
 			datepicker.hide();
 		}
 	}).data('datepicker');
-	$(".search-option").on('hide.bs.dropdown', function (e) {
+	$(".search-option").on('hide.bs.dropdown', function (e)
+	{
 		if (e.clickEvent) e.preventDefault();
 	});
 	$("#product-keyword").val(`${$("#keyword").val()}`);
@@ -122,21 +131,27 @@ function Initialize() {
 	FilterProduct();
 }
 
-$(document).ready(function () {
-	$("#category-select").on("change", function () {
+$(document).ready(function ()
+{
+	$("#category-select").on("change", function ()
+	{
 		FilterProduct();
 	});
-	$("#sorting-select").on("change", function () {
+	$("#sorting-select").on("change", function ()
+	{
 		FilterProduct();
 	});
-	$("#product-keyword").on("keyup", function () {
+	$("#product-keyword").on("keyup", function ()
+	{
 		FilterProduct();
 	});
-	$("#option-apply").on("click", function () {
+	$("#option-apply").on("click", function ()
+	{
 		$("#search-option-dropdown").dropdown("toggle");
 		FilterProduct();
 	});
-	$("#option-reset").on("click", function () {
+	$("#option-reset").on("click", function ()
+	{
 		appointment.update({
 			from: min,
 			to: max
@@ -148,5 +163,5 @@ $(document).ready(function () {
 		FilterProduct();
 	});
 
-    Initialize();
+	Initialize();
 });

@@ -1,6 +1,8 @@
-﻿function FilterProductCallback(model) {
+﻿function FilterProductCallback(model)
+{
 	$(".product-list").html('');
-	$.each(model, function (_index, item) {
+	$.each(model, function (_index, item)
+	{
 		$(".product-list").append(`
 			<tr id="product-${item.Id}">
 				<td class="d-none d-xl-table-cell">
@@ -37,17 +39,20 @@
 				</td>
 			</tr>
 		`);
-		$(`#product-${item.Id} .edit-product`).on("click", function () {
+		$(`#product-${item.Id} .edit-product`).on("click", function ()
+		{
 			var id = $(this).parent().parent().parent().attr("id").split("-")[1];
 			window.location.href = `/Admin/EditProduct?id=${id}`;
 		});
-		$(`#product-${item.Id} .remove-product`).on("click", function () {
+		$(`#product-${item.Id} .remove-product`).on("click", function ()
+		{
 			if (confirm("정말로 해당 상품을 제거하시겠습니까?\n이 동작은 취소할 수 없습니다."))
 			{
 				var id = $(this).parent().parent().parent().attr("id").split("-")[1];
 				Ajax("/Product/RemoveProduct", {
 					id: id
-				}, function (model) {
+				}, function (model)
+				{
 					if (model) alert("상품이 정상적으로 제거되었습니다.");
 					else alert("상품 제거에 실패하였습니다.");
 					RefreshList();
@@ -56,18 +61,22 @@
 		});
 	});
 }
-function RefreshList() {
+function RefreshList()
+{
 	var category = parseInt($("#category option:selected").val());
 	Ajax("/Product/FilterProduct", {
 		category: category
 	}, FilterProductCallback);
 }
 
-$(document).ready(function () {
-	$(".go-back").on("click", function () {
+$(document).ready(function ()
+{
+	$(".go-back").on("click", function ()
+	{
 		window.location.href = "/Admin/Dashboard";
 	});
-	$(".search-bar-second .search-text").on("focus", function () {
+	$(".search-bar-second .search-text").on("focus", function ()
+	{
 		$(this).parent().css("box-shadow", "0px 0px 10px #D0B8F5");
 		$(this).parent().css("border", "1px solid #D0B8F5");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
@@ -75,7 +84,8 @@ $(document).ready(function () {
 			"text-shadow": "0px 0px 10px #D0B8F5"
 		});
 	});
-	$(".search-bar-second .search-text").on("focusout", function () {
+	$(".search-bar-second .search-text").on("focusout", function ()
+	{
 		$(this).parent().css("box-shadow", "initial");
 		$(this).parent().css("border", "1px solid #D0B8F5");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
@@ -83,14 +93,17 @@ $(document).ready(function () {
 			"text-shadow": "none"
 		});
 	});
-	$(".write-product").on("click", function () {
+	$(".write-product").on("click", function ()
+	{
 		window.location.href = "/Admin/WriteProduct";
 	});
 
-	$("#category").on("change", function () {
+	$("#category").on("change", function ()
+	{
 		RefreshList();
 	});
-	$("#search-keyword").on("keyup", function () {
+	$("#search-keyword").on("keyup", function ()
+	{
 		var category = parseInt($("#category option:selected").val());
 		var keyword = $(this).val();
 		var option = parseInt($("#option").children("option:selected").val());

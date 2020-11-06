@@ -1,6 +1,7 @@
 ﻿var datepicker;
 
-function UploadCallback(model) {
+function UploadCallback(model)
+{
 	if (model)
 	{
 		alert("상품이 추가되었습니다.");
@@ -9,7 +10,8 @@ function UploadCallback(model) {
 	else alert("상품 등록에 문제가 발생하였습니다.\n입력이 비어있는지는 확인해보셨나요? '^'");
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	CKEDITOR.replace("editor");
 	$(".multiple-select").selectpicker({
 		noneSelectedText: "선택된 항목이 없습니다.",
@@ -23,14 +25,17 @@ $(document).ready(function () {
 		multipleDates: true,
 	}).data('datepicker');
 
-	$(".go-back").on("click", function () {
+	$(".go-back").on("click", function ()
+	{
 		window.location.href = "/Admin/ManageProduct";
 	});
-	$(".custom-file-input").on("change", function () {
+	$(".custom-file-input").on("change", function ()
+	{
 		var fileName = $(this).val().split("\\").pop();
 		$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 	});
-	$(".submit-post").on("click", function () {
+	$(".submit-post").on("click", function ()
+	{
 		var title = $("#title").val();
 		var subTitle = $("#sub-title").val();
 		var category = $("#category option:selected").val();
@@ -46,19 +51,24 @@ $(document).ready(function () {
 			data.append("CategoryId", category);
 			data.append("Thumbnail", thumbnail);
 			data.append("Price", price);
-			$("#price-rule").find("option:selected").each(function (index, item) {
+			$("#price-rule").find("option:selected").each(function (index, item)
+			{
 				data.append(`PriceRules[${index}]`, $(item).val());
 			});
-			$("#departure").find("option:selected").each(function (index, item) {
+			$("#departure").find("option:selected").each(function (index, item)
+			{
 				data.append(`Departures[${index}]`, $(item).val());
 			});
-			$("#host").find("option:selected").each(function (index, item) {
+			$("#host").find("option:selected").each(function (index, item)
+			{
 				data.append(`Hosts[${index}]`, $(item).val());
 			});
-			$("#billing").find("option:selected").each(function (index, item) {
+			$("#billing").find("option:selected").each(function (index, item)
+			{
 				data.append(`Billings[${index}]`, $(item).val());
 			});
-			$.each(datepicker.selectedDates, function (index, item) {
+			$.each(datepicker.selectedDates, function (index, item)
+			{
 				data.append(`Appointments[${index}]`, item.toISOString());
 			});
 			data.append("Form", form);

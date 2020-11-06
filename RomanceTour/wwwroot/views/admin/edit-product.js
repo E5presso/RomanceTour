@@ -1,6 +1,7 @@
 ﻿var datepicker;
 
-function UploadCallback(model) {
+function UploadCallback(model)
+{
 	if (model)
 	{
 		alert("상품이 편집되었습니다.");
@@ -9,7 +10,8 @@ function UploadCallback(model) {
 	}
 	else alert("상품 편집에 문제가 발생하였습니다.\n입력이 비어있는지는 확인해보셨나요? '^'");
 }
-function GetProductCallback(model) {
+function GetProductCallback(model)
+{
 	console.log(model.Form);
 	var form = model.Form;
 	var fileName = form.split("=")[1];
@@ -18,18 +20,23 @@ function GetProductCallback(model) {
 		fileName: fileName
 	}, GetFormCallback);
 }
-function GetFormCallback(model) {
+function GetFormCallback(model)
+{
 	CKEDITOR.instances.editor.setData(model);
-	setTimeout(function () {
+	setTimeout(function ()
+	{
 		HideLoading();
 	}, DELAY);
 }
-function GetAppointmentCallback(model) {
-	$.each(model, function (index, item) {
+function GetAppointmentCallback(model)
+{
+	$.each(model, function (index, item)
+	{
 		datepicker.selectDate(new Date(item.Date));
 	});
 }
-function Initialize() {
+function Initialize()
+{
 	var id = $("#product-id").val();
 	AjaxWithoutLoading("/Product/GetAppointment", {
 		id: id
@@ -39,7 +46,8 @@ function Initialize() {
 	}, GetProductCallback);
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	ShowLoading();
 	CKEDITOR.replace("editor");
 	$(".multiple-select").selectpicker({
@@ -54,15 +62,18 @@ $(document).ready(function () {
 		multipleDates: true,
 	}).data('datepicker');
 
-	$(".go-back").on("click", function () {
+	$(".go-back").on("click", function ()
+	{
 		var back = $("#back").val();
 		window.location.href = back;
 	});
-	$(".custom-file-input").on("change", function () {
+	$(".custom-file-input").on("change", function ()
+	{
 		var fileName = $(this).val().split("\\").pop();
 		$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 	});
-	$(".submit-post").on("click", function () {
+	$(".submit-post").on("click", function ()
+	{
 		var id = $("#product-id").val();
 		var title = $("#title").val();
 		var subTitle = $("#sub-title").val();
@@ -80,19 +91,24 @@ $(document).ready(function () {
 			data.append("CategoryId", category);
 			data.append("Thumbnail", thumbnail);
 			data.append("Price", price);
-			$("#price-rule").find("option:selected").each(function (index, item) {
+			$("#price-rule").find("option:selected").each(function (index, item)
+			{
 				data.append(`PriceRules[${index}]`, $(item).val());
 			});
-			$("#departure").find("option:selected").each(function (index, item) {
+			$("#departure").find("option:selected").each(function (index, item)
+			{
 				data.append(`Departures[${index}]`, $(item).val());
 			});
-			$("#host").find("option:selected").each(function (index, item) {
+			$("#host").find("option:selected").each(function (index, item)
+			{
 				data.append(`Hosts[${index}]`, $(item).val());
 			});
-			$("#billing").find("option:selected").each(function (index, item) {
+			$("#billing").find("option:selected").each(function (index, item)
+			{
 				data.append(`Billings[${index}]`, $(item).val());
 			});
-			$.each(datepicker.selectedDates, function (index, item) {
+			$.each(datepicker.selectedDates, function (index, item)
+			{
 				data.append(`Appointments[${index}]`, item.toISOString());
 			});
 			data.append("Form", form);

@@ -44,12 +44,12 @@
 	align-items: center;
 }
 
-	.user-area > .btn
-	{
-		display: flex;
-		flex-flow: column;
-		align-items: center;
-	}
+.user-area > .btn
+{
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
 
 #loading
 {

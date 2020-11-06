@@ -17,13 +17,15 @@ var Orientation =
 }
 const Minute = 60000;
 
-function Ajax(url, data, callback) {
+function Ajax(url, data, callback)
+{
 	ShowLoading();
 	$.ajax({
 		url: url,
 		type: "POST",
 		data: data,
-		success: function (response) {
+		success: function (response)
+		{
 			switch (response.Result)
 			{
 				case ResultType.SUCCESS: {
@@ -64,12 +66,14 @@ function Ajax(url, data, callback) {
 		}
 	});
 }
-function AjaxWithoutLoading(url, data, callback) {
+function AjaxWithoutLoading(url, data, callback)
+{
 	$.ajax({
 		url: url,
 		type: "POST",
 		data: data,
-		success: function (response) {
+		success: function (response)
+		{
 			switch (response.Result)
 			{
 				case ResultType.SUCCESS: {
@@ -109,7 +113,8 @@ function AjaxWithoutLoading(url, data, callback) {
 		}
 	});
 }
-function AjaxForm(url, data, callback) {
+function AjaxForm(url, data, callback)
+{
 	ShowLoading();
 	$.ajax({
 		url: url,
@@ -117,7 +122,8 @@ function AjaxForm(url, data, callback) {
 		contentType: false,
 		processData: false,
 		data: data,
-		success: function (response) {
+		success: function (response)
+		{
 			switch (response.Result)
 			{
 				case ResultType.SUCCESS: {
@@ -158,14 +164,16 @@ function AjaxForm(url, data, callback) {
 		}
 	});
 }
-function AjaxFormWithoutLoading(url, data, callback) {
+function AjaxFormWithoutLoading(url, data, callback)
+{
 	$.ajax({
 		url: url,
 		type: "POST",
 		contentType: false,
 		processData: false,
 		data: data,
-		success: function (response) {
+		success: function (response)
+		{
 			switch (response.Result)
 			{
 				case ResultType.SUCCESS: {
@@ -206,11 +214,13 @@ function AjaxFormWithoutLoading(url, data, callback) {
 	});
 }
 
-function padding(n, width) {
+function padding(n, width)
+{
 	n = n + '';
 	return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
 }
-jQuery.fn.hasScrollBar = function (direction) {
+jQuery.fn.hasScrollBar = function (direction)
+{
 	if (direction == Orientation.Vertical)
 		return this.get(0).scrollHeight > this.innerHeight();
 	else if (direction == Orientation.Horizontal)
@@ -218,7 +228,8 @@ jQuery.fn.hasScrollBar = function (direction) {
 	else return false;
 }
 
-Number.prototype.format = function () {
+Number.prototype.format = function ()
+{
 	if (this == 0) return 0;
 	var reg = /(^[+-]?\d+)(\d{3})/;
 	var n = (this + '');
@@ -227,7 +238,8 @@ Number.prototype.format = function () {
 };
 Number.prototype.zf = function (len) { return this.toString().zf(len); };
 
-Date.prototype.toDotNetDateTime = function () {
+Date.prototype.toDotNetDateTime = function ()
+{
 	var day = this.getDate();
 	var month = this.getMonth() + 1;
 	var year = this.getFullYear();
@@ -237,18 +249,21 @@ Date.prototype.toDotNetDateTime = function () {
 
 	return year + "/" + padding(month, 2) + "/" + padding(day, 2) + " " + padding(hour, 2) + ':' + padding(minute, 2) + ':' + padding(second, 2);
 }
-Date.prototype.toDateInputValue = (function () {
+Date.prototype.toDateInputValue = (function ()
+{
 	var local = new Date(this);
 	local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
 	return local.toJSON().slice(0, 10);
 });
-Date.prototype.format = function (f) {
+Date.prototype.format = function (f)
+{
 	if (!this.valueOf()) return " ";
 
 	var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 	var d = this;
 
-	return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function ($1) {
+	return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function ($1)
+	{
 		switch ($1)
 		{
 			case "yyyy": return d.getFullYear();
@@ -268,12 +283,15 @@ Date.prototype.format = function (f) {
 
 String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
 String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
-String.prototype.replaceAll = function (org, dest) {
+String.prototype.replaceAll = function (org, dest)
+{
 	return this.split(org).join(dest);
 }
 
-setInterval(function () {
-	AjaxWithoutLoading("/Home/ExtendSessionTime", {}, function (model) {
+setInterval(function ()
+{
+	AjaxWithoutLoading("/Home/ExtendSessionTime", {}, function (model)
+	{
 		if (model) console.log("로그인 시간이 연장되었습니다.");
 		else console.log("로그인 시간 연장에 실패했습니다.");
 	});

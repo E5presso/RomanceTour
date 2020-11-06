@@ -1,13 +1,17 @@
-﻿function ValidateName(name) {
+﻿function ValidateName(name)
+{
 	var regex = /^[가-힣]{2,4}$/;
 	return regex.test(name);
 }
-function ValidatePhone(phone) {
+function ValidatePhone(phone)
+{
 	var regex = /(01[016789])([1-9]{1}[0-9]{2,3})([0-9]{4})$/;
 	return regex.test(phone);
 }
-function ValidateForm() {
-	setTimeout(function () {
+function ValidateForm()
+{
+	setTimeout(function ()
+	{
 		if ($(".name").hasClass("is-valid") &&
 			$(".phone").hasClass("is-valid"))
 			$(".apply-btn").prop("disabled", false);
@@ -15,13 +19,15 @@ function ValidateForm() {
 	}, 10);
 }
 
-function Initialize() {
+function Initialize()
+{
 	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 	var padding = parseFloat($(".full-screen-area").css("paddingTop"));
 
 	$("article").height(window.innerHeight - header + collapse - (padding * 2));
-	$(window).resize(function () {
+	$(window).resize(function ()
+	{
 		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 		var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 		var padding = parseFloat($(".full-screen-area").css("paddingTop"));
@@ -30,10 +36,12 @@ function Initialize() {
 	});
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	Initialize();
 
-	$(".name").on("keyup", function () {
+	$(".name").on("keyup", function ()
+	{
 		var value = $(".name").val();
 		if (value.length > 0)
 		{
@@ -64,7 +72,8 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".phone").on("keyup", function () {
+	$(".phone").on("keyup", function ()
+	{
 		var value = $(".phone").val();
 		if (value.length > 0)
 		{
@@ -95,14 +104,16 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".apply-btn").on("click", function (e) {
+	$(".apply-btn").on("click", function (e)
+	{
 		e.preventDefault();
 
 		var name = $(".name").val();
 		var phone = $(".phone").val();
 		window.location.href = `/Appointment/LookupAppointment?name=${name}&phone=${phone}`;
 	});
-	$(".login-btn").on("click", function (e) {
+	$(".login-btn").on("click", function (e)
+	{
 		e.preventDefault();
 		window.location.href = "/User/Login";
 	});

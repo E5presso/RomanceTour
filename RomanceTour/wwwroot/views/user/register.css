@@ -58,21 +58,21 @@
 	border: 1px solid #FCFCFC;
 }
 
-	.register-form::before, .register-form::after
-	{
-		content: '';
-		flex: 1;
-	}
+.register-form::before, .register-form::after
+{
+	content: '';
+	flex: 1;
+}
 
-	.register-form::-webkit-scrollbar
-	{
-		width: 0;
-	}
+.register-form::-webkit-scrollbar
+{
+	width: 0;
+}
 
-	.register-form .form-group
-	{
-		width: 100%;
-	}
+.register-form .form-group
+{
+	width: 100%;
+}
 
 .form-group label
 {
@@ -106,16 +106,16 @@
 	align-items: center;
 }
 
-	.third > *
-	{
-		color: #FCFCFC;
-		font-size: 1.3rem;
-	}
+.third > *
+{
+	color: #FCFCFC;
+	font-size: 1.3rem;
+}
 
-	.third:hover > *
-	{
-		color: #F2B705;
-	}
+.third:hover > *
+{
+	color: #F2B705;
+}
 
 .form-email
 {
@@ -145,22 +145,22 @@
 	transition: border 0.3s, box-shadow 0.3s;
 }
 
-	.validate-phone > .btn-text, .challenge > .btn-text
-	{
-		color: #FCFCFC;
-		transition: color 0.3s;
-	}
+.validate-phone > .btn-text, .challenge > .btn-text
+{
+	color: #FCFCFC;
+	transition: color 0.3s;
+}
 
-	.validate-phone:not(:disabled):hover, .challenge:not(:disabled):hover
-	{
-		border: 1px solid #F2B705;
-		box-shadow: 0px 0px 10px #F2B705;
-	}
+.validate-phone:not(:disabled):hover, .challenge:not(:disabled):hover
+{
+	border: 1px solid #F2B705;
+	box-shadow: 0px 0px 10px #F2B705;
+}
 
-		.validate-phone:not(:disabled):hover > .btn-text, .challenge:not(:disabled):hover > .btn-text
-		{
-			color: #F2B705;
-		}
+.validate-phone:not(:disabled):hover > .btn-text, .challenge:not(:disabled):hover > .btn-text
+{
+	color: #F2B705;
+}
 
 .validation-code
 {

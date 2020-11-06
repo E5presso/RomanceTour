@@ -21,19 +21,19 @@
 	align-items: center;
 }
 
-	.go-back > *
-	{
-		color: #023859;
-		margin-right: 10px;
-		font-size: 1.5rem;
-		transition: color 0.3s;
-	}
+.go-back > *
+{
+	color: #023859;
+	margin-right: 10px;
+	font-size: 1.5rem;
+	transition: color 0.3s;
+}
 
-	.go-back:hover > *
-	{
-		color: #D0B8F5;
-		text-shadow: none;
-	}
+.go-back:hover > *
+{
+	color: #D0B8F5;
+	text-shadow: none;
+}
 
 .search-area
 {
@@ -72,55 +72,55 @@
 	transition: box-shadow 0.3s;
 }
 
-	.fourth:hover
-	{
-		box-shadow: 0px 0px 10px #D0B8F5;
-	}
+.fourth:hover
+{
+	box-shadow: 0px 0px 10px #D0B8F5;
+}
 
-	.fourth > .btn-icon
-	{
-		margin-right: 5px;
-	}
+.fourth > .btn-icon
+{
+	margin-right: 5px;
+}
 
-	.fourth > *
-	{
-		color: #FCFCFC;
-	}
+.fourth > *
+{
+	color: #FCFCFC;
+}
 
 .search-user
 {
 	width: 100%;
 }
 
-	.search-user > .search-text
-	{
-		width: 100%;
-		box-sizing: border-box;
-	}
+.search-user > .search-text
+{
+	width: 100%;
+	box-sizing: border-box;
+}
 
-	.search-user > .user-search-btn
-	{
-		width: 50px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+.search-user > .user-search-btn
+{
+	width: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-		.search-user > .user-search-btn > *
-		{
-			color: #D0B8F5;
-			transition: color 0.3s, text-shadow 0.3s;
-		}
+.search-user > .user-search-btn > *
+{
+	color: #D0B8F5;
+	transition: color 0.3s, text-shadow 0.3s;
+}
 
 .form-control
 {
 	transition: box-shadow 0.3s;
 }
 
-	.form-control:focus
-	{
-		box-shadow: 0 0 10px #D0B8F5;
-	}
+.form-control:focus
+{
+	box-shadow: 0 0 10px #D0B8F5;
+}
 
 .search-bar-second
 {
@@ -211,11 +211,11 @@ tr
 	align-items: center;
 }
 
-	.third > .btn-icon
-	{
-		font-size: 1.1rem;
-		transition: color 0.3s;
-	}
+.third > .btn-icon
+{
+	font-size: 1.1rem;
+	transition: color 0.3s;
+}
 
 .edit-product > .btn-icon
 {

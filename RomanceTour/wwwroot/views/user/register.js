@@ -9,13 +9,15 @@ var token = "";
 var timeLimit = 3 * 60;
 var timer;
 
-function Initialize() {
+function Initialize()
+{
 	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 	var padding = parseFloat($(".full-screen-area").css("paddingTop"));
 
 	$("article").height(window.innerHeight - header + collapse - (padding * 2));
-	$(window).resize(function () {
+	$(window).resize(function ()
+	{
 		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 		var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 		var padding = parseFloat($(".full-screen-area").css("paddingTop"));
@@ -23,20 +25,25 @@ function Initialize() {
 		$("article").height(window.innerHeight - header + collapse - (padding * 2));
 	});
 }
-function ValidatePassword(passwd) {
+function ValidatePassword(passwd)
+{
 	var regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,20}$/;
 	return regex.test(passwd);
 }
-function ValidateName(name) {
+function ValidateName(name)
+{
 	var regex = /^[가-힣]{2,4}$/;
 	return regex.test(name);
 }
-function ValidatePhone(phone) {
+function ValidatePhone(phone)
+{
 	var regex = /(01[016789])([1-9]{1}[0-9]{2,3})([0-9]{4})$/;
 	return regex.test(phone);
 }
-function ValidateForm() {
-	setTimeout(function () {
+function ValidateForm()
+{
+	setTimeout(function ()
+	{
 		if ($(".id").hasClass("is-valid") &&
 			$(".password").hasClass("is-valid") &&
 			$(".confirm-password").hasClass("is-valid") &&
@@ -49,7 +56,8 @@ function ValidateForm() {
 	}, 10);
 }
 
-function CreateAccountCallback(model) {
+function CreateAccountCallback(model)
+{
 	if (model)
 	{
 		alert("회원가입이 완료되었습니다.");
@@ -57,14 +65,16 @@ function CreateAccountCallback(model) {
 	}
 	else alert("이미 존재하는 사용자입니다.");
 }
-function VerifyPhoneCallback(model) {
+function VerifyPhoneCallback(model)
+{
 	$(".phone").prop("disabled", false);
 	switch (model)
 	{
 		case VerificationResult.SUCCESS: {
 			timeLimit = 3 * 60;
 			clearInterval(timer);
-			timer = setInterval(function () {
+			timer = setInterval(function ()
+			{
 				if (timeLimit > 0)
 				{
 					timeLimit--;
@@ -104,7 +114,8 @@ function VerifyPhoneCallback(model) {
 		}
 	}
 }
-function ChallengeCallback(model) {
+function ChallengeCallback(model)
+{
 	$(".code").prop("disabled", false);
 	if (model.Result)
 	{
@@ -132,16 +143,19 @@ function ChallengeCallback(model) {
 	}
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	Initialize();
 
-	$(".id").on("keyup", function () {
+	$(".id").on("keyup", function ()
+	{
 		var id = $(".id").val();
 		if (id.length > 0)
 		{
 			AjaxWithoutLoading("/User/CheckDuplication", {
 				UserName: id
-			}, function (model) {
+			}, function (model)
+			{
 				if (model)
 				{
 					$(".id").removeClass("is-invalid");
@@ -170,7 +184,8 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".password").on("keyup", function () {
+	$(".password").on("keyup", function ()
+	{
 		var origin = $(".password").val();
 		if (origin.length > 0)
 		{
@@ -202,7 +217,8 @@ $(document).ready(function () {
 		ValidateForm();
 		$(".confirm-password").trigger("keyup");
 	});
-	$(".confirm-password").on("keyup", function () {
+	$(".confirm-password").on("keyup", function ()
+	{
 		var origin = $(".password").val();
 		var confirm = $(".confirm-password").val();
 		if (origin.length > 0)
@@ -245,7 +261,8 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".name").on("keyup", function () {
+	$(".name").on("keyup", function ()
+	{
 		var value = $(".name").val();
 		if (value.length > 0)
 		{
@@ -276,11 +293,13 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".address").on("focus", function () {
+	$(".address").on("focus", function ()
+	{
 		if (!isPopupOpened)
 		{
 			new daum.Postcode({
-				oncomplete: function (result) {
+				oncomplete: function (result)
+				{
 					$(".address").val(result.address);
 					var address = $(".address").val();
 					if (address.length)
@@ -301,7 +320,8 @@ $(document).ready(function () {
 					}
 					ValidateForm();
 				},
-				onclose: function () {
+				onclose: function ()
+				{
 					isPopupOpened = false;
 					$(".phone").focus();
 				}
@@ -309,7 +329,8 @@ $(document).ready(function () {
 			isPopupOpened = true;
 		}
 	});
-	$(".phone").on("keyup", function () {
+	$(".phone").on("keyup", function ()
+	{
 		var value = $(".phone").val();
 		if (value.length > 0)
 		{
@@ -343,7 +364,8 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".birthday").on("change", function () {
+	$(".birthday").on("change", function ()
+	{
 		var value = $(".birthday").val();
 		if (value.length > 0)
 		{
@@ -363,7 +385,8 @@ $(document).ready(function () {
 		}
 		ValidateForm();
 	});
-	$(".create-account").on("click", function (e) {
+	$(".create-account").on("click", function (e)
+	{
 		e.preventDefault();
 		if (token == "")
 		{
@@ -391,19 +414,22 @@ $(document).ready(function () {
 			}, CreateAccountCallback);
 		}
 	});
-	$(".validate-phone").on("click", function () {
+	$(".validate-phone").on("click", function ()
+	{
 		$(".phone").prop("disabled", true);
 		Ajax("/User/VerifyPhone", {
 			phone: $(".phone").val()
 		}, VerifyPhoneCallback);
 	});
-	$(".code").on("keyup", function () {
+	$(".code").on("keyup", function ()
+	{
 		$(".code").val($(".code").val().replace(/[^0-9]/gi, ""));
 		var value = $(".code").val();
 		if (value.length == 6) $(".challenge").prop("disabled", false);
 		else $(".challenge").prop("disabled", true);
 	});
-	$(".challenge").on("click", function () {
+	$(".challenge").on("click", function ()
+	{
 		$(".code").prop("disabled", true);
 		Ajax("/User/Challenge", {
 			phone: $(".phone").val(),

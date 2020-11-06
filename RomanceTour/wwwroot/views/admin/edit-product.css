@@ -13,26 +13,26 @@
 	padding: 0px 40px 10px 40px;
 }
 
-	.info-area > .row > .form-group
-	{
-		display: flex;
-		flex-flow: column;
-		justify-content: center;
-		margin-bottom: 0.5rem;
-	}
+.info-area > .row > .form-group
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	margin-bottom: 0.5rem;
+}
 
-		.info-area > .row > .form-group > *, 
-		.form-group > .custom-file > .custom-file-label, 
-		.custom-file-input ~ .custom-file-label::after
-		{
-			font-size: 1.2rem;
-		}
+.info-area > .row > .form-group > *,
+.form-group > .custom-file > .custom-file-label,
+.custom-file-input ~ .custom-file-label::after
+{
+	font-size: 1.2rem;
+}
 
-		.info-area > .row > .form-group > label
-		{
-			white-space: nowrap;
-			margin-bottom: 5px;
-		}
+.info-area > .row > .form-group > label
+{
+	white-space: nowrap;
+	margin-bottom: 5px;
+}
 
 .go-back
 {
@@ -43,19 +43,19 @@
 	align-items: center;
 }
 
-	.go-back > *
-	{
-		color: #023859;
-		margin-right: 10px;
-		font-size: 1.5rem;
-		transition: color 0.3s;
-	}
+.go-back > *
+{
+	color: #023859;
+	margin-right: 10px;
+	font-size: 1.5rem;
+	transition: color 0.3s;
+}
 
-	.go-back:hover > *
-	{
-		color: #D0B8F5;
-		text-shadow: none;
-	}
+.go-back:hover > *
+{
+	color: #D0B8F5;
+	text-shadow: none;
+}
 
 .submit-post
 {
@@ -67,18 +67,20 @@
 	transition: box-shadow 0.3s;
 }
 
-	.submit-post:hover
-	{
-		box-shadow: 0px 0px 10px #D0B8F5;
-	}
-	.submit-post > .btn-icon
-	{
-		margin-right: 5px;
-	}
-	.submit-post > *
-	{
-		color: #FCFCFC;
-	}
+.submit-post:hover
+{
+	box-shadow: 0px 0px 10px #D0B8F5;
+}
+
+.submit-post > .btn-icon
+{
+	margin-right: 5px;
+}
+
+.submit-post > *
+{
+	color: #FCFCFC;
+}
 
 .fifth
 {
@@ -89,20 +91,21 @@
 	background: #D0B8F5;
 	transition: box-shadow 0.3s;
 }
-	.fifth:hover
-	{
-		box-shadow: 0px 0px 10px #D0B8F5;
-	}
 
-	.fifth > .btn-icon
-	{
-		margin-right: 5px;
-	}
+.fifth:hover
+{
+	box-shadow: 0px 0px 10px #D0B8F5;
+}
 
-	.fifth > *
-	{
-		color: #FCFCFC;
-	}
+.fifth > .btn-icon
+{
+	margin-right: 5px;
+}
+
+.fifth > *
+{
+	color: #FCFCFC;
+}
 
 .form-group > .custom-file > .custom-file-label
 {

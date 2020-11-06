@@ -3,20 +3,20 @@
 	overflow: hidden !important;
 }
 
-	.datepicker--cell.-selected-
-	{
-		background: #777777 !important;
-	}
+.datepicker--cell.-selected-
+{
+	background: #777777 !important;
+}
 
-	.datepicker--cell.-focus-
-	{
-		background: #ACACAC !important;
-	}
+.datepicker--cell.-focus-
+{
+	background: #ACACAC !important;
+}
 
-	.datepicker--cell.-selected-.-focus-
-	{
-		background: #131313 !important;
-	}
+.datepicker--cell.-selected-.-focus-
+{
+	background: #131313 !important;
+}
 
 .datepicker--day-name
 {
@@ -95,15 +95,15 @@ body
 	overflow-y: auto;
 }
 
-	.appointment-form::-webkit-scrollbar
-	{
-		width: 0;
-	}
+.appointment-form::-webkit-scrollbar
+{
+	width: 0;
+}
 
-	.appointment-form .form-group
-	{
-		width: 100%;
-	}
+.appointment-form .form-group
+{
+	width: 100%;
+}
 
 .form-divider
 {
@@ -114,10 +114,10 @@ body
 	border: 1px solid #FCFCFC;
 }
 
-	.form-divider > .row
-	{
-		padding: 0;
-	}
+.form-divider > .row
+{
+	padding: 0;
+}
 
 .form-divider-with-no-border
 {
@@ -148,21 +148,21 @@ body
 	padding: 0px 10px 5px 10px;
 }
 
-	.dropdown-item > .text
-	{
-		max-width: 100%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		margin: 0 !important;
-		font-size: 1.0rem;
-	}
+.dropdown-item > .text
+{
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 0 !important;
+	font-size: 1.0rem;
+}
 
-	.dropdown-item:hover
-	{
-		background: #0378A6;
-		color: #FCFCFC;
-	}
+.dropdown-item:hover
+{
+	background: #0378A6;
+	color: #FCFCFC;
+}
 
 .btn-light:not(:disabled):not(.disabled):active, .btn-light:not(:disabled):not(.disabled).active, .show > .btn-light.dropdown-toggle
 {
@@ -220,28 +220,28 @@ option
 	background: rgba(2, 56, 89, 0.1);
 }
 
-	.third > .btn-icon
-	{
-		margin-right: 10px;
-	}
+.third > .btn-icon
+{
+	margin-right: 10px;
+}
 
-	.third > *
-	{
-		color: #FCFCFC;
-		font-size: 1.3rem;
-		transition: color 0.3s, text-shadow 0.3s;
-	}
+.third > *
+{
+	color: #FCFCFC;
+	font-size: 1.3rem;
+	transition: color 0.3s, text-shadow 0.3s;
+}
 
-	.third:not(:disabled):hover > *
-	{
-		color: #F2B705;
-		text-shadow: 0 0 10px #F2B705;
-	}
+.third:not(:disabled):hover > *
+{
+	color: #F2B705;
+	text-shadow: 0 0 10px #F2B705;
+}
 
-	.third:focus
-	{
-		border: 1px solid #F2B705;
-	}
+.third:focus
+{
+	border: 1px solid #F2B705;
+}
 
 .fourth
 {
@@ -254,23 +254,23 @@ option
 	background: rgba(2, 56, 89, 0.1);
 }
 
-	.fourth > .btn-icon
-	{
-		margin-right: 10px;
-	}
+.fourth > .btn-icon
+{
+	margin-right: 10px;
+}
 
-	.fourth > *
-	{
-		color: #FCFCFC;
-		font-size: 1.3rem;
-		transition: color 0.3s, text-shadow 0.3s;
-	}
+.fourth > *
+{
+	color: #FCFCFC;
+	font-size: 1.3rem;
+	transition: color 0.3s, text-shadow 0.3s;
+}
 
-	.fourth:hover > *
-	{
-		color: #F2B705;
-		text-shadow: 0 0 10px #F2B705;
-	}
+.fourth:hover > *
+{
+	color: #F2B705;
+	text-shadow: 0 0 10px #F2B705;
+}
 
 .price-title, #price-value
 {
@@ -289,15 +289,15 @@ option
 	height: 45px;
 }
 
-	.btn-increment > strong, .btn-decrement > strong
-	{
-		color: #FCFCFC;
-	}
+.btn-increment > strong, .btn-decrement > strong
+{
+	color: #FCFCFC;
+}
 
-	.btn-increment:hover, .btn-decrement:hover
-	{
-		border: 1px solid #FCFCFC;
-	}
+.btn-increment:hover, .btn-decrement:hover
+{
+	border: 1px solid #FCFCFC;
+}
 
 
 .explanation-area
@@ -364,11 +364,11 @@ option
 	opacity: 0.3;
 }
 
-	.date-cell-disabled > .date-cell-day
-	{
-		font-size: 1.0rem;
-		color: #131313;
-	}
+.date-cell-disabled > .date-cell-day
+{
+	font-size: 1.0rem;
+	color: #131313;
+}
 
 .date-available
 {

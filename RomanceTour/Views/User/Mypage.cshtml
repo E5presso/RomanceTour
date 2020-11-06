@@ -50,31 +50,131 @@
     <div class="shadow-box">
         <div class="my-page-area">
             <div class="profile-area">
-                <span class="user-name">
-                    @user.UserName
-                </span>
+                @{
+                    var nowTime = DateTime.Now.Hour;
+                    if (nowTime >= 6 && nowTime <= 10)
+                    {
+                        <span class="time-icon fas fa-sun"></span>
+                        <span class="greeting">
+                            좋은 아침입니다
+                        </span>
+                        <span class="user-name">
+                            @(user.Name)님!
+                        </span>
+                    }
+                    else if (nowTime >= 11 && nowTime <= 14)
+                    {
+                        <span class="time-icon fas fa-utensils"></span>
+                        <span class="user-name">
+                            @(user.Name)님
+                        </span>
+                        <span class="greeting">
+                            식사는 하셨나요?
+                        </span>
+                    }
+                    else if (nowTime >= 15 && nowTime <= 18)
+                    {
+                        <span class="time-icon fas fa-briefcase"></span>
+                        <span class="greeting">
+                            힘내세요
+                        </span>
+                        <span class="user-name">
+                            @(user.Name)님!
+                        </span>
+                    }
+                    else if (nowTime >= 19 && nowTime <= 20)
+                    {
+                        <span class="time-icon fas fa-home"></span>
+                        <span class="greeting">
+                            오늘도
+                        </span>
+                        <span class="greeting">
+                            고생 많으셨어요
+                        </span>
+                        <span class="user-name">
+                            @(user.Name)님!
+                        </span>
+                    }
+                    else if (nowTime >= 21 || nowTime <= 0)
+                    {
+                        <span class="time-icon fas fa-moon"></span>
+                        <span class="user-name">
+                            @(user.Name)님
+                        </span>
+                        <span class="greeting">
+                            좋은 밤입니다!
+                        </span>
+                    }
+                    else if (nowTime >= 1 && nowTime <= 5)
+                    {
+                        <span class="time-icon fas fa-star"></span>
+                        <span class="user-name">
+                            @(user.Name)님!
+                        </span>
+                        <span class="greeting">
+                            이 새벽에
+                        </span>
+                        <span class="greeting">
+                            무슨 일이세요?
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="time-icon fas fa-smile-wink"></span>
+                        <span class="user-name">
+                            @(user.Name)님
+                        </span>
+                        <span class="greeting">
+                            어서오세요!
+                        </span>
+                    }
+                }
             </div>
             <div class="tool-area">
                 <div class="tool-container container-fluid">
                     <div class="row">
-                        <div class="tool-box-container col-12 col-lg-6">
+                        <div class="tool-box-container col-12 col-md-7 col-xl-4">
                             <div class="tool-box">
-
+                                <span class="menu-title">개인정보</span>
+                                <div class="form-group my-page-form-group">
+                                    <label>이름</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="form-group my-page-form-group">
+                                    <label>주소</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="form-group my-page-form-group">
+                                    <label>생년월일</label>
+                                    <input type="date" class="form-control" />
+                                </div>
+                                <div class="form-group my-page-form-group">
+                                    <button class="btn" disabled>
+                                        <span class="btn-text">
+                                            회원가입
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="tool-box-container col-12 col-lg-6">
+                        <div class="tool-box-container col-12 col-md-5 col-xl-4">
                             <div class="tool-box">
-
+                                <span class="menu-title">휴대폰 번호</span>
                             </div>
                         </div>
-                        <div class="tool-box-container col-12 col-lg-6">
+                        <div class="tool-box-container col-12 col-md-6 col-xl-4">
                             <div class="tool-box">
-
+                                <span class="menu-title">결제정보</span>
                             </div>
                         </div>
-                        <div class="tool-box-container col-12 col-lg-6">
+                        <div class="tool-box-container col-12 col-md-6 col-xl-5">
                             <div class="tool-box">
-
+                                <span class="menu-title">비밀번호</span>
+                            </div>
+                        </div>
+                        <div class="tool-box-container col-12 col-xl-7">
+                            <div class="tool-box">
+                                <span class="menu-title">회원 탈퇴</span>
                             </div>
                         </div>
                     </div>

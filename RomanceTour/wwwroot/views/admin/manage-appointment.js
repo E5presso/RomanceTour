@@ -25,7 +25,8 @@ var sessionStatus = {
 	"CANCELED": 3
 };
 
-function ListProduct() {
+function ListProduct()
+{
 	var category = $("#product-category option:selected").val();
 	var keyword = $("#product-keyword").val();
 
@@ -50,7 +51,8 @@ function ListProduct() {
 		}, ListProductCallback);
 	}
 }
-function ListSession() {
+function ListSession()
+{
 	var id = selectedProduct;
 	var status = $("#session-status option:selected").val();
 	AjaxWithoutLoading("/Appointment/FilterSession", {
@@ -66,33 +68,38 @@ function ListSession() {
 		}
 	}, ListSessionCallback);
 }
-function GetSession() {
+function GetSession()
+{
 	AjaxWithoutLoading("/Appointment/GetSession", {
 		id: selectedSession
 	}, GetSessionCallback);
 }
-function UpdateSession() {
+function UpdateSession()
+{
 	var status = parseInt($("#session-input-status").val());
 	Ajax("/Appointment/UpdateSession", {
 		id: selectedSession,
 		status: status
 	}, UpdateSessionCallback);
 }
-function CountDeparture() {
+function CountDeparture()
+{
 	var departure = parseInt($("#session-input-departure option:selected").val());
 	AjaxWithoutLoading("/Appointment/CountDeparture", {
 		id: selectedSession,
 		departureId: departure
 	}, CountDepartureCallback);
 }
-function CountPriceRule() {
+function CountPriceRule()
+{
 	var priceRule = parseInt($("#session-input-rule option:selected").val());
 	AjaxWithoutLoading("/Appointment/CountPriceRule", {
 		id: selectedSession,
 		priceRuleId: priceRule
 	}, CountPriceRuleCallback);
 }
-function ListAppointment() {
+function ListAppointment()
+{
 	var status = parseInt($("#appointment-status").val());
 	var keyword = $("#appointment-keyword").val();
 	AjaxWithoutLoading("/Appointment/FilterAppointment", {
@@ -101,12 +108,14 @@ function ListAppointment() {
 		keyword: keyword
 	}, ListAppointmentCallback);
 }
-function GetAppointment() {
+function GetAppointment()
+{
 	AjaxWithoutLoading("/Appointment/GetAppointmentStatus", {
 		id: selectedAppointment
 	}, GetAppointmentCallback);
 }
-function UpdateAppointment() {
+function UpdateAppointment()
+{
 	var status = parseInt($("#appointment-input-status").val());
 	Ajax("/Appointment/UpdateAppointmentStatus", {
 		id: selectedAppointment,
@@ -114,9 +123,11 @@ function UpdateAppointment() {
 	}, UpdateAppointmentCallback);
 }
 
-function ListProductCallback(model) {
+function ListProductCallback(model)
+{
 	$("#product-list tbody").html("");
-	$.each(model, function (index, item) {
+	$.each(model, function (index, item)
+	{
 		var row = `
 			<tr class="product-item" id="product-${item.Id}">
 				<td>
@@ -138,13 +149,16 @@ function ListProductCallback(model) {
 		`;
 		if (productKeyword) row = row.replaceAll(productKeyword, `<span class="highlighted">${productKeyword}</span>`);
 		$("#product-list tbody").append(row);
-		$(`#product-${item.Id}`).on("mouseover", function () {
+		$(`#product-${item.Id}`).on("mouseover", function ()
+		{
 			$(this).addClass("hovered");
 		});
-		$(`#product-${item.Id}`).on("mouseout", function () {
+		$(`#product-${item.Id}`).on("mouseout", function ()
+		{
 			$(this).removeClass("hovered");
 		});
-		$(`#product-${item.Id}`).on("click", function () {
+		$(`#product-${item.Id}`).on("click", function ()
+		{
 			$(".product-item").removeClass("selected");
 			$(this).addClass("selected");
 			selectedProduct = item.Id;
@@ -154,9 +168,11 @@ function ListProductCallback(model) {
 	});
 	$(`#product-${selectedProduct}`).addClass("selected");
 }
-function ListSessionCallback(model) {
+function ListSessionCallback(model)
+{
 	$("#session-list tbody").html("");
-	$.each(model, function (index, item) {
+	$.each(model, function (index, item)
+	{
 		$("#session-list tbody").append(`
 			<tr class="session-item" id="session-${item.Id}">
 				<td>
@@ -177,21 +193,24 @@ function ListSessionCallback(model) {
 				<td>
 					<span class="table-body">
 						${item.Status == "AVAILABLE" ?
-							"예약가능" : item.Status == "APPROVED" ?
-								"출발확정" : item.Status == "FULLED" ?
-									"예약마감" : item.Status == "CANCELED" ?
-										"예약취소" : "오류"}
+				"예약가능" : item.Status == "APPROVED" ?
+					"출발확정" : item.Status == "FULLED" ?
+						"예약마감" : item.Status == "CANCELED" ?
+							"예약취소" : "오류"}
 					</span>
 				</td>
 			</tr>
 		`);
-		$(`#session-${item.Id}`).on("mouseover", function () {
+		$(`#session-${item.Id}`).on("mouseover", function ()
+		{
 			$(this).addClass("hovered");
 		});
-		$(`#session-${item.Id}`).on("mouseout", function () {
+		$(`#session-${item.Id}`).on("mouseout", function ()
+		{
 			$(this).removeClass("hovered");
 		});
-		$(`#session-${item.Id}`).on("click", function () {
+		$(`#session-${item.Id}`).on("click", function ()
+		{
 			$(".session-item").removeClass("selected");
 			$(this).addClass("selected");
 			selectedSession = item.Id;
@@ -203,7 +222,8 @@ function ListSessionCallback(model) {
 	});
 	$(`#session-${selectedSession}`).addClass("selected");
 }
-function GetSessionCallback(model) {
+function GetSessionCallback(model)
+{
 	$("#session-info-date").prop("disabled", false);
 	$("#session-info-appointment").prop("disabled", false);
 	$("#session-info-paid").prop("disabled", false);
@@ -237,21 +257,26 @@ function GetSessionCallback(model) {
 	$(`#session-input-status option`).attr("selected", false);
 	$(`#session-input-status`).val(sessionStatus[model.Status]);
 }
-function UpdateSessionCallback(_) {
+function UpdateSessionCallback(_)
+{
 	ListProduct();
 	ListSession();
 	GetSession();
 	ListAppointment();
 }
-function CountDepartureCallback(model) {
+function CountDepartureCallback(model)
+{
 	$("#session-info-departure").val(`${model}명`);
 }
-function CountPriceRuleCallback(model) {
+function CountPriceRuleCallback(model)
+{
 	$("#session-info-rule").val(`${model}명`);
 }
-function ListAppointmentCallback(model) {
+function ListAppointmentCallback(model)
+{
 	$("#appointment-list tbody").html("");
-	$.each(model, function (index, item) {
+	$.each(model, function (index, item)
+	{
 		var row = `
 			<tr class="appointment-item" id="appointment-${item.Id}">
 				<td>
@@ -313,13 +338,16 @@ function ListAppointmentCallback(model) {
 		`;
 		if (appointmentKeyword) row = row.replaceAll(appointmentKeyword, `<span class="highlighted">${appointmentKeyword}</span>`);
 		$("#appointment-list tbody").append(row);
-		$(`#appointment-${item.Id}`).on("mouseover", function () {
+		$(`#appointment-${item.Id}`).on("mouseover", function ()
+		{
 			$(this).addClass("hovered");
 		});
-		$(`#appointment-${item.Id}`).on("mouseout", function () {
+		$(`#appointment-${item.Id}`).on("mouseout", function ()
+		{
 			$(this).removeClass("hovered");
 		});
-		$(`#appointment-${item.Id}`).on("click", function () {
+		$(`#appointment-${item.Id}`).on("click", function ()
+		{
 			$(".appointment-item").removeClass("selected");
 			$(this).addClass("selected");
 			selectedAppointment = item.Id;
@@ -332,13 +360,15 @@ function ListAppointmentCallback(model) {
 	});
 	$(`#appointment-${selectedAppointment}`).addClass("selected");
 }
-function GetAppointmentCallback(model) {
+function GetAppointmentCallback(model)
+{
 	$("#appointment-input-status").prop("disabled", false);
 	$(`#appointment-input-status option`).attr("selected", false);
 	$(`#appointment-input-status`).val(model);
 	$("#appointment-save").prop("disabled", false);
 }
-function UpdateAppointmentCallback(_) {
+function UpdateAppointmentCallback(_)
+{
 	ListProduct();
 	ListSession();
 	GetSession();
@@ -346,25 +376,31 @@ function UpdateAppointmentCallback(_) {
 	GetAppointment();
 }
 
-function AppointmentUpdateCallback(data) {
+function AppointmentUpdateCallback(data)
+{
 	fromAppointment = data.from;
 	toAppointment = data.to;
 }
-function AppointmentChangeCallback(data) {
+function AppointmentChangeCallback(data)
+{
 	fromAppointment = data.from;
 	toAppointment = data.to;
 }
-function PaidUpdateCallback(data) {
+function PaidUpdateCallback(data)
+{
 	fromPaid = data.from;
 	toPaid = data.to;
 }
-function PaidChangeCallback(data) {
+function PaidChangeCallback(data)
+{
 	fromPaid = data.from;
 	toPaid = data.to;
 }
 
-function Initialize() {
-	$(".go-back").on("click", function () {
+function Initialize()
+{
+	$(".go-back").on("click", function ()
+	{
 		window.location.href = "/Admin/Dashboard";
 	});
 	$("#appointment-range").ionRangeSlider({
@@ -379,7 +415,8 @@ function Initialize() {
 		onChange: AppointmentChangeCallback,
 		onUpdate: AppointmentUpdateCallback
 	});
-	$(".search-bar-second .search-text").on("focus", function () {
+	$(".search-bar-second .search-text").on("focus", function ()
+	{
 		$(this).parent().css("box-shadow", "0px 0px 10px #FFC3BD");
 		$(this).parent().css("border", "1px solid #FFC3BD");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
@@ -387,7 +424,8 @@ function Initialize() {
 			"text-shadow": "0px 0px 10px #FFC3BD"
 		});
 	});
-	$(".search-bar-second .search-text").on("focusout", function () {
+	$(".search-bar-second .search-text").on("focusout", function ()
+	{
 		$(this).parent().css("box-shadow", "2px 2px 5px rgba(18, 18, 18, 0.3)");
 		$(this).parent().css("border", "1px solid #FFC3BD");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
@@ -419,15 +457,18 @@ function Initialize() {
 		range: true
 	}).data('datepicker');
 
-	$(".search-option").on('hide.bs.dropdown', function (e) {
+	$(".search-option").on('hide.bs.dropdown', function (e)
+	{
 		if (e.clickEvent) e.preventDefault();
 	});
 
-	$("#option-apply").on("click", function () {
+	$("#option-apply").on("click", function ()
+	{
 		$("#search-option-dropdown").dropdown("toggle");
 		ListSession();
 	});
-	$("#option-reset").on("click", function () {
+	$("#option-reset").on("click", function ()
+	{
 		appointment.update({
 			from: min,
 			to: max
@@ -441,19 +482,23 @@ function Initialize() {
 		ListSession();
 	});
 
-	$("#product-category").on("change", function () {
+	$("#product-category").on("change", function ()
+	{
 		ListProduct();
 	});
-	$("#product-keyword").on("keyup", function () {
+	$("#product-keyword").on("keyup", function ()
+	{
 		productKeyword = $("#product-keyword").val();
 		ListProduct();
 	});
 
-	$("#session-status").on("change", function () {
+	$("#session-status").on("change", function ()
+	{
 		ListSession();
 	});
 
-	$("#session-input-group").on("keyup", function () {
+	$("#session-input-group").on("keyup", function ()
+	{
 		var group = parseInt($("#session-input-group").val());
 		if (!isNaN(group) && group != 0)
 		{
@@ -463,29 +508,36 @@ function Initialize() {
 		}
 		else $("#session-info-bus").val(`- 대`);
 	});
-	$("#session-input-departure").on("change", function () {
+	$("#session-input-departure").on("change", function ()
+	{
 		CountDeparture();
 	});
-	$("#session-input-rule").on("change", function () {
+	$("#session-input-rule").on("change", function ()
+	{
 		CountPriceRule();
 	});
-	$("#session-save").on("click", function () {
+	$("#session-save").on("click", function ()
+	{
 		UpdateSession();
 	});
 
-	$("#appointment-status").on("change", function () {
+	$("#appointment-status").on("change", function ()
+	{
 		ListAppointment();
 	});
-	$("#appointment-keyword").on("keyup", function () {
+	$("#appointment-keyword").on("keyup", function ()
+	{
 		appointmentKeyword = $("#appointment-keyword").val();
 		ListAppointment();
 	});
-	$("#appointment-save").on("click", function () {
+	$("#appointment-save").on("click", function ()
+	{
 		UpdateAppointment();
 	});
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	Initialize();
 	ListProduct();
 });

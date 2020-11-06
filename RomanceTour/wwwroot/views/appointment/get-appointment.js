@@ -1,10 +1,12 @@
-﻿function Initialize() {
+﻿function Initialize()
+{
 	var header = parseFloat($("header").height());
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height() + parseFloat($(".collapse").css("paddingTop")) * 2);
 	var padding = parseFloat($(".full-screen-area").css("paddingTop"));
 
 	$("article").height(window.innerHeight - header + collapse - (padding * 2));
-	$(window).resize(function () {
+	$(window).resize(function ()
+	{
 		var header = parseFloat($("header").height());
 		var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height()) + (parseFloat($(".collapse").css("paddingTop")) * 2);
 
@@ -12,12 +14,14 @@
 		$("article").height(window.innerHeight - header + collapse - (padding * 2));
 	});
 }
-function Print() {
+function Print()
+{
 	var origin = document.body.innerHTML;
 	var printArea = document.getElementById("printable-area").innerHTML;
 	document.body.innerHTML = printArea;
 	var containers = document.querySelectorAll(".kakao-map-container");
-	$.each(containers, function (index, item) {
+	$.each(containers, function (index, item)
+	{
 		var name = item.querySelector(".departure-name").value;
 		var latitude = parseFloat(item.querySelector(".latitude").value);
 		var longtitude = parseFloat(item.querySelector(".longtitude").value);
@@ -34,16 +38,19 @@ function Print() {
 		marker.setMap(map);
 		map.setDraggable(false);
 		map.setZoomable(false);
-		kakao.maps.event.addListener(map, "click", function (e) {
+		kakao.maps.event.addListener(map, "click", function (e)
+		{
 			if (IsMobile) window.open(`kakaomap://look?p=${latitude},${longtitude}`);
 			else window.open(`https://map.kakao.com/link/map/${name},${latitude},${longtitude}`);
 		});
 	});
-	window.onafterprint = function () {
+	window.onafterprint = function ()
+	{
 		document.body.innerHTML = origin;
 		Initialize();
 
-		$(".copy-btn, .copy-text").on("click", function () {
+		$(".copy-btn, .copy-text").on("click", function ()
+		{
 			var id = $("#appointment-id").text();
 			var textarea = document.createElement("textarea");
 			textarea.value = id;
@@ -55,14 +62,17 @@ function Print() {
 
 			alert("클립보드에 복사되었습니다.");
 		});
-		$(".go-back").on("click", function () {
+		$(".go-back").on("click", function ()
+		{
 			window.location.href = $("#back").val();
 		});
-		$(".print-btn").on("click", function () {
+		$(".print-btn").on("click", function ()
+		{
 			Print();
 		});
 		var containers = document.querySelectorAll(".kakao-map-container");
-		$.each(containers, function (index, item) {
+		$.each(containers, function (index, item)
+		{
 			var name = item.querySelector(".departure-name").value;
 			var latitude = parseFloat(item.querySelector(".latitude").value);
 			var longtitude = parseFloat(item.querySelector(".longtitude").value);
@@ -79,21 +89,25 @@ function Print() {
 			marker.setMap(map);
 			map.setDraggable(false);
 			map.setZoomable(false);
-			kakao.maps.event.addListener(map, "click", function (e) {
+			kakao.maps.event.addListener(map, "click", function (e)
+			{
 				if (IsMobile) window.open(`kakaomap://look?p=${latitude},${longtitude}`);
 				else window.open(`https://map.kakao.com/link/map/${name},${latitude},${longtitude}`);
 			});
 		});
 	}
-	setTimeout(function () {
+	setTimeout(function ()
+	{
 		window.print();
 	}, 100);
 }
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 	Initialize();
 
-	$(".copy-btn, .copy-text").on("click", function () {
+	$(".copy-btn, .copy-text").on("click", function ()
+	{
 		var id = $("#appointment-id").text();
 		var textarea = document.createElement("textarea");
 		textarea.value = id;
@@ -105,14 +119,17 @@ $(document).ready(function () {
 
 		alert("클립보드에 복사되었습니다.");
 	});
-	$(".go-back").on("click", function () {
+	$(".go-back").on("click", function ()
+	{
 		window.location.href = $("#back").val();
 	});
-	$(".print-btn").on("click", function () {
+	$(".print-btn").on("click", function ()
+	{
 		Print();
 	});
 	var containers = document.querySelectorAll(".kakao-map-container");
-	$.each(containers, function (index, item) {
+	$.each(containers, function (index, item)
+	{
 		var name = item.querySelector(".departure-name").value;
 		var latitude = parseFloat(item.querySelector(".latitude").value);
 		var longtitude = parseFloat(item.querySelector(".longtitude").value);
@@ -129,7 +146,8 @@ $(document).ready(function () {
 		marker.setMap(map);
 		map.setDraggable(false);
 		map.setZoomable(false);
-		kakao.maps.event.addListener(map, "click", function (e) {
+		kakao.maps.event.addListener(map, "click", function (e)
+		{
 			if (IsMobile) window.open(`kakaomap://look?p=${latitude},${longtitude}`);
 			else window.open(`https://map.kakao.com/link/map/${name},${latitude},${longtitude}`);
 		});

@@ -10,18 +10,18 @@ input
 	appearance: none;
 }
 
-	input::-ms-clear
-	{
-		display: none;
-	}
+input::-ms-clear
+{
+	display: none;
+}
 
-	input[type=number]::-webkit-inner-spin-button,
-	input[type=number]::-webkit-outer-spin-button
-	{
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-	}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
 
 select
 {
@@ -30,10 +30,10 @@ select
 	appearance: none;
 }
 
-	select::-ms-expand
-	{
-		display: none;
-	}
+select::-ms-expand
+{
+	display: none;
+}
 
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button
@@ -55,11 +55,11 @@ a
 	outline: none;
 }
 
-	a:hover, a:active
-	{
-		text-decoration: none;
-		color: #FFFFFF;
-	}
+a:hover, a:active
+{
+	text-decoration: none;
+	color: #FFFFFF;
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -123,12 +123,12 @@ blockquote, q
 	quotes: none;
 }
 
-	blockquote:before, blockquote:after,
-	q:before, q:after
-	{
-		content: '';
-		content: none;
-	}
+blockquote:before, blockquote:after,
+q:before, q:after
+{
+	content: '';
+	content: none;
+}
 
 table
 {

@@ -67,15 +67,15 @@
 	overflow-y: auto;
 }
 
-	.search-form::-webkit-scrollbar
-	{
-		width: 0;
-	}
+.search-form::-webkit-scrollbar
+{
+	width: 0;
+}
 
-	.search-form .form-group
-	{
-		width: 100%;
-	}
+.search-form .form-group
+{
+	width: 100%;
+}
 
 .form-group label
 {

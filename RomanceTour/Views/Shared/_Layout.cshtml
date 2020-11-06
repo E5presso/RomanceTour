@@ -82,7 +82,9 @@
                 }
             })();
             ChannelIO('boot', {
-                "pluginKey": "33521c8c-35c0-4128-8c4f-6a50c8cc2255"
+                "pluginKey": "33521c8c-35c0-4128-8c4f-6a50c8cc2255",
+                "customLauncherSelector": ".help-button",
+                "hideChannelButtonOnBoot": true
             });
         </script>
     }
@@ -99,62 +101,71 @@
 	<input type="hidden" id="back" value="@Back" />
 	<div id="container">
 		<header class="fixed-top">
-			<div class="top-menu container-fluid d-none d-xl-flex">
-				@if (isLoggedIn)
-				{
-					@if (Session.IsAdministrator(sessionId))
-					{
-						<button class="dashboard btn menu-btn">
-							<span class="btn-icon fa fa-user-cog"></span>
-							<span class="btn-text">
-								관리자
-							</span>
-						</button>
-					}
-					else
-					{
-						<button class="mypage btn menu-btn">
-							<span class="btn-icon fa fa-user"></span>
-							<span class="btn-text">
-								마이페이지
-							</span>
-						</button>
-					}
-				}
-				else
-				{
-					<button class="login btn menu-btn">
-						<span class="btn-icon fa fa-sign-in-alt"></span>
-						<span class="btn-text">
-							로그인
-						</span>
-					</button>
-					<button class="register btn menu-btn">
-						<span class="btn-icon fa fa-user-plus"></span>
-						<span class="btn-text">
-							회원가입
-						</span>
-					</button>
-				}
-				@if (!isLoggedIn || !Session.IsAdministrator(sessionId))
-				{
-					<button class="appointment btn menu-btn">
-						<span class="btn-icon fa fa-clipboard-list"></span>
-						<span class="btn-text">
-							예약확인
-						</span>
-					</button>
-				}
-				@if (isLoggedIn)
-				{
-					<button class="logout btn menu-btn">
-						<span class="btn-icon fa fa-sign-out-alt"></span>
-						<span class="btn-text">
-							로그아웃
-						</span>
-					</button>
-				}
-			</div>
+            <div class="top-menu container-fluid d-none d-xl-flex">
+                @if (isLoggedIn)
+                {
+                    @if (Session.IsAdministrator(sessionId))
+                    {
+                        <button class="dashboard btn menu-btn">
+                            <span class="btn-icon fa fa-user-cog"></span>
+                            <span class="btn-text">
+                                관리자
+                            </span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="mypage btn menu-btn">
+                            <span class="btn-icon fa fa-user"></span>
+                            <span class="btn-text">
+                                마이페이지
+                            </span>
+                        </button>
+                    }
+                }
+                else
+                {
+                    <button class="login btn menu-btn">
+                        <span class="btn-icon fa fa-sign-in-alt"></span>
+                        <span class="btn-text">
+                            로그인
+                        </span>
+                    </button>
+                    <button class="register btn menu-btn">
+                        <span class="btn-icon fa fa-user-plus"></span>
+                        <span class="btn-text">
+                            회원가입
+                        </span>
+                    </button>
+                }
+                @if (!isLoggedIn || !Session.IsAdministrator(sessionId))
+                {
+                    <button class="appointment btn menu-btn">
+                        <span class="btn-icon fa fa-clipboard-list"></span>
+                        <span class="btn-text">
+                            예약확인
+                        </span>
+                    </button>
+                }
+                @if (!Session.IsAdministrator(sessionId))
+                {
+                    <button class="help-button btn menu-btn">
+                        <span class="btn-icon fas fa-headset"></span>
+                        <span class="btn-text">
+                            고객센터
+                        </span>
+                    </button>
+                }
+                @if (isLoggedIn)
+                {
+                    <button class="logout btn menu-btn">
+                        <span class="btn-icon fa fa-sign-out-alt"></span>
+                        <span class="btn-text">
+                            로그아웃
+                        </span>
+                    </button>
+                }
+            </div>
 			<nav class="gnb navbar navbar-expand-xl">
 				<div class="container-fluid">
 					<a class="navbar-brand" href="@Url.Action("Index", "Home")">
@@ -217,62 +228,71 @@
 							</li>
 						</ul>
 						<ul class="navbar-nav mr-auto">
-							<li class="user-area nav-item d-flex d-xl-none">
-								@if (isLoggedIn)
-								{
-									@if (Session.IsAdministrator(sessionId))
-									{
-										<button class="dashboard btn menu-btn">
-											<span class="btn-icon fa fa-user-cog"></span>
-											<span class="btn-text">
-												관리자
-											</span>
-										</button>
-									}
-									else
-									{
-										<button class="mypage btn menu-btn">
-											<span class="btn-icon fa fa-user"></span>
-											<span class="btn-text">
-												마이페이지
-											</span>
-										</button>
-									}
-								}
-								else
-								{
-									<button class="login btn menu-btn">
-										<span class="btn-icon fa fa-sign-in-alt"></span>
-										<span class="btn-text">
-											로그인
-										</span>
-									</button>
-									<button class="register btn menu-btn">
-										<span class="btn-icon fa fa-user-plus"></span>
-										<span class="btn-text">
-											회원가입
-										</span>
-									</button>
-								}
-								@if (!isLoggedIn || !Session.IsAdministrator(sessionId))
-								{
-									<button class="appointment btn menu-btn">
-										<span class="btn-icon fa fa-clipboard-list"></span>
-										<span class="btn-text">
-											예약확인
-										</span>
-									</button>
-								}
-								@if (isLoggedIn)
-								{
-									<button class="logout btn menu-btn">
-										<span class="btn-icon fa fa-sign-out-alt"></span>
-										<span class="btn-text">
-											로그아웃
-										</span>
-									</button>
-								}
-							</li>
+                            <li class="user-area nav-item d-flex d-xl-none">
+                                @if (isLoggedIn)
+                                {
+                                    @if (Session.IsAdministrator(sessionId))
+                                    {
+                                        <button class="dashboard btn menu-btn">
+                                            <span class="btn-icon fa fa-user-cog"></span>
+                                            <span class="btn-text">
+                                                관리자
+                                            </span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="mypage btn menu-btn">
+                                            <span class="btn-icon fa fa-user"></span>
+                                            <span class="btn-text">
+                                                마이페이지
+                                            </span>
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button class="login btn menu-btn">
+                                        <span class="btn-icon fa fa-sign-in-alt"></span>
+                                        <span class="btn-text">
+                                            로그인
+                                        </span>
+                                    </button>
+                                    <button class="register btn menu-btn">
+                                        <span class="btn-icon fa fa-user-plus"></span>
+                                        <span class="btn-text">
+                                            회원가입
+                                        </span>
+                                    </button>
+                                }
+                                @if (!isLoggedIn || !Session.IsAdministrator(sessionId))
+                                {
+                                    <button class="appointment btn menu-btn">
+                                        <span class="btn-icon fa fa-clipboard-list"></span>
+                                        <span class="btn-text">
+                                            예약확인
+                                        </span>
+                                    </button>
+                                }
+                                @if (!Session.IsAdministrator(sessionId))
+                                {
+                                    <button class="help-button btn menu-btn">
+                                        <span class="btn-icon fas fa-headset"></span>
+                                        <span class="btn-text">
+                                            고객센터
+                                        </span>
+                                    </button>
+                                }
+                                @if (isLoggedIn)
+                                {
+                                    <button class="logout btn menu-btn">
+                                        <span class="btn-icon fa fa-sign-out-alt"></span>
+                                        <span class="btn-text">
+                                            로그아웃
+                                        </span>
+                                    </button>
+                                }
+                            </li>
 							<li class="nav-item active">
 								<a class="nav-link menu-btn" href="/Product/ListProduct?category=0">
 									<span class="btn-text">
@@ -320,13 +340,13 @@
 				</div>
 			</nav>
 		</header>
-		<article>
-			<div id="loading">
-				<span id="loading-icon" class="fa fa-circle-notch fa-spin"></span>
-				<span id="loading-message" class="font-korean">요청을 처리 중입니다.</span>
-			</div>
-			@RenderBody()
-		</article>
+        <article>
+            <div id="loading">
+                <span id="loading-icon" class="fa fa-circle-notch fa-spin"></span>
+                <span id="loading-message" class="font-korean">요청을 처리 중입니다.</span>
+            </div>
+            @RenderBody()
+        </article>
 		<footer></footer>
 	</div>
 </body>

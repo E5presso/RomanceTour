@@ -8,7 +8,6 @@ function InitContainer() {
 	$("article").css("top", header - collapse);
 	$("#loading").css("top", header - collapse);
 	$("#loading").height(window.innerHeight - header + collapse - (padding * 2));
-	$("#splash").height(window.innerHeight);
 	$(window).resize(function () {
 		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
 		var collapse = $(".collapse").css("display") == "none" || $(".top-menu").css("display") != "none" ? 0 : parseFloat($(".collapse").height() + 10);
@@ -17,7 +16,6 @@ function InitContainer() {
 		$("article").css("top", header - collapse);
 		$("#loading").css("top", header - collapse);
 		$("#loading").height(window.innerHeight - header + collapse - (padding * 2));
-		$("#splash").height(window.innerHeight);
 	});
 	var header = parseFloat($("header").height());
 	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height());
@@ -141,10 +139,6 @@ $(document).ready(function () {
 			$(".gnb").css("background", "rgba(2, 56, 89, 1)");
 		}
 	});
-	$("#splash").on("touchmove mousewheel DOMMouseScroll scroll", function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-	});
 	$("header").on("touchmove mousewheel DOMMouseScroll scroll", function (e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -161,9 +155,6 @@ $(document).ready(function () {
 	});
 	$(".appointment").on("click", function () {
 		window.location.href = "/Appointment/ListAppointment";
-	});
-	$(".help").on("click", function () {
-		window.location.href = "/Customer/Help";
 	});
 	$(".mypage").on("click", function () {
 		window.location.href = "/User/Mypage";

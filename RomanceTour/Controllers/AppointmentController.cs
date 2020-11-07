@@ -908,6 +908,7 @@ namespace RomanceTour.Controllers
             {
                 ViewBag.Back = Back;
                 ViewBag.Appointment = matched;
+                ViewBag.Type = "View";
                 return View("GetAppointment");
             }
             else return RedirectToAction("PageNotFound", "Home");

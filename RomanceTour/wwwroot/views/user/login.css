@@ -72,7 +72,7 @@
 .line
 {
 	width: 1px;
-	height: 50%;
+	height: 55%;
 	border: 1px solid #FCFCFC;
 	margin: 30px;
 }
@@ -154,4 +154,26 @@
 .third:hover > *
 {
 	color: #F2B705;
+}
+
+.button-group
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.division-text
+{
+	width: 100%;
+	white-space: nowrap;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color: #FCFCFC;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
 }

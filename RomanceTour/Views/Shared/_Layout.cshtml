@@ -1,7 +1,7 @@
 ﻿@{
 	var isLoggedIn = Context.Session.GetInt32(Session.Id) != null;
 	var sessionId = Context.Session.GetInt32(Session.Id);
-	var Back = ViewBag.Back;
+	var Back = ViewBag.Back??"/Home/Index";
 }
 
 <!DOCTYPE html>

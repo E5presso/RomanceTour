@@ -1,7 +1,7 @@
 ﻿@{
 	ViewData["DATA"] = "GetAppointment";
 	ViewData["TITLE"] = "예약확인";
-	string Back = ViewBag.Back;
+	string type = ViewBag.Type;
 	Appointment appointment = ViewBag.Appointment;
 }
 
@@ -148,8 +148,8 @@
 						}
 					}
 					@if (appointment.Status == AppointmentStatus.CONFIRMED &&
-					(appointment.DateSession.Status == DateSessionStatus.APPROVED ||
-					appointment.DateSession.Status == DateSessionStatus.FULLED))
+						(appointment.DateSession.Status == DateSessionStatus.APPROVED ||
+						appointment.DateSession.Status == DateSessionStatus.FULLED))
 					{
 						<span class="yellow-stamp">@("출발 확정")</span>
 					}
@@ -161,12 +161,15 @@
 					</span>
 				</button>
 			</div>
-			<div class="go-back">
-				<span class="btn-icon fa fa-arrow-left"></span>
-				<span class="btn-text">
-					돌아가기
-				</span>
-			</div>
+			@if (type == null || type != "View")
+			{
+				<div class="go-back">
+					<span class="btn-icon fa fa-arrow-left"></span>
+					<span class="btn-text">
+						돌아가기
+					</span>
+				</div>
+			}
 		</div>
 	</div>
 </div>

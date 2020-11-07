@@ -61,6 +61,11 @@ $(document).ready(function ()
 			Password: pw
 		}, CheckAccountCallback);
 	});
+	$(".register").on("click", function (e)
+	{
+		e.preventDefault();
+		window.location.href = "/User/Register";
+	});
 
 	ValidateForm();
 	$(".id").focus();

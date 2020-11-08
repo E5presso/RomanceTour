@@ -64,8 +64,15 @@ namespace Core.Network.Smtp
 				{
 					while (flag)
 					{
-						if (buffer.Count > 0) await session.SendMailAsync(buffer.Read());
-						Thread.Sleep(500);
+						if (buffer.Count > 0)
+						{
+							try
+							{
+								await session.SendMailAsync(buffer.Read());
+							}
+							catch { throw; }
+						}
+						Thread.Sleep(100);
 					}
 				}));
 				mailingThread.Start();

@@ -9,7 +9,7 @@ namespace RomanceTour
 	{
 		public static void Main(string[] args)
 		{
-			ServiceInitializer.Initialize();
+			ServiceInitializer.InitializeAsync();
 			CreateHostBuilder(args).Build().Run();
 		}
 		public static IHostBuilder CreateHostBuilder(string[] args) =>

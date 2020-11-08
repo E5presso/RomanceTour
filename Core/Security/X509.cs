@@ -47,7 +47,7 @@ namespace Core.Security
 		/// <summary>
 		/// 직렬화된 인증서 개체를 가져옵니다.
 		/// </summary>
-		public byte[] Serialized => cert.Export(X509ContentType.Cert);
+		public byte[] Serialized => cert.Export(X509ContentType.SerializedCert);
 
 		/// <summary>
 		/// 직렬화된 인증서 개체를 이용해 X509 구조체를 초기화합니다.
@@ -106,7 +106,16 @@ namespace Core.Security
 			bool verified = cert2.Verify();
 			string subject = cert2.GetNameInfo(X509NameType.DnsName, false);
 
-			return verified && subject == domain;
+			string[] parsed_s = domain.Split('.');
+			string[] parsed_t = subject.Split('.');
+
+			if (parsed_s.Length != parsed_t.Length) return false;
+			else
+			{
+				bool v_domain = true;
+				for (int i = 0; i < parsed_s.Length; i++) v_domain = parsed_t[i] == "*" || v_domain && parsed_s[i] == parsed_t[i];
+				return verified && v_domain;
+			}
 		}
 	}
 }

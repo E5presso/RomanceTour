@@ -1,4 +1,13 @@
 ﻿var isPopupOpened = false;
+var VerificationResult = {
+	SUCCESS: "SUCCESS",							// 발송 성공 시
+	FAILURE: "FAILURE",							// 발송 실패 시
+	TOO_MUCH_REQUEST: "TOO_MUCH_REQUEST",		// 너무 빠른 요청
+	MAX_REQUEST_REACHED: "MAX_REQUEST_REACHED"	// 일일 요청한도 도달
+};
+var token = "";
+var timeLimit = 3 * 60;
+var timer;
 
 function Initialize()
 {
@@ -28,298 +37,504 @@ function ValidateName(name)
 }
 function ValidateAddress()
 {
-	var address = $(".address").val();
+	var address = $("#address").val();
 	if (address.length)
 	{
-		$(".address").siblings("label").html("유효한 주소입니다.");
-		$(".address").siblings("label").removeClass("text-danger");
-		$(".address").siblings("label").addClass("text-success");
-		$(".address").removeClass("is-invalid");
-		$(".address").addClass("is-valid");
+		$("#address").siblings("label").html("유효한 주소입니다.");
+		$("#address").siblings("label").removeClass("text-danger");
+		$("#address").siblings("label").addClass("text-success");
+		$("#address").removeClass("is-invalid");
+		$("#address").addClass("is-valid");
 	}
 	else
 	{
-		$(".address").siblings("label").html("주소를 입력해주세요.");
-		$(".address").siblings("label").removeClass("text-success");
-		$(".address").siblings("label").addClass("text-danger");
-		$(".address").removeClass("is-valid");
-		$(".address").addClass("is-invalid");
+		$("#address").siblings("label").html("주소를 입력해주세요.");
+		$("#address").siblings("label").removeClass("text-success");
+		$("#address").siblings("label").addClass("text-danger");
+		$("#address").removeClass("is-valid");
+		$("#address").addClass("is-invalid");
 	}
-	ValidateForm();
 }
 function ValidatePhone(phone)
 {
 	var regex = /(01[016789])([1-9]{1}[0-9]{2,3})([0-9]{4})$/;
 	return regex.test(phone);
 }
-function ValidateForm()
+
+// 개인정보 변경
+function ValidatePersonalInfo()
 {
-	setTimeout(function ()
-	{
-		if ($(".id").hasClass("is-valid") &&
-			$(".password").hasClass("is-valid") &&
-			$(".confirm-password").hasClass("is-valid") &&
-			$(".name").hasClass("is-valid") &&
-			$(".address").hasClass("is-valid") &&
-			$(".phone").hasClass("is-valid") &&
-			$(".birthday").hasClass("is-valid"))
-			$(".update-account").prop("disabled", false);
-		else $(".update-account").prop("disabled", true);
-	}, 10);
+	var name = $("#name");
+	var address = $("#address");
+	var birthday = $("#birthday");
+
+	if (name.hasClass("is-valid") && address.hasClass("is-valid") && birthday.hasClass("is-valid"))
+		$("#change-personal-info").prop("disabled", false);
+	else $("#change-personal-info").prop("disabled", true);
+
 }
-function CreateAccountCallback(model)
+function ChangePersonalInfoCallback(model)
 {
 	if (model)
 	{
-		alert("정보수정이 완료되었습니다.");
-		window.location.href = "/Home/Index";
+		alert("개인정보 변경이 완료되었습니다.");
+		location.reload(true);
 	}
-	else alert("사용자를 찾을 수 없습니다.");
+	else
+	{
+		alert("존재하지 않는 사용자입니다.");
+		location.reload(true);
+	}
+}
+
+// 휴대폰 번호 변경
+function VerifyPhoneCallback(model)
+{
+	$("#new-phone-number").prop("disabled", false);
+	switch (model)
+	{
+		case VerificationResult.SUCCESS: {
+			timeLimit = 3 * 60;
+			clearInterval(timer);
+			timer = setInterval(function ()
+			{
+				if (timeLimit > 0)
+				{
+					timeLimit--;
+					$("#verification-form").children("label").text(`인증번호 [${Math.floor(timeLimit / 60).zf(2)}:${(timeLimit % 60).zf(2)}]`);
+				}
+				else
+				{
+					clearInterval(timer);
+					$("#verification-form").children("label").removeClass("text-danger");
+					$("#verification-code").removeClass("is-invalid");
+					$("#verification-code").val("");
+					$("#check-verification-code").prop("disabled", true);
+					$("#verification-form").slideUp(DURATION);
+					$("#new-phone-number").focus();
+				}
+			}, 1000);
+			$("#verification-form").children("label").removeClass("text-danger");
+			$("#verification-code").removeClass("is-invalid");
+			$("#verification-code").val("");
+			$("#check-verification-code").prop("disabled", true);
+			alert("인증요청 문자를 발송했습니다.");
+			$("#verification-form").slideDown(DURATION);
+			$("#verification-code").focus();
+			break;
+		}
+		case VerificationResult.FAILURE: {
+			window.location.href = "/Home/Error";
+			break;
+		}
+		case VerificationResult.TOO_MUCH_REQUEST: {
+			alert("너무 빠른 인증요청입니다.\n잠시 후에 다시 시도해주세요.");
+			break;
+		}
+		case VerificationResult.MAX_REQUEST_REACHED: {
+			alert("일일 인증요청한도에 도달했습니다.");
+			break;
+		}
+	}
+}
+function CheckVerificationCodeCallback(model)
+{
+	$("#verification-code").prop("disabled", false);
+	if (model.Result)
+	{
+		token = model.Token;
+		alert("휴대폰 인증에 성공하였습니다.");
+		$("#new-phone-number").prop("disabled", true);
+		$("#challenge").prop("disabled", true);
+		$("#verification-form").slideUp(DURATION);
+		$("#new-phone-number").parent().siblings("label").html("인증된 번호입니다.");
+		$("#new-phone-number").parent().siblings("label").removeClass("text-danger");
+		$("#new-phone-number").parent().siblings("label").addClass("text-success");
+		$("#new-phone-number").removeClass("is-invalid");
+		$("#new-phone-number").addClass("is-valid");
+		$("#change-phone-number").prop("disabled", false);
+	}
+	else
+	{
+		alert("잘못된 인증번호입니다.");
+		$("#verification-code").parent().siblings("label").html("잘못된 인증번호입니다.");
+		$("#verification-code").parent().siblings("label").removeClass("text-success");
+		$("#verification-code").parent().siblings("label").addClass("text-danger");
+		$("#verification-code").addClass("is-invalid");
+		$("#verification-code").removeClass("is-valid");
+		$("#challenge").prop("disabled", false);
+		$("#verification-code").focus();
+	}
+}
+function ChangePhoneNumberCallback(model)
+{
+	if (model)
+	{
+		alert("번호 변경이 완료되었습니다.");
+		location.reload(true);
+	}
+	else
+	{
+		alert("이미 사용 중인 번호입니다.");
+		$("#new-phone-number").focus();
+	}
+}
+
+// 결제정보 변경
+function ValidatePaymentInfo()
+{
+	var billingName = $("#billing-name");
+	var billingNumber = $("#billing-number");
+	if (billingName.hasClass("is-valid") && billingNumber.val().length > 0)
+		$("#change-payment-info").prop("disabled", false);
+	else $("#change-payment-info").prop("disabled", true);
+}
+function ChangePaymentInfoCallback(model)
+{
+	if (model)
+	{
+		alert("결제정보 변경이 완료되었습니다.");
+		location.reload(true);
+	}
+	else
+	{
+		alert("존재하지 않는 사용자입니다.");
+		location.reload(true);
+	}
+}
+
+// 비밀번호 변경
+function ValidateChangePassword()
+{
+	var oldPassword = $("#old-password");
+	var newPassword = $("#new-password");
+	var confirmPassword = $("#confirm-password");
+
+	if (oldPassword.val().length > 0 && newPassword.hasClass("is-valid") && confirmPassword.hasClass("is-valid"))
+		$("#change-password").prop("disabled", false);
+	else $("#change-password").prop("disabled", true);
+}
+function ChangePasswordCallback(model)
+{
+	if (model)
+	{
+		alert("비밀번호 변경이 완료되었습니다.");
+		location.reload(true);
+	}
+	else
+	{
+		alert("잘못된 비밀번호입니다.\n이전 비밀번호를 다시 확인해주세요.");
+		$("#old-password").val("");
+		$("#old-password").focus();
+	}
 }
 
 $(document).ready(function ()
 {
 	Initialize();
-	$(".id").on("keyup", function ()
+	// 개인정보 변경
+	$("#name").on("keyup", function ()
 	{
-		var id = $(".id").val();
-		if (id.length > 0)
-		{
-			AjaxWithoutLoading("/User/CheckDuplication", {
-				UserName: id
-			}, function (model)
-			{
-				if (model)
-				{
-					$(".id").removeClass("is-invalid");
-					$(".id").addClass("is-valid");
-					$(".id").siblings("label").html("사용 가능한 아이디입니다.");
-					$(".id").siblings("label").removeClass("text-danger");
-					$(".id").siblings("label").addClass("text-success");
-				}
-				else
-				{
-					$(".id").removeClass("is-valid");
-					$(".id").addClass("is-invalid");
-					$(".id").siblings("label").html("이미 가입된 사용자입니다.");
-					$(".id").siblings("label").removeClass("text-success");
-					$(".id").siblings("label").addClass("text-danger");
-				}
-			});
-		}
-		else
-		{
-			$(".id").removeClass("is-invalid");
-			$(".id").removeClass("is-valid");
-			$(".id").siblings("label").html("아이디");
-			$(".id").siblings("label").removeClass("text-danger");
-			$(".id").siblings("label").removeClass("text-success");
-		}
-		ValidateForm();
-	});
-	$(".password").on("keyup", function ()
-	{
-		var origin = $(".password").val();
-		if (origin.length > 0)
-		{
-			if (ValidatePassword(origin))
-			{
-				$(".password").siblings("label").html("안전한 비밀번호입니다.");
-				$(".password").siblings("label").removeClass("text-danger");
-				$(".password").siblings("label").addClass("text-success");
-				$(".password").removeClass("is-invalid");
-				$(".password").addClass("is-valid");
-			}
-			else
-			{
-				$(".password").siblings("label").html("영문자, 숫자 포함 4 ~ 20자리 입니다.");
-				$(".password").siblings("label").removeClass("text-success");
-				$(".password").siblings("label").addClass("text-danger");
-				$(".password").removeClass("is-valid");
-				$(".password").addClass("is-invalid");
-			}
-		}
-		else
-		{
-			$(".password").siblings("label").html("비밀번호");
-			$(".password").siblings("label").removeClass("text-danger");
-			$(".password").siblings("label").removeClass("text-success");
-			$(".password").removeClass("is-invalid");
-			$(".password").removeClass("is-valid");
-		}
-		ValidateForm();
-		$(".confirm-password").trigger("keyup");
-	});
-	$(".confirm-password").on("keyup", function ()
-	{
-		var origin = $(".password").val();
-		var confirm = $(".confirm-password").val();
-		if (origin.length > 0)
-		{
-			if ($(".password").hasClass("is-valid"))
-			{
-				if (origin == confirm)
-				{
-					$(".confirm-password").siblings("label").html("비밀번호가 일치합니다.");
-					$(".confirm-password").siblings("label").removeClass("text-danger");
-					$(".confirm-password").siblings("label").addClass("text-success");
-					$(".confirm-password").removeClass("is-invalid");
-					$(".confirm-password").addClass("is-valid");
-				}
-				else
-				{
-					$(".confirm-password").siblings("label").html("비밀번호가 일치하지 않습니다.");
-					$(".confirm-password").siblings("label").removeClass("text-success");
-					$(".confirm-password").siblings("label").addClass("text-danger");
-					$(".confirm-password").removeClass("is-valid");
-					$(".confirm-password").addClass("is-invalid");
-				}
-			}
-			else
-			{
-				$(".confirm-password").siblings("label").html("잘못된 비밀번호입니다.");
-				$(".confirm-password").siblings("label").removeClass("text-success");
-				$(".confirm-password").siblings("label").addClass("text-danger");
-				$(".confirm-password").removeClass("is-valid");
-				$(".confirm-password").addClass("is-invalid");
-			}
-		}
-		else
-		{
-			$(".confirm-password").siblings("label").html("비밀번호 확인");
-			$(".confirm-password").siblings("label").removeClass("text-danger");
-			$(".confirm-password").siblings("label").removeClass("text-success");
-			$(".confirm-password").removeClass("is-invalid");
-			$(".confirm-password").removeClass("is-valid");
-		}
-		ValidateForm();
-	});
-	$(".name").on("keyup", function ()
-	{
-		var value = $(".name").val();
+		var value = $(this).val();
 		if (value.length > 0)
 		{
 			if (ValidateName(value))
 			{
-				$(".name").siblings("label").html("유효한 이름입니다.");
-				$(".name").siblings("label").removeClass("text-danger");
-				$(".name").siblings("label").addClass("text-success");
-				$(".name").removeClass("is-invalid");
-				$(".name").addClass("is-valid");
+				$(this).siblings("label").html("유효한 이름입니다.");
+				$(this).siblings("label").removeClass("text-danger");
+				$(this).siblings("label").addClass("text-success");
+				$(this).removeClass("is-invalid");
+				$(this).addClass("is-valid");
 			}
 			else
 			{
-				$(".name").siblings("label").html("유효하지 않은 이름입니다.");
-				$(".name").siblings("label").removeClass("text-success");
-				$(".name").siblings("label").addClass("text-danger");
-				$(".name").removeClass("is-valid");
-				$(".name").addClass("is-invalid");
+				$(this).siblings("label").html("유효하지 않은 이름입니다.");
+				$(this).siblings("label").removeClass("text-success");
+				$(this).siblings("label").addClass("text-danger");
+				$(this).removeClass("is-valid");
+				$(this).addClass("is-invalid");
 			}
 		}
 		else
 		{
-			$(".name").removeClass("is-invalid");
-			$(".name").removeClass("is-valid");
-			$(".name").siblings("label").html("이름");
-			$(".name").siblings("label").removeClass("text-danger");
-			$(".name").siblings("label").removeClass("text-success");
+			$(this).removeClass("is-invalid");
+			$(this).removeClass("is-valid");
+			$(this).siblings("label").html("이름");
+			$(this).siblings("label").removeClass("text-danger");
+			$(this).siblings("label").removeClass("text-success");
 		}
-		ValidateForm();
+		ValidatePersonalInfo();
 	});
-	$(".address").on("focus", function ()
+	$("#address").on("focus", function ()
 	{
 		if (!isPopupOpened)
 		{
 			new daum.Postcode({
 				oncomplete: function (result)
 				{
-					$(".address").val(result.address);
+					$("#address").val(result.address);
 				},
 				onclose: function ()
 				{
 					isPopupOpened = false;
-					$(".phone").focus();
+					$("#birthday").focus();
+					ValidateAddress();
+					ValidatePersonalInfo();
 				}
 			}).open();
 			isPopupOpened = true;
 		}
 	});
-	$(".phone").on("keyup", function ()
+	$("#birthday").on("change", function ()
 	{
-		var value = $(".phone").val();
+		var value = $(this).val();
+		if (value.length > 0)
+		{
+			$(this).siblings("label").html("유효한 날짜입니다.");
+			$(this).siblings("label").removeClass("text-danger");
+			$(this).siblings("label").addClass("text-success");
+			$(this).removeClass("is-invalid");
+			$(this).addClass("is-valid");
+		}
+		else
+		{
+			$(this).siblings("label").html("유효하지 않은 날짜입니다.");
+			$(this).siblings("label").removeClass("text-success");
+			$(this).siblings("label").addClass("text-danger");
+			$(this).removeClass("is-valid");
+			$(this).addClass("is-invalid");
+		}
+		ValidatePersonalInfo();
+	});
+	$("#change-personal-info").on("click", function ()
+	{
+		var name = $("#name").val();
+		var address = $("#address").val();
+		var birthday = $("#birthday").val();
+
+		Ajax("/User/ChangePersonalInfo", {
+			Name: name,
+			Address: address,
+			Birthday: birthday
+		}, ChangePersonalInfoCallback);
+	});
+
+	// 휴대폰 번호 변경
+	$("#new-phone-number").on("keyup", function ()
+	{
+		var value = $(this).val();
 		if (value.length > 0)
 		{
 			if (ValidatePhone(value))
 			{
-				$(".phone").siblings("label").html("유효한 번호입니다.");
-				$(".phone").siblings("label").removeClass("text-danger");
-				$(".phone").siblings("label").addClass("text-success");
-				$(".phone").removeClass("is-invalid");
-				$(".phone").addClass("is-valid");
+				$(this).parent().siblings("label").html("인증이 필요합니다.");
+				$(this).parent().siblings("label").removeClass("text-success");
+				$(this).parent().siblings("label").addClass("text-danger");
+				$(this).removeClass("is-valid");
+				$(this).addClass("is-invalid");
+				$("#challenge").prop("disabled", false);
 			}
 			else
 			{
-				$(".phone").siblings("label").html("유효하지 않은 번호입니다.");
-				$(".phone").siblings("label").removeClass("text-success");
-				$(".phone").siblings("label").addClass("text-danger");
-				$(".phone").removeClass("is-valid");
-				$(".phone").addClass("is-invalid");
+				$(this).parent().siblings("label").html("유효하지 않은 번호입니다.");
+				$(this).parent().siblings("label").removeClass("text-success");
+				$(this).parent().siblings("label").addClass("text-danger");
+				$(this).removeClass("is-valid");
+				$(this).addClass("is-invalid");
+				$("#challenge").prop("disabled", true);
 			}
 		}
 		else
 		{
-			$(".phone").removeClass("is-invalid");
-			$(".phone").removeClass("is-valid");
-			$(".phone").siblings("label").html("휴대폰 번호");
-			$(".phone").siblings("label").removeClass("text-danger");
-			$(".phone").siblings("label").removeClass("text-success");
+			$(this).removeClass("is-invalid");
+			$(this).removeClass("is-valid");
+			$(this).parent().siblings("label").html("새로운 휴대폰 번호");
+			$(this).parent().siblings("label").removeClass("text-danger");
+			$(this).parent().siblings("label").removeClass("text-success");
+			$("#challenge").prop("disabled", true);
 		}
-		ValidateForm();
 	});
-	$(".birthday").on("change", function ()
+	$("#challenge").on("click", function ()
 	{
-		var value = $(".birthday").val();
-		if (value.length > 0)
+		$("#new-phone-number").prop("disabled", true);
+		Ajax("/User/VerifyPhone", {
+			phone: $("#new-phone-number").val()
+		}, VerifyPhoneCallback);
+	});
+	$("#verification-code").on("keyup", function ()
+	{
+		$(this).val($(this).val().replace(/[^0-9]/gi, ""));
+		var value = $(this).val();
+		if (value.length == 6) $("#check-verification-code").prop("disabled", false);
+		else $("#check-verification-code").prop("disabled", true);
+	});
+	$("#check-verification-code").on("click", function ()
+	{
+		$("#verification-code").prop("disabled", true);
+		Ajax("/User/Challenge", {
+			phone: $("#new-phone-number").val(),
+			code: $("#verification-code").val()
+		}, CheckVerificationCodeCallback);
+	});
+	$("#change-phone-number").on("click", function ()
+	{
+		if (token == "")
 		{
-			$(".birthday").siblings("label").html("유효한 날짜입니다.");
-			$(".birthday").siblings("label").removeClass("text-danger");
-			$(".birthday").siblings("label").addClass("text-success");
-			$(".birthday").removeClass("is-invalid");
-			$(".birthday").addClass("is-valid");
+			alert("휴대폰 인증을 완료해주세요.");
+			$("#new-phone-number").focus();
 		}
 		else
 		{
-			$(".birthday").siblings("label").html("유효하지 않은 날짜입니다.");
-			$(".birthday").siblings("label").removeClass("text-success");
-			$(".birthday").siblings("label").addClass("text-danger");
-			$(".birthday").removeClass("is-valid");
-			$(".birthday").addClass("is-invalid");
+			Ajax("/User/ChangePhoneNumber", {
+				token: token
+			}, ChangePhoneNumberCallback);
 		}
-		ValidateForm();
 	});
-	$(".update-account").on("click", function (e)
+
+	// 결제정보 변경
+	$("#billing-name").on("keyup", function ()
 	{
-		e.preventDefault();
+		var value = $(this).val();
+		if (value.length > 0)
+		{
+			if (ValidateName(value))
+			{
+				$(this).siblings("label").html("유효한 이름입니다.");
+				$(this).siblings("label").removeClass("text-danger");
+				$(this).siblings("label").addClass("text-success");
+				$(this).removeClass("is-invalid");
+				$(this).addClass("is-valid");
+			}
+			else
+			{
+				$(this).siblings("label").html("유효하지 않은 이름입니다.");
+				$(this).siblings("label").removeClass("text-success");
+				$(this).siblings("label").addClass("text-danger");
+				$(this).removeClass("is-valid");
+				$(this).addClass("is-invalid");
+			}
+		}
+		else
+		{
+			$(this).removeClass("is-invalid");
+			$(this).removeClass("is-valid");
+			$(this).siblings("label").html("예금주명");
+			$(this).siblings("label").removeClass("text-danger");
+			$(this).siblings("label").removeClass("text-success");
+		}
+		ValidatePaymentInfo();
+	});
+	$("#billing-bank").on("change", function ()
+	{
+		ValidatePaymentInfo();
+	});
+	$("#billing-number").on("keyup", function ()
+	{
+		ValidatePaymentInfo();
+	});
+	$("#change-payment-info").on("click", function ()
+	{
+		var billingName = $("#billing-name").val();
+		var billingBank = $("#billing-bank").children("option:selected").val();
+		var billingNumber = $("#billing-number").val();
 
-		var id = $(".id").val();
-		var password = $(".password").val();
-		var name = $(".name").val();
-		var address = $(".address").val();
-		var phone = $(".phone").val();
-		var birthday = $(".birthday").val();
-		Ajax("/User/UpdateAccount", {
-			UserName: id,
-			Password: password,
-			Name: name,
-			Address: address,
-			Phone: phone,
-			Birthday: birthday
-		}, CreateAccountCallback);
+		Ajax("/User/ChangePaymentInfo", {
+			BillingName: billingName,
+			BillingBank: billingBank,
+			BillingNumber: billingNumber
+		}, ChangePaymentInfoCallback);
 	});
 
-	$(".name").trigger("keyup");
-	$(".phone").trigger("keyup");
-	$(".birthday").trigger("change");
-	ValidateAddress();
-	$(".id").focus();
+	// 비밀번호 변경
+	$("#old-password").on("keyup", function ()
+	{
+		ValidateChangePassword();
+	});
+	$("#new-password").on("keyup", function ()
+	{
+		var value = $(this).val();
+		if (value.length > 0)
+		{
+			if (ValidatePassword(value))
+			{
+				$(this).siblings("label").html("안전한 비밀번호입니다.");
+				$(this).siblings("label").removeClass("text-danger");
+				$(this).siblings("label").addClass("text-success");
+				$(this).removeClass("is-invalid");
+				$(this).addClass("is-valid");
+			}
+			else
+			{
+				$(this).siblings("label").html("영문자, 숫자 포함 4 ~ 20자리 입니다.");
+				$(this).siblings("label").removeClass("text-success");
+				$(this).siblings("label").addClass("text-danger");
+				$(this).removeClass("is-valid");
+				$(this).addClass("is-invalid");
+			}
+		}
+		else
+		{
+			$(this).removeClass("is-invalid");
+			$(this).removeClass("is-valid");
+			$(this).siblings("label").html("새 비밀번호");
+			$(this).siblings("label").removeClass("text-danger");
+			$(this).siblings("label").removeClass("text-success");
+		}
+		$("#confirm-password").trigger("keyup");
+		ValidateChangePassword();
+	});
+	$("#confirm-password").on("keyup", function ()
+	{
+		var origin = $("#new-password").val();
+		var confirm = $(this).val();
+		if (origin.length > 0)
+		{
+			if ($("#new-password").hasClass("is-valid"))
+			{
+				if (origin == confirm)
+				{
+					$(this).siblings("label").html("비밀번호가 일치합니다.");
+					$(this).siblings("label").removeClass("text-danger");
+					$(this).siblings("label").addClass("text-success");
+					$(this).removeClass("is-invalid");
+					$(this).addClass("is-valid");
+				}
+				else
+				{
+					$(this).siblings("label").html("비밀번호가 일치하지 않습니다.");
+					$(this).siblings("label").removeClass("text-success");
+					$(this).siblings("label").addClass("text-danger");
+					$(this).removeClass("is-valid");
+					$(this).addClass("is-invalid");
+				}
+			}
+			else
+			{
+				$(this).siblings("label").html("잘못된 비밀번호입니다.");
+				$(this).siblings("label").removeClass("text-success");
+				$(this).siblings("label").addClass("text-danger");
+				$(this).removeClass("is-valid");
+				$(this).addClass("is-invalid");
+			}
+		}
+		else
+		{
+			$(this).siblings("label").html("비밀번호 확인");
+			$(this).siblings("label").removeClass("text-danger");
+			$(this).siblings("label").removeClass("text-success");
+			$(this).removeClass("is-invalid");
+			$(this).removeClass("is-valid");
+		}
+		ValidateChangePassword();
+	});
+	$("#change-password").on("click", function ()
+	{
+		var oldPassword = $("#old-password").val();
+		var newPassword = $("#new-password").val();
+
+		Ajax("/User/ChangePassword", {
+			oldPassword: oldPassword,
+			newPassword: newPassword
+		}, ChangePasswordCallback);
+	});
 });

@@ -65,89 +65,228 @@
 		<div class="my-page-area">
 			<div class="profile-area">
 				@{
-					var nowTime = DateTime.Now.Hour;
-					if (nowTime >= 6 && nowTime <= 10)
+					var now = DateTime.Now;
+					var nowMonth = now.Month;
+					var nowDate = now.DayOfWeek;
+					var nowHour = now.Hour;
+					// 주말
+					if (nowDate == DayOfWeek.Saturday || nowDate == DayOfWeek.Sunday)
 					{
-						<span class="time-icon fas fa-sun"></span>
-						<span class="greeting">
-							좋은 아침입니다
-						</span>
-						<span class="user-name">
-							@(user.Name)님!
-						</span>
+						// 아침
+						if (nowHour >= 6 && nowHour <= 10)
+						{
+							<span class="time-icon fas fa-sun"></span>
+							<span class="greeting">
+								좋은 아침입니다
+							</span>
+							<span class="user-name">
+								@(user.Name)님!
+							</span>
+						}
+						// 점심
+						else if (nowHour >= 11 && nowHour <= 14)
+						{
+							<span class="time-icon fas fa-utensils"></span>
+							<span class="user-name">
+								@(user.Name)님
+							</span>
+							<span class="greeting">
+								식사는 하셨나요?
+							</span>
+						}
+						// 오후 (여행)
+						else if (nowHour >= 15 && nowHour <= 20)
+						{
+							// 봄
+							if (nowMonth >= 3 && nowMonth <= 5)
+							{
+								<span class="time-icon fas fa-walking"></span>
+								<span class="user-name">
+									@(user.Name)님!
+								</span>
+								<span class="greeting">
+									우리 같이 나들이
+								</span>
+								<span class="greeting">
+									어떠세요?
+								</span>
+							}
+							// 여름
+							else if (nowMonth >= 6 && nowMonth <= 8)
+							{
+								<span class="time-icon fas fa-swimmer"></span>
+								<span class="user-name">
+									@(user.Name)님!
+								</span>
+								<span class="greeting">
+									날도 더운데
+								</span>
+								<span class="greeting">
+									바다 어때요?
+								</span>
+							}
+							// 가을
+							else if (nowMonth >= 9 && nowMonth <= 11)
+							{
+								<span class="time-icon fas fa-hiking"></span>
+								<span class="user-name">
+									@(user.Name)님!
+								</span>
+								<span class="greeting">
+									우리 같이 단풍
+								</span>
+								<span class="greeting">
+									보러갈래요?
+								</span>
+							}
+							// 겨울
+							else if (nowMonth >= 12 && nowMonth <= 2)
+							{
+								<span class="time-icon fas fa-skiing"></span>
+								<span class="user-name">
+									@(user.Name)님!
+								</span>
+								<span class="greeting">
+									스키 타보신 적
+								</span>
+								<span class="greeting">
+									있으신가요?
+								</span>
+							}
+						}
+						// 밤 (안부)
+						else if (nowHour >= 21 || nowHour <= 0)
+						{
+							<span class="time-icon fas fa-moon"></span>
+							<span class="user-name">
+								@(user.Name)님
+							</span>
+							<span class="greeting">
+								오늘 하루는
+							</span>
+							<span class="greeting">
+								어땠나요?
+							</span>
+						}
+						// 새벽
+						else if (nowHour >= 1 && nowHour <= 5)
+						{
+							<span class="time-icon fas fa-star"></span>
+							<span class="user-name">
+								@(user.Name)님!
+							</span>
+							<span class="greeting">
+								이 새벽에
+							</span>
+							<span class="greeting">
+								어쩐 일이세요?
+							</span>
+						}
+						// 기타
+						else
+						{
+							<span class="time-icon fas fa-smile-wink"></span>
+							<span class="user-name">
+								@(user.Name)님
+							</span>
+							<span class="greeting">
+								어서오세요!
+							</span>
+						}
 					}
-					else if (nowTime >= 11 && nowTime <= 14)
-					{
-						<span class="time-icon fas fa-utensils"></span>
-						<span class="user-name">
-							@(user.Name)님
-						</span>
-						<span class="greeting">
-							식사는 하셨나요?
-						</span>
-					}
-					else if (nowTime >= 15 && nowTime <= 18)
-					{
-						<span class="time-icon fas fa-briefcase"></span>
-						<span class="greeting">
-							힘내세요
-						</span>
-						<span class="user-name">
-							@(user.Name)님!
-						</span>
-					}
-					else if (nowTime >= 19 && nowTime <= 20)
-					{
-						<span class="time-icon fas fa-home"></span>
-						<span class="greeting">
-							오늘도
-						</span>
-						<span class="greeting">
-							고생 많으셨어요
-						</span>
-						<span class="user-name">
-							@(user.Name)님!
-						</span>
-					}
-					else if (nowTime >= 21 || nowTime <= 0)
-					{
-						<span class="time-icon fas fa-moon"></span>
-						<span class="user-name">
-							@(user.Name)님
-						</span>
-						<span class="greeting">
-							좋은 밤입니다!
-						</span>
-					}
-					else if (nowTime >= 1 && nowTime <= 5)
-					{
-						<span class="time-icon fas fa-star"></span>
-						<span class="user-name">
-							@(user.Name)님!
-						</span>
-						<span class="greeting">
-							이 새벽에
-						</span>
-						<span class="greeting">
-							어쩐 일이세요?
-						</span>
-					}
+					// 주중
 					else
 					{
-						<span class="time-icon fas fa-smile-wink"></span>
-						<span class="user-name">
-							@(user.Name)님
-						</span>
-						<span class="greeting">
-							어서오세요!
-						</span>
+						// 아침
+						if (nowHour >= 6 && nowHour <= 10)
+						{
+							<span class="time-icon fas fa-sun"></span>
+							<span class="greeting">
+								좋은 아침입니다
+							</span>
+							<span class="user-name">
+								@(user.Name)님!
+							</span>
+						}
+						// 점심
+						else if (nowHour >= 11 && nowHour <= 14)
+						{
+							<span class="time-icon fas fa-utensils"></span>
+							<span class="user-name">
+								@(user.Name)님
+							</span>
+							<span class="greeting">
+								식사는 하셨나요?
+							</span>
+						}
+						// 오후 (일)
+						else if (nowHour >= 15 && nowHour <= 18)
+						{
+							<span class="time-icon fas fa-briefcase"></span>
+							<span class="greeting">
+								힘내세요
+							</span>
+							<span class="user-name">
+								@(user.Name)님!
+							</span>
+						}
+						// 저녁 (집)
+						else if (nowHour >= 19 && nowHour <= 20)
+						{
+							<span class="time-icon fas fa-home"></span>
+							<span class="greeting">
+								오늘도
+							</span>
+							<span class="greeting">
+								고생 많으셨어요
+							</span>
+							<span class="user-name">
+								@(user.Name)님!
+							</span>
+						}
+						// 밤
+						else if (nowHour >= 21 || nowHour <= 0)
+						{
+							<span class="time-icon fas fa-moon"></span>
+							<span class="user-name">
+								@(user.Name)님
+							</span>
+							<span class="greeting">
+								좋은 밤입니다!
+							</span>
+						}
+						// 새벽
+						else if (nowHour >= 1 && nowHour <= 5)
+						{
+							<span class="time-icon fas fa-star"></span>
+							<span class="user-name">
+								@(user.Name)님!
+							</span>
+							<span class="greeting">
+								이 새벽에
+							</span>
+							<span class="greeting">
+								어쩐 일이세요?
+							</span>
+						}
+						// 기타
+						else
+						{
+							<span class="time-icon fas fa-smile-wink"></span>
+							<span class="user-name">
+								@(user.Name)님
+							</span>
+							<span class="greeting">
+								어서오세요!
+							</span>
+						}
 					}
 				}
 			</div>
 			<div class="tool-area">
 				<div class="tool-container container-fluid">
 					<div class="row">
-						<div class="tool-box-container col-12 col-md-7 col-xl-4">
+						<div class="tool-box-container col-12 col-md-6 col-xl-4">
 							<div id="personal-info" class="tool-box">
 								<span class="menu-title">개인정보</span>
 								<div class="form-group my-page-form-group">
@@ -171,7 +310,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="tool-box-container col-12 col-md-5 col-xl-4">
+						<div class="tool-box-container col-12 col-md-6 col-xl-4">
 							<div id="phone-number" class="tool-box">
 								<span class="menu-title">휴대폰 번호</span>
 								<div class="form-group my-page-form-group">
@@ -182,14 +321,14 @@
 									<label>새로운 휴대폰 번호</label>
 									<div class="form-group input-bundle">
 										<input type="text" id="new-phone-number" class="form-control" placeholder="'-' 없이 입력" />
-										<button id="chanllenge" class="btn" disabled>
+										<button id="challenge" class="btn" disabled>
 											<span class="btn-text">
 												인증
 											</span>
 										</button>
 									</div>
 								</div>
-								<div class="form-group my-page-form-group">
+								<div id="verification-form" class="form-group my-page-form-group">
 									<label>인증번호 [03:00]</label>
 									<div class="form-group input-bundle">
 										<input type="text" id="verification-code" class="form-control" />
@@ -209,7 +348,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="tool-box-container col-12 col-md-6 col-xl-4">
+						<div class="tool-box-container col-12 col-md-5 col-xl-4">
 							<div id="payment-info" class="tool-box">
 								<span class="menu-title">결제정보</span>
 								<div class="form-group my-page-form-group">
@@ -245,7 +384,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="tool-box-container col-12 col-md-6 col-xl-5">
+						<div class="tool-box-container col-12 col-md-7 col-xl-5">
 							<div id="password" class="tool-box">
 								<span class="menu-title">비밀번호</span>
 								<div class="form-group my-page-form-group">

@@ -305,18 +305,13 @@ header
 {
 	transition: box-shadow 0.3s, border 0.3s;
 	border: 1px solid #FCFCFC;
+	background-image: none;
 }
 
 .form-group > .form-control:not(:disabled):focus, .form-group > * > .form-control:not(:disabled):focus
 {
 	border: 1px solid #F2B705 !important;
 	box-shadow: 0px 0px 10px #F2B705 !important;
-}
-
-.form-group > .form-control:disabled, .form-group > * > .form-control:disabled
-{
-	background: #E0E0E0;
-	cursor: not-allowed;
 }
 
 .form-group > .third:focus
@@ -353,7 +348,12 @@ button[type=submit]:not(:disabled):hover .btn-text
 	text-shadow: 0px 0px 10px #F2B705;
 }
 
-.is-invalid, .text-danger
+.is-valid
 {
-	border-color: #ff0000 !important;
+	border-color: #28a745 !important;
+}
+
+.is-invalid
+{
+	border-color: #dc3545 !important;
 }

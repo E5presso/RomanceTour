@@ -1,40 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.DataEncryption;
+﻿using Core.Security;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
-
+using RomanceTour.Extensions;
 using RomanceTour.Middlewares;
-
-using System.Linq;
+using RomanceTour.Middlewares.DataEncryption;
+using RomanceTour.Middlewares.DataEncryption.Providers;
 
 namespace RomanceTour.Models
 {
-    /// <summary>
-    /// 모델의 운용모드입니다.
-    /// </summary>
-    public enum EntityMode
-    {
-        /// <summary>
-        /// 최초로 암호화를 설정할 때 사용합니다. 이 경우 기존의 평문 데이터가 암호문으로 변경됩니다.
-        /// </summary>
-        Initialize,
-        /// <summary>
-        /// 암호화 키를 변경할 때 사용됩니다. 이 경우 기존의 암호문이 새로운 키를 기준으로 다시 암호화됩니다.
-        /// </summary>
-        Migration,
-        /// <summary>
-        /// 평상 운용 시 사용됩니다. 사용 중인 키를 이용하여 암복호화를 수행합니다.
-        /// </summary>
-        Normal,
-        /// <summary>
-        /// 데이터베이스에 설정된 암호화의 해제 시 사용됩니다. 이 경우 이미 설정된 데이터가 평문으로 복호화됩니다.
-        /// </summary>
-        Revert
-    }
     public partial class RomanceTourDbContext : DbContext
     {
-        public IEncryptionProvider encryptor;
-        private string Key => XmlConfiguration.Key;
+        private readonly IDataEncryptionProvider encryptor = new GcmEncryptionProvider(new Gcm(XmlConfiguration.SecretKey));
+        private string Key => XmlConfiguration.SecretKey;
         private readonly IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
         public virtual DbSet<Appointment> Appointment { get; set; }
@@ -59,14 +37,8 @@ namespace RomanceTour.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Verification> Verification { get; set; }
 
-        public RomanceTourDbContext()
-        {
-            encryptor = new EntityEncryptor(Key, Key);
-        }
-        public RomanceTourDbContext(DbContextOptions<RomanceTourDbContext> options) : base(options)
-        {
-            encryptor = new EntityEncryptor(Key, Key);
-        }
+        public RomanceTourDbContext() { }
+        public RomanceTourDbContext(DbContextOptions<RomanceTourDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -454,58 +426,9 @@ namespace RomanceTour.Models
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
             });
+            modelBuilder.UseEncryption(encryptor);
             OnModelCreatingPartial(modelBuilder);
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-        public void ChangeMode(EntityMode mode)
-        {
-            void UpdateEntities()
-            {
-                var users = User.Where(x => true);
-                var appointments = Appointment.Where(x => true);
-                User.UpdateRange(users);
-                Appointment.UpdateRange(appointments);
-                SaveChanges();
-            }
-            switch (mode)
-            {
-                case EntityMode.Initialize:
-                {
-                    XmlConfiguration.Key = Core.Security.Key.GenerateString(32);
-                    XmlConfiguration.SaveChanges();
-                    ((EntityEncryptor)encryptor).EncryptionKey = Key;
-                    ((EntityEncryptor)encryptor).DecryptionKey = string.Empty;
-                    UpdateEntities();
-                    break;
-                }
-                case EntityMode.Migration:
-                {
-                    string newKey = Core.Security.Key.GenerateString(32);
-                    string oldKey = Key;
-                    XmlConfiguration.Key = newKey;
-                    XmlConfiguration.SaveChanges();
-                    ((EntityEncryptor)encryptor).EncryptionKey = newKey;
-                    ((EntityEncryptor)encryptor).DecryptionKey = oldKey;
-                    UpdateEntities();
-                    break;
-                }
-                case EntityMode.Normal:
-                {
-                    ((EntityEncryptor)encryptor).EncryptionKey = Key;
-                    ((EntityEncryptor)encryptor).DecryptionKey = Key;
-                    break;
-                }
-                case EntityMode.Revert:
-                {
-                    string oldKey = Key;
-                    XmlConfiguration.Key = string.Empty;
-                    XmlConfiguration.SaveChanges();
-                    ((EntityEncryptor)encryptor).EncryptionKey = Key;
-                    ((EntityEncryptor)encryptor).DecryptionKey = oldKey;
-                    UpdateEntities();
-                    break;
-                }
-            }
-        }
     }
 }

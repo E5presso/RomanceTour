@@ -25,6 +25,12 @@
             </summary>
             <param name="capacity">버퍼의 최초 크기를 지정합니다.</param>
         </member>
+        <member name="M:Core.Collections.RingBuffer.#ctor(System.Byte[])">
+            <summary>
+            최초 데이터를 이용하여 RingBuffer 클래스를 초기화합니다.
+            </summary>
+            <param name="initial">버퍼에 초기 데이터를 지정합니다.</param>
+        </member>
         <member name="M:Core.Collections.RingBuffer.Write(System.Byte)">
             <summary>
             버퍼에 지정한 데이터를 기록합니다.
@@ -97,6 +103,12 @@
             </summary>
             <param name="capacity">버퍼의 최초 크기를 지정합니다.</param>
         </member>
+        <member name="M:Core.Collections.RingBuffer`1.#ctor(`0[])">
+            <summary>
+            최초 데이터를 이용하여 RingBuffer 클래스를 초기화합니다.
+            </summary>
+            <param name="initial">버퍼에 초기 데이터를 지정합니다.</param>
+        </member>
         <member name="M:Core.Collections.RingBuffer`1.Write(`0)">
             <summary>
             버퍼에 지정한 데이터를 기록합니다.
@@ -166,26 +178,6 @@
             <param name="data">압축해제할 데이터입니다.</param>
             <returns>압축해제된 데이터입니다.</returns>
         </member>
-        <member name="T:Core.Network.NCloud.MessageType">
-            <summary>
-            발송할 메세지 타입을 정의합니다.
-            </summary>
-        </member>
-        <member name="F:Core.Network.NCloud.MessageType.SMS">
-            <summary>
-            SMS 메세지입니다.
-            </summary>
-        </member>
-        <member name="F:Core.Network.NCloud.MessageType.LMS">
-            <summary>
-            LMS 메세지입니다.
-            </summary>
-        </member>
-        <member name="F:Core.Network.NCloud.MessageType.MMS">
-            <summary>
-            MMS 메세지입니다.
-            </summary>
-        </member>
         <member name="T:Core.Network.NCloud.Sens">
             <summary>
             네이버 클라우드 플랫폼(NCloud)의 SENS 서비스를 활용한 SMS 웹 발송 기능을 구현합니다.
@@ -227,32 +219,26 @@
             <param name="secretKey">Secret-Key를 지정합니다.</param>
             <param name="from">발송 시 사용할 전화번호를 지정합니다.</param>
         </member>
-        <member name="M:Core.Network.NCloud.Sens.SendMessage(Core.Network.NCloud.MessageType,System.String,System.String,System.String)">
+        <member name="M:Core.Network.NCloud.Sens.SendMessage(System.String,System.String)">
             <summary>
             SMS 메세지를 발송합니다.
             </summary>
-            <param name="type">발송할 메세지의 타입을 지정합니다.</param>
-            <param name="subject">발송할 메세지의 제목을 지정합니다.</param>
             <param name="to">수신 대상자를 지정합니다.</param>
             <param name="message">발송할 메세지를 지정합니다.</param>
             <returns>발송 요청에 대한 요청식별자를 반환합니다.</returns>
         </member>
-        <member name="M:Core.Network.NCloud.Sens.SendMessage(Core.Network.NCloud.MessageType,System.String,System.String[],System.String)">
+        <member name="M:Core.Network.NCloud.Sens.SendMessage(System.String[],System.String)">
             <summary>
             SMS 메세지를 발송합니다.
             </summary>
-            <param name="type">발송할 메세지의 타입을 지정합니다.</param>
-            <param name="subject">발송할 메세지의 제목을 지정합니다.</param>
             <param name="to">수신 대상자 목록을 지정합니다.</param>
             <param name="message">발송할 메세지를 지정합니다.</param>
             <returns>발송 요청에 대한 요청식별자를 반환합니다.</returns>
         </member>
-        <member name="M:Core.Network.NCloud.Sens.SendMessage(Core.Network.NCloud.MessageType,System.String,System.String,System.String[])">
+        <member name="M:Core.Network.NCloud.Sens.SendMessage(System.String,System.String[])">
             <summary>
             SMS 메세지를 발송합니다.
             </summary>
-            <param name="type">발송할 메세지의 타입을 지정합니다.</param>
-            <param name="subject">발송할 메세지의 제목을 지정합니다.</param>
             <param name="message">발송할 메세지를 지정합니다.</param>
             <param name="to">수신 대상자 목록을 지정합니다.</param>
             <returns>발송 요청에 대한 요청식별자를 반환합니다.</returns>
@@ -315,6 +301,92 @@
             <param name="disposing"></param>
         </member>
         <member name="M:Core.Network.Smtp.Mail.Dispose">
+            <summary>
+            클래스를 제거하고 리소스를 반환합니다.
+            </summary>
+        </member>
+        <member name="T:Core.Network.Tcp.Client">
+            <summary>
+            클라이언트 기능을 제공합니다.
+            </summary>
+        </member>
+        <member name="P:Core.Network.Tcp.Client.IsActive">
+            <summary>
+            클라이언트의 가동 여부를 가져옵니다.
+            </summary>
+        </member>
+        <member name="P:Core.Network.Tcp.Client.RemoteIP">
+            <summary>
+            접속 중인 서버의 IP주소입니다.
+            </summary>
+        </member>
+        <member name="P:Core.Network.Tcp.Client.LocalIP">
+            <summary>
+            현재 클라이언트의 로컬 IP주소입니다.
+            </summary>
+        </member>
+        <member name="E:Core.Network.Tcp.Client.Connected">
+            <summary>
+            서버 연결 시 발생하는 이벤트입니다.
+            </summary>
+        </member>
+        <member name="E:Core.Network.Tcp.Client.Sended">
+            <summary>
+            데이터 전송 완료 시 발생하는 이벤트입니다.
+            </summary>
+        </member>
+        <member name="E:Core.Network.Tcp.Client.Received">
+            <summary>
+            데이터 수신 완료 시 발생하는 이벤트입니다.
+            </summary>
+        </member>
+        <member name="E:Core.Network.Tcp.Client.Disconnected">
+            <summary>
+            클라이언트 연결 종료 시 발생하는 이벤트입니다.
+            </summary>
+        </member>
+        <member name="E:Core.Network.Tcp.Client.ErrorOccurred">
+            <summary>
+            에러 시 발생하는 이벤트입니다.
+            </summary>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.#ctor">
+            <summary>
+            Client 클래스를 초기화합니다.
+            </summary>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.Open(System.String,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            클라이언트를 시작합니다.
+            </summary>
+            <param name="ip">연결할 서버의 IP주소입니다.</param>
+            <param name="port">연결에 사용할 포트번호입니다.</param>
+            <param name="bufferSize">송수신에 사용할 버퍼의 크기입니다.</param>
+            <param name="enableMultiBytes">데이터 송수신 시 멀티바이트 수신을 사용할 지 여부를 지정합니다. 멀티바이트 수신 시 데이터 전송 용량에 제한이 없어지지만, 패킷 구조 특성 상, 송수신 측 모두 해당 구현체를 동일하게 사용해야합니다.</param>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.Send(System.Byte[])">
+            <summary>
+            데이터를 전송합니다.
+            </summary>
+            <param name="data">전송할 데이터입니다.</param>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.Close">
+            <summary>
+            클라이언트를 정지합니다.
+            </summary>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.Finalize">
+            <summary>
+            Client 클래스를 제거합니다.
+            </summary>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.Dispose(System.Boolean)">
+            <summary>
+            IDisposable 패턴을 구현합니다.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:Core.Network.Tcp.Client.Dispose">
             <summary>
             클래스를 제거하고 리소스를 반환합니다.
             </summary>
@@ -433,92 +505,6 @@
             </summary>
             <returns>문자열로 변환된 예외발생 정보입니다.</returns>
         </member>
-        <member name="T:Core.Network.Tcp.Client">
-            <summary>
-            클라이언트 기능을 제공합니다.
-            </summary>
-        </member>
-        <member name="P:Core.Network.Tcp.Client.IsActive">
-            <summary>
-            클라이언트의 가동 여부를 가져옵니다.
-            </summary>
-        </member>
-        <member name="P:Core.Network.Tcp.Client.RemoteIP">
-            <summary>
-            접속 중인 서버의 IP주소입니다.
-            </summary>
-        </member>
-        <member name="P:Core.Network.Tcp.Client.LocalIP">
-            <summary>
-            현재 클라이언트의 로컬 IP주소입니다.
-            </summary>
-        </member>
-        <member name="E:Core.Network.Tcp.Client.Connected">
-            <summary>
-            서버 연결 시 발생하는 이벤트입니다.
-            </summary>
-        </member>
-        <member name="E:Core.Network.Tcp.Client.Sended">
-            <summary>
-            데이터 전송 완료 시 발생하는 이벤트입니다.
-            </summary>
-        </member>
-        <member name="E:Core.Network.Tcp.Client.Received">
-            <summary>
-            데이터 수신 완료 시 발생하는 이벤트입니다.
-            </summary>
-        </member>
-        <member name="E:Core.Network.Tcp.Client.Disconnected">
-            <summary>
-            클라이언트 연결 종료 시 발생하는 이벤트입니다.
-            </summary>
-        </member>
-        <member name="E:Core.Network.Tcp.Client.ErrorOccurred">
-            <summary>
-            에러 시 발생하는 이벤트입니다.
-            </summary>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.#ctor">
-            <summary>
-            Client 클래스를 초기화합니다.
-            </summary>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.Open(System.String,System.Int32,System.Int32,System.Boolean)">
-            <summary>
-            클라이언트를 시작합니다.
-            </summary>
-            <param name="ip">연결할 서버의 IP주소입니다.</param>
-            <param name="port">연결에 사용할 포트번호입니다.</param>
-            <param name="bufferSize">송수신에 사용할 버퍼의 크기입니다.</param>
-            <param name="enableMultiBytes">데이터 송수신 시 멀티바이트 수신을 사용할 지 여부를 지정합니다. 멀티바이트 수신 시 데이터 전송 용량에 제한이 없어지지만, 패킷 구조 특성 상, 송수신 측 모두 해당 구현체를 동일하게 사용해야합니다.</param>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.Send(System.Byte[])">
-            <summary>
-            데이터를 전송합니다.
-            </summary>
-            <param name="data">전송할 데이터입니다.</param>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.Close">
-            <summary>
-            클라이언트를 정지합니다.
-            </summary>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.Finalize">
-            <summary>
-            Client 클래스를 제거합니다.
-            </summary>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.Dispose(System.Boolean)">
-            <summary>
-            IDisposable 패턴을 구현합니다.
-            </summary>
-            <param name="disposing"></param>
-        </member>
-        <member name="M:Core.Network.Tcp.Client.Dispose">
-            <summary>
-            클래스를 제거하고 리소스를 반환합니다.
-            </summary>
-        </member>
         <member name="T:Core.Network.Tcp.Server">
             <summary>
             서버 기능을 제공합니다.
@@ -635,25 +621,26 @@
             대칭키를 가져옵니다.
             </summary>
         </member>
-        <member name="P:Core.Security.Aes.IV">
-            <summary>
-            초기벡터를 가져옵니다.
-            </summary>
-        </member>
         <member name="M:Core.Security.Aes.#ctor">
             <summary>
-            AES 클래스를 초기화합니다.
+            Aes 클래스를 초기화합니다.
             </summary>
         </member>
         <member name="M:Core.Security.Aes.#ctor(System.Byte[])">
             <summary>
-            AES 클래스를 초기화합니다.
+            Aes 클래스를 초기화합니다.
             </summary>
             <param name="key">암호화에 사용할 키를 지정합니다.</param>
         </member>
         <member name="M:Core.Security.Aes.#ctor(System.String)">
             <summary>
-            AES 클래스를 초기화합니다.
+            Aes 클래스를 초기화합니다.
+            </summary>
+            <param name="key">암호화에 사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Aes.#ctor(Core.Security.Key)">
+            <summary>
+            Aes 클래스를 초기화합니다.
             </summary>
             <param name="key">암호화에 사용할 키를 지정합니다.</param>
         </member>
@@ -664,6 +651,12 @@
             <param name="key">지정할 키입니다.</param>
         </member>
         <member name="M:Core.Security.Aes.SetKey(System.String)">
+            <summary>
+            새로운 키를 지정합니다.
+            </summary>
+            <param name="key">지정할 키입니다.</param>
+        </member>
+        <member name="M:Core.Security.Aes.SetKey(Core.Security.Key)">
             <summary>
             새로운 키를 지정합니다.
             </summary>
@@ -701,230 +694,369 @@
             <param name="decrypted">복호화된 데이터입니다.</param>
             <returns>복호화 결과입니다.</returns>
         </member>
-        <member name="M:Core.Security.Aes.Finalize">
-            <summary>
-            AES 클래스를 제거합니다.
-            </summary>
-        </member>
-        <member name="M:Core.Security.Aes.Dispose(System.Boolean)">
-            <summary>
-            IDisposable 패턴을 구현합니다.
-            </summary>
-            <param name="disposing"></param>
-        </member>
-        <member name="M:Core.Security.Aes.Dispose">
-            <summary>
-            클래스를 제거하고 리소스를 반환합니다.
-            </summary>
-        </member>
         <member name="T:Core.Security.Base64">
             <summary>
             Base64 변환기입니다.
             </summary>
         </member>
-        <member name="M:Core.Security.Base64.GetString(System.Byte[])">
+        <member name="M:Core.Security.Base64.Encode(System.Byte[])">
             <summary>
             바이트 시퀀스를 Base64 문자열로 변환합니다.
             </summary>
             <param name="binary">바이트 시퀀스입니다.</param>
             <returns>Base64 문자열입니다.</returns>
         </member>
-        <member name="M:Core.Security.Base64.GetBytes(System.String)">
+        <member name="M:Core.Security.Base64.Decode(System.String)">
             <summary>
             Base64 문자열을 바이트 시퀀스로 변환합니다.
             </summary>
             <param name="base64">Base64 문자열입니다.</param>
             <returns>바이트 시퀀스입니다.</returns>
         </member>
-        <member name="M:Core.Security.Base64.Encode(System.String)">
+        <member name="M:Core.Security.Base64.FromBase64(System.String)">
             <summary>
-            UTF8문자열을 Base64로 인코딩합니다.
+            BASE64 문자열을 UTF8 문자열로 변환합니다.
             </summary>
-            <param name="utf8">인코딩할 UTF8문자열입니다.</param>
-            <returns>인코딩된 Base64문자열입니다.</returns>
+            <param name="base64">BASE64 문자열을 지정합니다.</param>
+            <returns>UTF8 문자열을 반환합니다.</returns>
         </member>
-        <member name="M:Core.Security.Base64.Decode(System.String)">
+        <member name="M:Core.Security.Base64.ToBase64(System.String)">
             <summary>
-            Base64문자열을 UTF8로 디코딩합니다.
+            UTF8 문자열을 BASE64 문자열로 변환합니다.
             </summary>
-            <param name="base64">디코딩할 Base64문자열입니다.</param>
-            <returns>디코딩된 UTF8문자열입니다.</returns>
+            <param name="utf8">UTF8 문자열을 지정합니다.</param>
+            <returns>BASE64 문자열을 반환합니다.</returns>
+        </member>
+        <member name="T:Core.Security.SignAlgorithm">
+            <summary>
+            Security 네임스페이스에서 사용 가능한 서명 알고리즘의 종류를 정의합니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.SignAlgorithm.HS256">
+            <summary>
+            HMAC256 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.SignAlgorithm.HS384">
+            <summary>
+            HMAC384 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.SignAlgorithm.HS512">
+            <summary>
+            HMAC512 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.SignAlgorithm.RS256">
+            <summary>
+            RSA_SHA256 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.SignAlgorithm.RS384">
+            <summary>
+            RSA_SHA384 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.SignAlgorithm.RS512">
+            <summary>
+            RSA_SHA512 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="T:Core.Security.HashAlgorithm">
+            <summary>
+            Security 네임스페이스에서 사용 가능한 해시 알고리즘의 종류를 정의합니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.HashAlgorithm.MD5">
+            <summary>
+            MD5 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.HashAlgorithm.SHA1">
+            <summary>
+            SHA1 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.HashAlgorithm.SHA256">
+            <summary>
+            SHA256 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.HashAlgorithm.SHA384">
+            <summary>
+            SHA384 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.HashAlgorithm.SHA512">
+            <summary>
+            SHA512 알고리즘입니다.
+            </summary>
+        </member>
+        <member name="T:Core.Security.KeyType">
+            <summary>
+            키의 종류를 지정합니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.KeyType.SYMMETRIC">
+            <summary>
+            대칭키입니다.
+            </summary>
+        </member>
+        <member name="F:Core.Security.KeyType.ASYMMETRIC">
+            <summary>
+            비대칭키입니다.
+            </summary>
+        </member>
+        <member name="T:Core.Security.Key">
+            <summary>
+            암호화에 사용할 키에 대한 정보를 구현합니다.
+            </summary>
+        </member>
+        <member name="P:Core.Security.Key.Type">
+            <summary>
+            키의 종류를 가져옵니다.
+            </summary>
+        </member>
+        <member name="M:Core.Security.Key.#ctor(System.Byte[])">
+            <summary>
+            Key 구조체를 초기화합니다.
+            </summary>
+            <param name="key">사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Key.#ctor(System.String)">
+            <summary>
+            Key 구조체를 초기화합니다.
+            </summary>
+            <param name="key">사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Key.#ctor(Core.Security.X509)">
+            <summary>
+            Key 구조체를 초기화합니다.
+            </summary>
+            <param name="key">사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Key.ToString">
+            <summary>
+            키를 표현가능한 Base64 문자열로 변환합니다.
+            </summary>
+            <returns>Base64 문자열을 반환합니다.</returns>
+        </member>
+        <member name="M:Core.Security.Key.op_Implicit(Core.Security.Key)~System.String">
+            <summary>
+            대칭키를 문자열로 명시적 변환합니다.
+            </summary>
+            <param name="key">변환할 키를 지정합니다.</param>
+            <exception cref="T:System.InvalidCastException">지정한 키가 비대칭키인 경우에 발생합니다.</exception>
+        </member>
+        <member name="M:Core.Security.Key.op_Implicit(Core.Security.Key)~System.Byte[]">
+            <summary>
+            대칭키를 바이트 시퀀스로 명시적 변환합니다.
+            </summary>
+            <param name="key">변환할 키를 지정합니다.</param>
+            <exception cref="T:System.InvalidCastException">지정한 키가 비대칭키인 경우에 발생합니다.</exception>
+        </member>
+        <member name="M:Core.Security.Key.op_Implicit(Core.Security.Key)~Core.Security.X509">
+            <summary>
+            비대칭키를 X509 인증서로 명시적 변환합니다.
+            </summary>
+            <param name="key">변환할 키를 지정합니다.</param>
+            <exception cref="T:System.InvalidCastException">지정한 키가 대칭키인 경우에 발생합니다.</exception>
+        </member>
+        <member name="M:Core.Security.Key.op_Implicit(System.String)~Core.Security.Key">
+            <summary>
+            문자열을 대칭키로 명시적 변환합니다.
+            </summary>
+            <param name="key">변환할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Key.op_Implicit(System.Byte[])~Core.Security.Key">
+            <summary>
+            바이트시퀀스를 대칭키로 명시적 변환합니다.
+            </summary>
+            <param name="key">변환할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Key.op_Implicit(Core.Security.X509)~Core.Security.Key">
+            <summary>
+            X509 인증서를 비대칭키로 명시적 변환합니다.
+            </summary>
+            <param name="key">변환할 키를 지정합니다.</param>
+        </member>
+        <member name="T:Core.Security.Gcm">
+            <summary>
+            Gcm 암호화 알고리즘을 구현한 클래스입니다.
+            </summary>
+        </member>
+        <member name="P:Core.Security.Gcm.Key">
+            <summary>
+            대칭키를 가져옵니다.
+            </summary>
+        </member>
+        <member name="M:Core.Security.Gcm.#ctor">
+            <summary>
+            Gcm 클래스를 초기화합니다.
+            </summary>
+        </member>
+        <member name="M:Core.Security.Gcm.#ctor(System.Byte[])">
+            <summary>
+            Gcm 클래스를 초기화합니다.
+            </summary>
+            <param name="key">암호화에 사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Gcm.#ctor(System.String)">
+            <summary>
+            Gcm 클래스를 초기화합니다.
+            </summary>
+            <param name="key">암호화에 사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Gcm.#ctor(Core.Security.Key)">
+            <summary>
+            Gcm 클래스를 초기화합니다.
+            </summary>
+            <param name="key">암호화에 사용할 키를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Gcm.SetKey(System.Byte[])">
+            <summary>
+            새로운 키를 지정합니다.
+            </summary>
+            <param name="key">지정할 키입니다.</param>
+        </member>
+        <member name="M:Core.Security.Gcm.SetKey(System.String)">
+            <summary>
+            새로운 키를 지정합니다.
+            </summary>
+            <param name="key">지정할 키입니다.</param>
+        </member>
+        <member name="M:Core.Security.Gcm.SetKey(Core.Security.Key)">
+            <summary>
+            새로운 키를 지정합니다.
+            </summary>
+            <param name="key">지정할 키입니다.</param>
+        </member>
+        <member name="M:Core.Security.Gcm.Encrypt(System.Byte[],System.Byte[]@)">
+            <summary>
+            데이터를 암호화합니다.
+            </summary>
+            <param name="data">암호화할 데이터입니다.</param>
+            <param name="encrypted">암호화된 데이터입니다.</param>
+            <returns>암호화 결과입니다.</returns>
+        </member>
+        <member name="M:Core.Security.Gcm.Decrypt(System.Byte[],System.Byte[]@)">
+            <summary>
+            데이터를 복호화합니다.
+            </summary>
+            <param name="data">복호화할 데이터입니다.</param>
+            <param name="decrypted">복호화된 데이터입니다.</param>
+            <returns>복호화 결과입니다.</returns>
+        </member>
+        <member name="M:Core.Security.Gcm.Encrypt(System.String,System.String@)">
+            <summary>
+            데이터를 암호화합니다.
+            </summary>
+            <param name="data">암호화할 데이터입니다.</param>
+            <param name="encrypted">암호화된 데이터입니다.</param>
+            <returns>암호화 결과입니다.</returns>
+        </member>
+        <member name="M:Core.Security.Gcm.Decrypt(System.String,System.String@)">
+            <summary>
+            데이터를 복호화합니다.
+            </summary>
+            <param name="data">복호화할 데이터입니다.</param>
+            <param name="decrypted">복호화된 데이터입니다.</param>
+            <returns>복호화 결과입니다.</returns>
         </member>
         <member name="T:Core.Security.Hash">
             <summary>
             해쉬함수 모음입니다.
             </summary>
         </member>
-        <member name="M:Core.Security.Hash.MD5(System.String)">
+        <member name="M:Core.Security.Hash.Compute(System.String,Core.Security.HashAlgorithm)">
             <summary>
-            MD5 해쉬코드를 생성합니다.
+            해쉬코드를 생성합니다.
             </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <returns>생성된 MD5 해쉬코드입니다.</returns>
+            <param name="message">해쉬코드 생성에 사용할 문자열입니다.</param>
+            <param name="algorithm">적용할 해쉬알고리즘을 지정합니다.</param>
+            <returns>생성된 해쉬코드입니다.</returns>
         </member>
-        <member name="M:Core.Security.Hash.MD5(System.String,System.String)">
+        <member name="M:Core.Security.Hash.Compute(System.Byte[],Core.Security.HashAlgorithm)">
             <summary>
-            솔트값을 이용해 MD5 해쉬코드를 생성합니다.
+            해쉬코드를 생성합니다.
             </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <param name="salt">해쉬에 포함할 솔트값을 지정합니다.</param>
-            <returns>생성된 MD5 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.MD5(System.Byte[])">
-            <summary>
-            MD5 해쉬 데이터를 생성합니다.
-            </summary>
-            <param name="data">해쉬데이터 생성에 사용할 데이터입니다.</param>
-            <returns>생성된 MD5 해쉬 데이터입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA1(System.String)">
-            <summary>
-            SHA1 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <returns>생성된 SHA1 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA1(System.String,System.String)">
-            <summary>
-            솔트값을 이용해 SHA1 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <param name="salt">해쉬에 포함할 솔트값을 지정합니다.</param>
-            <returns>생성된 SHA1 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA1(System.Byte[])">
-            <summary>
-            SHA1 해쉬 데이터를 생성합니다.
-            </summary>
-            <param name="data">해쉬 데이터 생성에 사용할 데이터입니다.</param>
-            <returns>생성된 SHA1 해쉬 데이터입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA256(System.String)">
-            <summary>
-            SHA256 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <returns>생성된 SHA256 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA256(System.String,System.String)">
-            <summary>
-            솔트값을 이용해 SHA256 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <param name="salt">해쉬에 포함할 솔트값을 지정합니다.</param>
-            <returns>생성된 SHA256 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA256(System.Byte[])">
-            <summary>
-            SHA256 해쉬 데이터를 생성합니다.
-            </summary>
-            <param name="data">해쉬 데이터 생성에 사용할 데이터입니다.</param>
-            <returns>생성된 SHA256 해쉬 데이터입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA384(System.String)">
-            <summary>
-            SHA384 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <returns>생성된 SHA384 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA384(System.String,System.String)">
-            <summary>
-            솔트값을 이용해 SHA384 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <param name="salt">해쉬에 포함할 솔트값을 지정합니다.</param>
-            <returns>생성된 SHA384 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA384(System.Byte[])">
-            <summary>
-            SHA384 해쉬 데이터를 생성합니다.
-            </summary>
-            <param name="data">해쉬 데이터 생성에 사용할 데이터입니다.</param>
-            <returns>생성된 SHA384 해쉬 데이터입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA512(System.String)">
-            <summary>
-            SHA512 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <returns>생성된 SHA512 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA512(System.String,System.String)">
-            <summary>
-            솔트값을 이용해 SHA512 해쉬코드를 생성합니다.
-            </summary>
-            <param name="content">해쉬코드 생성에 사용할 문자열입니다.</param>
-            <param name="salt">해쉬에 포함할 솔트값을 지정합니다.</param>
-            <returns>생성된 SHA512 해쉬코드입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Hash.SHA512(System.Byte[])">
-            <summary>
-            SHA512 해쉬 데이터를 생성합니다.
-            </summary>
-            <param name="data">해쉬 데이터 생성에 사용할 데이터입니다.</param>
-            <returns>생성된 SHA512 해쉬 데이터입니다.</returns>
+            <param name="binary">해쉬코드 생성에 사용할 바이트시퀀스입니다.</param>
+            <param name="algorithm">적용할 해쉬알고리즘을 지정합니다.</param>
+            <returns>생성된 해쉬코드입니다.</returns>
         </member>
         <member name="T:Core.Security.HMAC">
             <summary>
             해쉬 기반 메세지 인증 코드의 생성을 구현합니다.
             </summary>
         </member>
-        <member name="M:Core.Security.HMAC.SHA256(System.String,System.String)">
+        <member name="M:Core.Security.HMAC.Compute(System.String,Core.Security.Key,Core.Security.SignAlgorithm)">
             <summary>
-            SHA256 기반의 HMAC을 생성합니다.
+            HMAC을 생성합니다.
             </summary>
-            <param name="key">HMAC의 생성에 사용할 비밀키를 지정합니다.</param>
             <param name="message">HMAC을 적용할 메세지 본문을 지정합니다.</param>
+            <param name="key">HMAC의 생성에 사용할 비밀키를 지정합니다.</param>
+            <param name="algorithm">적용할 알고리즘을 지정합니다.</param>
             <returns>생성된 HMAC을 반환합니다.</returns>
         </member>
-        <member name="T:Core.Security.Key">
+        <member name="M:Core.Security.HMAC.Compute(System.Byte[],Core.Security.Key,Core.Security.SignAlgorithm)">
+            <summary>
+            HMAC을 생성합니다.
+            </summary>
+            <param name="message">HMAC을 적용할 메세지 본문을 지정합니다.</param>
+            <param name="key">HMAC의 생성에 사용할 비밀키를 지정합니다.</param>
+            <param name="algorithm">적용할 알고리즘을 지정합니다.</param>
+            <returns>생성된 HMAC을 반환합니다.</returns>
+        </member>
+        <member name="T:Core.Security.KeyGenerator">
             <summary>
             키 생성기입니다.
             </summary>
         </member>
-        <member name="M:Core.Security.Key.GenerateString(System.Int32)">
+        <member name="M:Core.Security.KeyGenerator.GenerateString(System.Int32)">
             <summary>
             랜덤한 문자열을 생성합니다.
             </summary>
-            <param name="length">생성할 문자열의 길이입니다.</param>
+            <param name="length">생성할 키의 길이입니다.</param>
             <returns>생성된 문자열입니다.</returns>
         </member>
-        <member name="M:Core.Security.Key.GenerateBytes(System.Int32)">
+        <member name="M:Core.Security.KeyGenerator.GenerateBytes(System.Int32)">
             <summary>
             랜덤한 바이트 시퀀스를 생성합니다.
             </summary>
             <param name="length">생성할 시퀀스의 길이입니다.</param>
             <returns>생성된 시퀀스입니다.</returns>
         </member>
-        <member name="T:Core.Security.HashType">
+        <member name="M:Core.Security.KeyGenerator.Generate(System.Int32)">
             <summary>
-            해쉬 타입을 지정합니다.
+            랜덤한 키를 생성합니다.
+            </summary>
+            <param name="length">생성할 키의 길이입니다.</param>
+            <returns>생성된 키입니다.</returns>
+        </member>
+        <member name="T:Core.Security.Password">
+            <summary>
+            비밀번호의 단방향 암호화를 위한 PBKDF2 알고리즘을 제공합니다.
             </summary>
         </member>
-        <member name="F:Core.Security.HashType.SHA1">
+        <member name="M:Core.Security.Password.Hash(System.String,Core.Security.Key,System.Int32,System.Int32,Core.Security.HashAlgorithm)">
             <summary>
-            SHA1 해쉬입니다.
+            비밀번호에 대해 단방향 암호화를 수행합니다.
             </summary>
-        </member>
-        <member name="F:Core.Security.HashType.SHA256">
-            <summary>
-            SHA256 해쉬입니다.
-            </summary>
-        </member>
-        <member name="F:Core.Security.HashType.SHA384">
-            <summary>
-            SHA384 해쉬입니다.
-            </summary>
-        </member>
-        <member name="F:Core.Security.HashType.SHA512">
-            <summary>
-            SHA512 해쉬입니다.
-            </summary>
+            <param name="password">암호화할 비밀번호를 지정합니다.</param>
+            <param name="salt">암호화에 사용할 솔트를 지정합니다.</param>
+            <param name="size">해쉬 길이를 지정합니다.</param>
+            <param name="iteration">해쉬 적용횟수를 지정합니다.</param>
+            <param name="algorithm">적용할 해쉬함수를 지정합니다.</param>
+            <returns>암호화된 비밀번호를 반환합니다.</returns>
         </member>
         <member name="T:Core.Security.Rsa">
             <summary>
             RSA 암호화 기능을 제공하는 클래스입니다..
+            </summary>
+        </member>
+        <member name="F:Core.Security.Rsa.SIGNATURE_SIZE">
+            <summary>
+            암호문에 포함될 RSA서명의 길이를 가져옵니다.
             </summary>
         </member>
         <member name="P:Core.Security.Rsa.PublicKey">
@@ -939,14 +1071,20 @@
         </member>
         <member name="M:Core.Security.Rsa.#ctor">
             <summary>
-            RSA 클래스를 초기화합니다.
+            Rsa 클래스를 초기화합니다.
             </summary>
         </member>
         <member name="M:Core.Security.Rsa.#ctor(Core.Security.X509)">
             <summary>
-            RSA 클래스를 초기화합니다.
+            Rsa 클래스를 초기화합니다.
             </summary>
             <param name="certificate">X.509 인증서를 지정합니다.</param>
+        </member>
+        <member name="M:Core.Security.Rsa.#ctor(Core.Security.Key)">
+            <summary>
+            Rsa 클래스를 초기화합니다.
+            </summary>
+            <param name="key">키 데이터를 지정합니다.</param>
         </member>
         <member name="M:Core.Security.Rsa.Encrypt(System.Byte[],System.Byte[]@)">
             <summary>
@@ -980,55 +1118,39 @@
             <param name="decrypted">복호화된 데이터입니다.</param>
             <returns>복호화 결과입니다.</returns>
         </member>
-        <member name="M:Core.Security.Rsa.Sign(System.Byte[],Core.Security.HashType)">
+        <member name="M:Core.Security.Rsa.Sign(System.Byte[],Core.Security.SignAlgorithm)">
             <summary>
             데이터에 서명합니다.
             </summary>
             <param name="data">서명할 데이터입니다.</param>
-            <param name="type">서명에 사용할 해쉬함수를 지정합니다.</param>
+            <param name="algorithm">서명에 사용할 해쉬함수를 지정합니다.</param>
             <returns>서명된 데이터입니다.</returns>
         </member>
-        <member name="M:Core.Security.Rsa.Verify(System.Byte[],System.Byte[],Core.Security.HashType)">
+        <member name="M:Core.Security.Rsa.Verify(System.Byte[],System.Byte[],Core.Security.SignAlgorithm)">
             <summary>
             서명된 데이터를 검증합니다.
             </summary>
             <param name="data">서명의 유효성을 검증할 데이터를 지정합니다.</param>
             <param name="sign">데이터의 서명값을 지정합니다.</param>
-            <param name="type">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
+            <param name="algorithm">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
             <returns>검증 결과입니다.</returns>
         </member>
-        <member name="M:Core.Security.Rsa.Sign(System.String,Core.Security.HashType)">
+        <member name="M:Core.Security.Rsa.Sign(System.String,Core.Security.SignAlgorithm)">
             <summary>
             데이터에 서명합니다.
             </summary>
             <param name="data">서명할 데이터입니다.</param>
-            <param name="type">서명에 사용할 해쉬함수를 지정합니다.</param>
+            <param name="algorithm">서명에 사용할 해쉬함수를 지정합니다.</param>
             <returns>서명된 데이터입니다.</returns>
         </member>
-        <member name="M:Core.Security.Rsa.Verify(System.String,System.String,Core.Security.HashType)">
+        <member name="M:Core.Security.Rsa.Verify(System.String,System.String,Core.Security.SignAlgorithm)">
             <summary>
             서명된 데이터를 검증합니다.
             </summary>
             <param name="data">서명의 유효성을 검증할 데이터를 지정합니다.</param>
             <param name="sign">데이터의 서명값을 지정합니다.</param>
-            <param name="type">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
+            <param name="algorithm">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
             <returns>검증 결과입니다.</returns>
-        </member>
-        <member name="M:Core.Security.Rsa.Finalize">
-            <summary>
-            RSA 클래스를 제거합니다.
-            </summary>
-        </member>
-        <member name="M:Core.Security.Rsa.Dispose(System.Boolean)">
-            <summary>
-            IDisposable 패턴을 구현합니다.
-            </summary>
-            <param name="disposing"></param>
-        </member>
-        <member name="M:Core.Security.Rsa.Dispose">
-            <summary>
-            클래스를 제거하고 리소스를 반환합니다.
-            </summary>
         </member>
         <member name="T:Core.Security.LocationType">
             <summary>
@@ -1103,88 +1225,59 @@
             <param name="domain">확인할 도메인을 지정합니다.</param>
             <returns>유효성 검사 결과입니다.</returns>
         </member>
-        <member name="T:Core.Utility.Converter">
+        <member name="T:Core.Utility.TaskHandle">
             <summary>
-            Core 데이터 형식을 다른 데이터 형식으로 변환합니다.
+            작업핸들을 정의합니다.
             </summary>
         </member>
-        <member name="M:Core.Utility.Converter.ToHexCode(System.Byte[])">
+        <member name="M:Core.Utility.TaskHandle.#ctor(System.Threading.CancellationTokenSource)">
             <summary>
-            바이트 배열을 16진수 문자열로 변환합니다.
+            TaskHandle 클래스를 초기화합니다.
             </summary>
-            <param name="data">변환할 바이트 배열입니다.</param>
-            <returns>변환된 문자열입니다.</returns>
+            <param name="token">작업 취소토큰을 지정합니다.</param>
         </member>
-        <member name="M:Core.Utility.Converter.GetBytes(System.String)">
+        <member name="T:Core.Utility.Function">
             <summary>
-            16진수 문자열을 바이트 배열로 변환합니다.
-            </summary>
-            <param name="hex">변환할 16진수 문자열입니다.</param>
-            <returns>변환된 바이트 배열입니다.</returns>
-        </member>
-        <member name="T:Core.Utility.JsonSerializer">
-            <summary>
-            개체의 Json 직렬화/역직렬화를 정의합니다.
+            함수작업에 사용할 수 있는 유틸리티 모음집입니다.
             </summary>
         </member>
-        <member name="M:Core.Utility.JsonSerializer.Serialize(System.Object)">
+        <member name="M:Core.Utility.Function.SetTimeout(System.Action,System.Int32)">
             <summary>
-            개체를 Json 문자열로 직렬화합니다.
+            지정한 지연 후에 작업을 호출합니다.
             </summary>
-            <param name="value">직렬화를 수행할 개체를 지정합니다.</param>
-            <returns>직렬화된 Json 문자열입니다.</returns>
+            <param name="callback">호출할 작업을 지정합니다.</param>
+            <param name="time">지연될 시간을 지정합니다.</param>
+            <returns>작업 핸들을 반환합니다.</returns>
         </member>
-        <member name="M:Core.Utility.JsonSerializer.Deserialize``1(System.String)">
+        <member name="M:Core.Utility.Function.SetTimeout(System.Action,System.TimeSpan)">
             <summary>
-            Json 문자열을 역직렬화합니다.
+            지정한 지연 후에 작업을 호출합니다.
             </summary>
-            <typeparam name="T">역직렬화의 대상 개체타입을 지정합니다.</typeparam>
-            <param name="json">역직렬화를 수행할 Json 문자열을 지정합니다.</param>
-            <returns>역직렬화된 개체입니다.</returns>
+            <param name="callback">호출할 작업을 지정합니다.</param>
+            <param name="time">지연될 시간을 지정합니다.</param>
+            <returns>작업 핸들을 반환합니다.</returns>
         </member>
-        <member name="M:Core.Utility.JsonSerializer.Deserialize(System.String)">
+        <member name="M:Core.Utility.Function.SetInterval(System.Action,System.Int32)">
             <summary>
-            Json 문자열을 역직렬화합니다.
+            지정한 주기마다 작업을 호출합니다.
             </summary>
-            <param name="json">역직렬화를 수행할 Json 문자열을 지정합니다.</param>
-            <returns>역직렬화된 개체입니다.</returns>
+            <param name="callback">호출할 작업을 지정합니다.</param>
+            <param name="time">호출될 주기를 지정합니다.</param>
+            <returns>작업 핸들을 반환합니다.</returns>
         </member>
-        <member name="T:Core.Utility.ScheduleEventArgs">
+        <member name="M:Core.Utility.Function.SetInterval(System.Action,System.TimeSpan)">
             <summary>
-            스케쥴 해당 시 발생하는 이벤트에 대한 정보입니다.
+            지정한 주기마다 작업을 호출합니다.
             </summary>
+            <param name="callback">호출할 작업을 지정합니다.</param>
+            <param name="time">호출될 주기를 지정합니다.</param>
+            <returns>작업 핸들을 반환합니다.</returns>
         </member>
-        <member name="P:Core.Utility.ScheduleEventArgs.Time">
+        <member name="M:Core.Utility.Function.Clear(Core.Utility.TaskHandle)">
             <summary>
-            스케쥴 발생 시간을 가져옵니다.
+            지정한 작업을 중단합니다.
             </summary>
-        </member>
-        <member name="M:Core.Utility.ScheduleEventArgs.#ctor(System.DateTime)">
-            <summary>
-            ScheduleEventArgs 클래스를 초기화합니다.
-            </summary>
-            <param name="time">스케쥴 발생 시간을 지정합니다.</param>
-        </member>
-        <member name="T:Core.Utility.Scheduler">
-            <summary>
-            지정한 시간에 이벤트를 발생시키는 기능을 구현합니다.
-            </summary>
-        </member>
-        <member name="E:Core.Utility.Scheduler.ScheduleEvent">
-            <summary>
-            스케쥴 해당 시 발생하는 이벤트입니다.
-            </summary>
-        </member>
-        <member name="M:Core.Utility.Scheduler.#ctor">
-            <summary>
-            Scheduler 클래스를 초기화합니다.
-            </summary>
-        </member>
-        <member name="M:Core.Utility.Scheduler.AddSchedule(System.DateTime)">
-            <summary>
-            새로운 스케쥴을 등록합니다.
-            </summary>
-            <param name="time">스케쥴이 발생할 시간을 지정합니다.</param>
+            <param name="handle">중단할 작업을 지정합니다.</param>
         </member>
     </members>
 </doc>

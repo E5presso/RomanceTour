@@ -194,25 +194,28 @@
 {
 	width: 100%;
 	background: rgb(2, 56, 89);
-	transition: background 0.3s, border 0.3s;
+	transition: background 0.3s;
 }
 
 .my-page-form-group > .btn > .btn-text
 {
 	font-size: 1.2rem;
 	color: #FCFCFC;
-	transition: color 0.3s;
 }
 
 .my-page-form-group > .btn:not(:disabled):hover
 {
-	background: #FCFCFC;
-	border: 1px solid rgb(2, 56, 89);
+	background: #0378A6;
 }
 
-.my-page-form-group > .btn:not(:disabled):hover > .btn-text
+.my-page-form-group > .btn:disabled:hover
 {
-	color: rgb(2, 56, 89);
+	cursor: not-allowed;
+}
+
+#verification-form
+{
+	display: none;
 }
 
 #unregister > .menu-title
@@ -224,25 +227,18 @@
 {
 	width: 100%;
 	background: #F29544;
-	transition: background 0.3s, border 0.3s;
+	transition: background 0.3s;
 }
 
 #unregister > .my-page-form-group > .btn > .btn-text
 {
 	font-size: 1.2rem;
 	color: #FCFCFC;
-	transition: color 0.3s;
 }
 
 #unregister > .my-page-form-group > .btn:not(:disabled):hover
 {
-	background: #FCFCFC;
-	border: 1px solid #F29544;
-}
-
-#unregister > .my-page-form-group > .btn:not(:disabled):hover > .btn-text
-{
-	color: #F29544;
+	background: #0378A6;
 }
 
 .my-page-form-group > .input-bundle

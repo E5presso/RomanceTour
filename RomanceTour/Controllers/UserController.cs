@@ -143,8 +143,8 @@ namespace RomanceTour.Controllers
 						string phone = PhoneVerifier.Retrieve(token);
 						if (phone != null && phone == user.Phone)
 						{
-							user.HashSalt = Key.GenerateString(32);
-							user.Password = Hash.SHA256(user.Password, user.HashSalt);
+							user.HashSalt = KeyGenerator.GenerateString(32);
+							user.Password = Password.Hash(user.Password, user.HashSalt);
 							db.User.Add(user);
 							await db.SaveChangesAsync();
 							var registered = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
@@ -178,56 +178,6 @@ namespace RomanceTour.Controllers
 				});
 			}
 		}
-		public async Task<IActionResult> UpdateAccount(User user)
-		{
-			try
-			{
-				if (XmlConfiguration.Administrator.UserName == user.UserName) return Json(new Response
-				{
-					Result = ResultType.SUCCESS,
-					Model = false
-				});
-				else
-				{
-					using var db = new RomanceTourDbContext();
-					var matched = await db.User
-						.Include(x => x.Appointment)
-						.SingleOrDefaultAsync(x => x.Id == SessionId);
-					if (matched != null)
-					{
-						matched.UserName = user.UserName;
-						matched.HashSalt = Key.GenerateString(32);
-						matched.Password = Hash.SHA256(user.Password, matched.HashSalt);
-						matched.Name = user.Name;
-						matched.Phone = user.Phone;
-						matched.Address = user.Address;
-						matched.Birthday = user.Birthday;
-
-						db.User.Update(matched);
-						await db.SaveChangesAsync();
-						return Json(new Response
-						{
-							Result = ResultType.SUCCESS,
-							Model = true
-						});
-					}
-					else return Json(new Response
-					{
-						Result = ResultType.SUCCESS,
-						Model = false
-					});
-				}
-			}
-			catch (Exception e)
-			{
-				await LogManager.ErrorAsync(e);
-				return Json(new Response
-				{
-					Result = ResultType.SYSTEM_ERROR,
-					Error = e,
-				});
-			}
-		}
 		public async Task<IActionResult> CheckAccount(User user)
 		{
 			try
@@ -235,7 +185,7 @@ namespace RomanceTour.Controllers
 				var admin = XmlConfiguration.Administrator;
 				if (admin.UserName == user.UserName)
 				{
-					if (admin.Password == Hash.SHA256(user.Password, admin.HashSalt))
+					if (admin.Password == Password.Hash(user.Password, admin.HashSalt))
 					{
 						AddSession(admin.Id, admin.Name);
 						return Json(new Response
@@ -254,7 +204,7 @@ namespace RomanceTour.Controllers
 				{
 					using var db = new RomanceTourDbContext();
 					var matched = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
-					if (matched != null && matched.Password == Hash.SHA256(user.Password, matched.HashSalt))
+					if (matched != null && matched.Password == Password.Hash(user.Password, matched.HashSalt))
 					{
 						AddSession(matched.Id, matched.Name);
 						return Json(new Response
@@ -474,6 +424,203 @@ namespace RomanceTour.Controllers
 				{
 					Result = ResultType.SYSTEM_ERROR,
 					Error = e
+				});
+			}
+		}
+
+		public async Task<IActionResult> ChangePersonalInfo(User user)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				if (matched != null)
+				{
+					matched.Name = user.Name;
+					matched.Address = user.Address;
+					matched.Birthday = user.Birthday;
+					db.User.Update(matched);
+					await db.SaveChangesAsync();
+					return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = true
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e,
+				});
+			}
+		}
+		public async Task<IActionResult> ChangePhoneNumber(string token)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				if (matched != null)
+				{
+					string phone = PhoneVerifier.Retrieve(token);
+					var duplicated = await db.User.SingleOrDefaultAsync(x => x.Phone == phone);
+					if (phone != null && duplicated == null)
+					{
+						matched.Phone = phone;
+						db.User.Update(matched);
+						await db.SaveChangesAsync();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = true
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = false
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e,
+				});
+			}
+		}
+		public async Task<IActionResult> ChangePaymentInfo(User user)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				if (matched != null)
+				{
+					matched.BillingName = user.BillingName;
+					matched.BillingBank = user.BillingBank;
+					matched.BillingNumber = user.BillingNumber;
+					db.User.Update(matched);
+					await db.SaveChangesAsync();
+					return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = true
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e,
+				});
+			}
+		}
+		public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				if (matched != null)
+				{
+					if (matched.Password == Password.Hash(oldPassword, matched.HashSalt))
+					{
+						matched.HashSalt = KeyGenerator.GenerateString(32);
+						matched.Password = Password.Hash(newPassword, matched.HashSalt);
+						db.User.Update(matched);
+						await db.SaveChangesAsync();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = true
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = false
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e,
+				});
+			}
+		}
+		public async Task<IActionResult> Unregister(User user)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				if (matched != null)
+				{
+					if (matched.Password == Password.Hash(user.Password, matched.HashSalt))
+					{
+						db.User.Remove(matched);
+						await db.SaveChangesAsync();
+						RemoveSession();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = true
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = false
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e,
 				});
 			}
 		}

@@ -1,5 +1,5 @@
 ﻿using Core.Network.NCloud;
-
+using Core.Security;
 using System;
 
 namespace TestConsole
@@ -14,12 +14,24 @@ namespace TestConsole
 			string accessKey = "eQLq6kKSxChwuTrhcZDB";
 			string secretKey = "8p7Wt6dm07SgXWaNsbaEH36zbxE0HsMomyTMhocF";
 			string from = "01064308733";
-
+			
 			Sens message = new Sens(url, uri, serviceId, accessKey, secretKey, from);
 			bool result = message.SendMessage(MessageType.SMS, "[낭만투어] 메세지 전송 테스트", "01064308733", "[낭만투어] SMS 메세지 발송을 테스트합니다.").Result;
 			if (result) Console.WriteLine("전송 완료!");
 			else Console.WriteLine("전송 실패...");
 			Console.ReadKey();
+
+			// string secretKey = KeyGenerator.GenerateString(32);
+			// string username = "root";
+			// string password = "eSP$#418404";
+			// string salt = KeyGenerator.GenerateString(32);
+			// string hash = Password.Hash(password, salt);
+			// 
+			// Console.WriteLine($"Secret Key : {secretKey}");
+			// Console.WriteLine($"User Name : {username}");
+			// Console.WriteLine($"Password : {password}");
+			// Console.WriteLine($"Salt : {salt}");
+			// Console.WriteLine($"Hash : {hash}");
 		}
 	}
 }

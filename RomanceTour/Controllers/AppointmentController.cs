@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Core.Security;
-using Core.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -145,7 +144,7 @@ namespace RomanceTour.Controllers
                     {
                         if (password != null)
                         {
-                            if (matched.Password == Hash.SHA256(password, matched.HashSalt))
+                            if (matched.Password == Password.Hash(password, matched.HashSalt))
                             {
                                 matched = await db.Appointment
                                     .Include(x => x.Person)
@@ -332,11 +331,11 @@ namespace RomanceTour.Controllers
                             var session = product.DateSession.SingleOrDefault(x => x.Date == appointment.Date);
                             if (session != null)
                             {
-                                string link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                                string link = Base64.Encode(Guid.NewGuid().ToByteArray());
                                 var check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
                                 while (check != null)
 								{
-                                    link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                                    link = Base64.Encode(Guid.NewGuid().ToByteArray());
                                     check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
 								}
                                 var item = new Appointment
@@ -453,21 +452,21 @@ namespace RomanceTour.Controllers
                         var session = product.DateSession.SingleOrDefault(x => x.Date == appointment.Date);
                         if (session != null)
                         {
-                            string link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                            string link = Base64.Encode(Guid.NewGuid().ToByteArray());
                             var check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
                             while (check != null)
                             {
-                                link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
+                                link = Base64.Encode(Guid.NewGuid().ToByteArray());
                                 check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
                             }
-                            var salt = Key.GenerateString(32);
+                            var salt = KeyGenerator.GenerateString(32);
                             var item = new Appointment
                             {
                                 DateSessionId = session.Id,
                                 IsUserAppointment = false,
                                 TimeStamp = DateTime.Now,
                                 Status = AppointmentStatus.READY_TO_PAY,
-                                Password = Hash.SHA256(appointment.Password, salt),
+                                Password = Password.Hash(appointment.Password, salt),
                                 HashSalt = salt,
                                 Name = appointment.Name,
                                 Phone = appointment.Phone,

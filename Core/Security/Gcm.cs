@@ -1,7 +1,6 @@
 ﻿using Core.Collections;
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,11 +8,13 @@ using System.Text;
 namespace Core.Security
 {
 	/// <summary>
-	/// AES 암호화 기능을 제공하는 클래스입니다.
+	/// Gcm 암호화 알고리즘을 구현한 클래스입니다.
 	/// </summary>
-	public class Aes : IEncryptionProvider
+	public class Gcm : IEncryptionProvider
 	{
-		private const int IV_SIZE = 16;
+		private const int KEY_SIZE = 32;
+		private const int TAG_SIZE = 12;
+		private const int NONCE_SIZE = 12;
 
 		/// <summary>
 		/// 대칭키를 가져옵니다.
@@ -21,40 +22,40 @@ namespace Core.Security
 		public byte[] Key { get; private set; }
 
 		/// <summary>
-		/// Aes 클래스를 초기화합니다.
+		/// Gcm 클래스를 초기화합니다.
 		/// </summary>
-		public Aes()
+		public Gcm()
 		{
-			Key = KeyGenerator.GenerateBytes(32);
+			Key = KeyGenerator.GenerateBytes(KEY_SIZE);
 		}
 		/// <summary>
-		/// Aes 클래스를 초기화합니다.
+		/// Gcm 클래스를 초기화합니다.
 		/// </summary>
 		/// <param name="key">암호화에 사용할 키를 지정합니다.</param>
-		public Aes(byte[] key)
+		public Gcm(byte[] key)
 		{
 			byte[] _key = key;
-			if (_key.Length > 32) throw new ArgumentException("키의 길이가 32바이트를 넘을 수 없습니다.");
+			if (_key.Length > KEY_SIZE) throw new ArgumentException($"키의 길이가 {KEY_SIZE}바이트를 넘을 수 없습니다.");
 			Key = _key;
 		}
 		/// <summary>
-		/// Aes 클래스를 초기화합니다.
+		/// Gcm 클래스를 초기화합니다.
 		/// </summary>
 		/// <param name="key">암호화에 사용할 키를 지정합니다.</param>
-		public Aes(string key)
+		public Gcm(string key)
 		{
 			byte[] _key = Base64.Decode(key);
-			if (_key.Length > 32) throw new ArgumentException("키의 길이가 32바이트를 넘을 수 없습니다.");
+			if (_key.Length > KEY_SIZE) throw new ArgumentException($"키의 길이가 {KEY_SIZE}바이트를 넘을 수 없습니다.");
 			Key = _key;
 		}
 		/// <summary>
-		/// Aes 클래스를 초기화합니다.
+		/// Gcm 클래스를 초기화합니다.
 		/// </summary>
 		/// <param name="key">암호화에 사용할 키를 지정합니다.</param>
-		public Aes(Key key)
+		public Gcm(Key key)
 		{
 			byte[] _key = key;
-			if (_key.Length > 32) throw new ArgumentException("키의 길이가 32바이트를 넘을 수 없습니다.");
+			if (_key.Length > KEY_SIZE) throw new ArgumentException($"키의 길이가 {KEY_SIZE}바이트를 넘을 수 없습니다.");
 			Key = _key;
 		}
 
@@ -64,7 +65,7 @@ namespace Core.Security
 		/// <param name="key">지정할 키입니다.</param>
 		public void SetKey(byte[] key)
 		{
-			if (key.Length > 32) throw new ArgumentException("키의 길이가 32바이트를 넘을 수 없습니다.");
+			if (key.Length > KEY_SIZE) throw new ArgumentException($"키의 길이가 {KEY_SIZE}바이트를 넘을 수 없습니다.");
 			Key = key;
 		}
 		/// <summary>
@@ -74,7 +75,7 @@ namespace Core.Security
 		public void SetKey(string key)
 		{
 			byte[] array = Encoding.UTF8.GetBytes(key);
-			if (array.Length > 32) throw new ArgumentException("키의 길이가 32바이트를 넘을 수 없습니다.");
+			if (array.Length > KEY_SIZE) throw new ArgumentException($"키의 길이가 {KEY_SIZE}바이트를 넘을 수 없습니다.");
 			Key = array;
 		}
 		/// <summary>
@@ -84,10 +85,10 @@ namespace Core.Security
 		public void SetKey(Key key)
 		{
 			byte[] array = key;
-			if (array.Length > 32) throw new ArgumentException("키의 길이가 32바이트를 넘을 수 없습니다.");
+			if (array.Length > KEY_SIZE) throw new ArgumentException($"키의 길이가 {KEY_SIZE}바이트를 넘을 수 없습니다.");
 			Key = array;
 		}
-
+		
 		/// <summary>
 		/// 데이터를 암호화합니다.
 		/// </summary>
@@ -99,24 +100,16 @@ namespace Core.Security
 			try
 			{
 				var buffer = new RingBuffer();
-				var iv = Hash.Compute(data, HashAlgorithm.SHA512).Take(IV_SIZE).ToArray();
-				using var aes = new RijndaelManaged
-				{
-					KeySize = 256,
-					BlockSize = 128,
-					Mode = CipherMode.CBC,
-					Padding = PaddingMode.PKCS7,
-					Key = Key,
-					IV = iv
-				};
-				using var memory = new MemoryStream();
-				using var crypto = new CryptoStream(memory, aes.CreateEncryptor(aes.Key, aes.IV), CryptoStreamMode.Write);
-				crypto.Write(data, 0, data.Length);
-				crypto.FlushFinalBlock();
-				var cipher = memory.ToArray();
+				var tag = new byte[TAG_SIZE];
+				var nonce = Hash.Compute(data, HashAlgorithm.SHA512).Take(NONCE_SIZE).ToArray();
+				var cipher = new byte[data.Length];
 
-				buffer.Write(iv);
+				using var gcm = new AesGcm(Key);
+				gcm.Encrypt(nonce, data, cipher, tag);
+				buffer.Write(tag);
+				buffer.Write(nonce);
 				buffer.Write(cipher);
+
 				encrypted = buffer.ToArray();
 				return true;
 			}
@@ -136,24 +129,15 @@ namespace Core.Security
 		{
 			try
 			{
-				var buffer = new RingBuffer(data);
-				byte[] iv = buffer.Read(IV_SIZE);
+				RingBuffer buffer = new RingBuffer(data);
+				byte[] tag = buffer.Read(TAG_SIZE);
+				byte[] nonce = buffer.Read(NONCE_SIZE);
 				byte[] cipher = buffer.Flush();
+				byte[] plain = new byte[cipher.Length];
 
-				using var aes = new RijndaelManaged
-				{
-					KeySize = 256,
-					BlockSize = 128,
-					Mode = CipherMode.CBC,
-					Padding = PaddingMode.PKCS7,
-					Key = Key,
-					IV = iv
-				};
-				using var memory = new MemoryStream();
-				using var crypto = new CryptoStream(memory, aes.CreateDecryptor(aes.Key, aes.IV), CryptoStreamMode.Write);
-				crypto.Write(cipher, 0, cipher.Length);
-				crypto.FlushFinalBlock();
-				decrypted = memory.ToArray();
+				using var gcm = new AesGcm(Key);
+				gcm.Decrypt(nonce, cipher, tag, plain);
+				decrypted = plain;
 				return true;
 			}
 			catch

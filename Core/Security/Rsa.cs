@@ -1,37 +1,22 @@
-﻿using System;
+﻿using Core.Collections;
+
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Core.Security
 {
 	/// <summary>
-	/// 해쉬 타입을 지정합니다.
-	/// </summary>
-	public enum HashType
-	{
-		/// <summary>
-		/// SHA1 해쉬입니다.
-		/// </summary>
-		SHA1,
-		/// <summary>
-		/// SHA256 해쉬입니다.
-		/// </summary>
-		SHA256,
-		/// <summary>
-		/// SHA384 해쉬입니다.
-		/// </summary>
-		SHA384,
-		/// <summary>
-		/// SHA512 해쉬입니다.
-		/// </summary>
-		SHA512
-	}
-	/// <summary>
 	/// RSA 암호화 기능을 제공하는 클래스입니다..
 	/// </summary>
-	public class Rsa : IDisposable
+	public class Rsa : IEncryptionProvider
 	{
 		private string privateKey;
+
+		/// <summary>
+		/// 암호문에 포함될 RSA서명의 길이를 가져옵니다.
+		/// </summary>
+		public static int SIGNATURE_SIZE = 384;
 
 		/// <summary>
 		/// RSA 공개키입니다.
@@ -53,7 +38,7 @@ namespace Core.Security
 		}
 
 		/// <summary>
-		/// RSA 클래스를 초기화합니다.
+		/// Rsa 클래스를 초기화합니다.
 		/// </summary>
 		public Rsa()
 		{
@@ -61,7 +46,7 @@ namespace Core.Security
 			PrivateKey = provider.ToXmlString(true);
 		}
 		/// <summary>
-		/// RSA 클래스를 초기화합니다.
+		/// Rsa 클래스를 초기화합니다.
 		/// </summary>
 		/// <param name="certificate">X.509 인증서를 지정합니다.</param>
 		public Rsa(X509 certificate)
@@ -72,6 +57,21 @@ namespace Core.Security
 				using var provider = new RSACryptoServiceProvider();
 				privateKey = provider.ToXmlString(true);
 				PublicKey = certificate.PublicKey;
+			}
+		}
+		/// <summary>
+		/// Rsa 클래스를 초기화합니다.
+		/// </summary>
+		/// <param name="key">키 데이터를 지정합니다.</param>
+		public Rsa(Key key)
+		{
+			var cert = (X509)key;
+			if (cert.HasPrivateKey) PrivateKey = cert.PrivateKey;
+			else
+			{
+				using var provider = new RSACryptoServiceProvider();
+				privateKey = provider.ToXmlString(true);
+				PublicKey = cert.PublicKey;
 			}
 		}
 
@@ -85,14 +85,18 @@ namespace Core.Security
 		{
 			try
 			{
+				if (data.Length > 256) throw new ArgumentException("암호화하려는 데이터는 키 길이를 초과할 수 없습니다.");
+				var buffer = new RingBuffer();
 				using var provider = new RSACryptoServiceProvider();
 				provider.FromXmlString(PublicKey);
-				encrypted = provider.Encrypt(data, true);
+				buffer.Write(Sign(data));
+				buffer.Write(provider.Encrypt(data, true));
+				encrypted = buffer.ToArray();
 				return true;
 			}
 			catch
 			{
-				encrypted = default;
+				encrypted = data;
 				return false;
 			}
 		}
@@ -106,14 +110,22 @@ namespace Core.Security
 		{
 			try
 			{
+				var buffer = new RingBuffer(data);
+				byte[] signature = buffer.Read(SIGNATURE_SIZE);
+				byte[] cipher = buffer.Flush();
 				using var provider = new RSACryptoServiceProvider();
 				provider.FromXmlString(privateKey);
-				decrypted = provider.Decrypt(data, true);
-				return true;
+				decrypted = provider.Decrypt(cipher, true);
+				if (Verify(decrypted, signature)) return true;
+				else
+				{
+					decrypted = data;
+					return false;
+				}
 			}
 			catch
 			{
-				decrypted = default;
+				decrypted = data;
 				return false;
 			}
 		}
@@ -125,9 +137,18 @@ namespace Core.Security
 		/// <returns>암호화 결과입니다.</returns>
 		public bool Encrypt(string data, out string encrypted)
 		{
-			bool result = Encrypt(Encoding.UTF8.GetBytes(data), out byte[] cipher);
-			encrypted = Base64.GetString(cipher);
-			return result;
+			try
+			{
+				bool result = Encrypt(Encoding.UTF8.GetBytes(data), out byte[] cipher);
+				if (result) encrypted = Base64.Encode(cipher);
+				else encrypted = data;
+				return result;
+			}
+			catch
+			{
+				encrypted = data;
+				return false;
+			}
 		}
 		/// <summary>
 		/// 데이터를 복호화합니다.
@@ -137,30 +158,38 @@ namespace Core.Security
 		/// <returns>복호화 결과입니다.</returns>
 		public bool Decrypt(string data, out string decrypted)
 		{
-			bool result = Decrypt(Base64.GetBytes(data), out byte[] plain);
-			decrypted = Encoding.UTF8.GetString(plain);
-			return result;
+			try
+			{
+				bool result = Decrypt(Base64.Decode(data), out byte[] plain);
+				if (result) decrypted = Encoding.UTF8.GetString(plain);
+				else decrypted = data;
+				return result;
+			}
+			catch
+			{
+				decrypted = data;
+				return false;
+			}
 		}
 
 		/// <summary>
 		/// 데이터에 서명합니다.
 		/// </summary>
 		/// <param name="data">서명할 데이터입니다.</param>
-		/// <param name="type">서명에 사용할 해쉬함수를 지정합니다.</param>
+		/// <param name="algorithm">서명에 사용할 해쉬함수를 지정합니다.</param>
 		/// <returns>서명된 데이터입니다.</returns>
-		public byte[] Sign(byte[] data, HashType type = HashType.SHA256)
+		public byte[] Sign(byte[] data, SignAlgorithm algorithm = SignAlgorithm.RS256)
 		{
 			try
 			{
 				using var provider = new RSACryptoServiceProvider();
 				provider.FromXmlString(privateKey);
-				return type switch
+				return algorithm switch
 				{
-					HashType.SHA1 => provider.SignData(data, new SHA1CryptoServiceProvider()),
-					HashType.SHA256 => provider.SignData(data, new SHA256CryptoServiceProvider()),
-					HashType.SHA384 => provider.SignData(data, new SHA384CryptoServiceProvider()),
-					HashType.SHA512 => provider.SignData(data, new SHA512CryptoServiceProvider()),
-					_ => provider.SignData(data, new SHA1CryptoServiceProvider())
+					SignAlgorithm.RS256 => provider.SignData(data, new SHA256CryptoServiceProvider()),
+					SignAlgorithm.RS384 => provider.SignData(data, new SHA384CryptoServiceProvider()),
+					SignAlgorithm.RS512 => provider.SignData(data, new SHA512CryptoServiceProvider()),
+					_ => throw new ArgumentException("유효하지 않은 알고리즘입니다."),
 				};
 			}
 			catch { throw; }
@@ -170,79 +199,44 @@ namespace Core.Security
 		/// </summary>
 		/// <param name="data">서명의 유효성을 검증할 데이터를 지정합니다.</param>
 		/// <param name="sign">데이터의 서명값을 지정합니다.</param>
-		/// <param name="type">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
+		/// <param name="algorithm">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
 		/// <returns>검증 결과입니다.</returns>
-		public bool Verify(byte[] data, byte[] sign, HashType type = HashType.SHA256)
+		public bool Verify(byte[] data, byte[] sign, SignAlgorithm algorithm = SignAlgorithm.RS256)
 		{
 			try
 			{
 				using var provider = new RSACryptoServiceProvider();
 				provider.FromXmlString(PublicKey);
-				return type switch
+				return algorithm switch
 				{
-					HashType.SHA1 => provider.VerifyData(data, new SHA1CryptoServiceProvider(), sign),
-					HashType.SHA256 => provider.VerifyData(data, new SHA256CryptoServiceProvider(), sign),
-					HashType.SHA384 => provider.VerifyData(data, new SHA384CryptoServiceProvider(), sign),
-					HashType.SHA512 => provider.VerifyData(data, new SHA512CryptoServiceProvider(), sign),
-					_ => provider.VerifyData(data, new SHA1CryptoServiceProvider(), sign)
+					SignAlgorithm.RS256 => provider.VerifyData(data, new SHA256CryptoServiceProvider(), sign),
+					SignAlgorithm.RS384 => provider.VerifyData(data, new SHA384CryptoServiceProvider(), sign),
+					SignAlgorithm.RS512 => provider.VerifyData(data, new SHA512CryptoServiceProvider(), sign),
+					_ => throw new ArgumentException("유효하지 않은 알고리즘입니다."),
 				};
 			}
-			catch { throw; }
+			catch { return false; }
 		}
 		/// <summary>
 		/// 데이터에 서명합니다.
 		/// </summary>
 		/// <param name="data">서명할 데이터입니다.</param>
-		/// <param name="type">서명에 사용할 해쉬함수를 지정합니다.</param>
+		/// <param name="algorithm">서명에 사용할 해쉬함수를 지정합니다.</param>
 		/// <returns>서명된 데이터입니다.</returns>
-		public string Sign(string data, HashType type = HashType.SHA256)
+		public string Sign(string data, SignAlgorithm algorithm = SignAlgorithm.RS256)
 		{
-			return Base64.GetString(Sign(Encoding.UTF8.GetBytes(data), type));
+			return Base64.Encode(Sign(Encoding.UTF8.GetBytes(data), algorithm));
 		}
 		/// <summary>
 		/// 서명된 데이터를 검증합니다.
 		/// </summary>
 		/// <param name="data">서명의 유효성을 검증할 데이터를 지정합니다.</param>
 		/// <param name="sign">데이터의 서명값을 지정합니다.</param>
-		/// <param name="type">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
+		/// <param name="algorithm">서명에 사용한 해쉬 알고리즘을 지정합니다.</param>
 		/// <returns>검증 결과입니다.</returns>
-		public bool Verify(string data, string sign, HashType type = HashType.SHA256)
+		public bool Verify(string data, string sign, SignAlgorithm algorithm = SignAlgorithm.RS256)
 		{
-			return Verify(Encoding.UTF8.GetBytes(data), Base64.GetBytes(sign), type);
+			return Verify(Encoding.UTF8.GetBytes(data), Base64.Decode(sign), algorithm);
 		}
-		#region IDisposable Support
-		private bool disposedValue = false;
-		/// <summary>
-		/// RSA 클래스를 제거합니다.
-		/// </summary>
-		~Rsa()
-		{
-			Dispose(false);
-		}
-		/// <summary>
-		/// IDisposable 패턴을 구현합니다.
-		/// </summary>
-		/// <param name="disposing"></param>
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-				}
-				PublicKey = null;
-				privateKey = null;
-				disposedValue = true;
-			}
-		}
-		/// <summary>
-		/// 클래스를 제거하고 리소스를 반환합니다.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-		#endregion
 	}
 }

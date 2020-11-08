@@ -1,6 +1,5 @@
 ﻿using Core.Security;
 using Core.Utility;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +27,6 @@ namespace Core.Network.NCloud
 		/// </summary>
 		MMS
 	}
-
 	/// <summary>
 	/// 네이버 클라우드 플랫폼(NCloud)의 SENS 서비스를 활용한 SMS 웹 발송 기능을 구현합니다.
 	/// </summary>
@@ -280,7 +278,7 @@ namespace Core.Network.NCloud
 				.Append(newLine)
 				.Append(AccessKey)
 				.ToString();
-			return HMAC.SHA256(SecretKey, message);
+			return HMAC.Compute(message, SecretKey);
 		}
 	}
 }

@@ -36,10 +36,10 @@ namespace RomanceTour.Middlewares
 		private static readonly XmlDocument config = new XmlDocument();
 
 		public static string Domain => config["configuration"]["domain"].InnerText;
-		public static string Key
+		public static string SecretKey
 		{
-			get => config["configuration"]["key"].InnerText;
-			set => config["configuration"]["key"].InnerText = value;
+			get => config["configuration"]["secret-key"].InnerText;
+			set => config["configuration"]["secret-key"].InnerText = value;
 		}
 
 		public static string RootDirectory => config["configuration"]["directories"]["root"].InnerText;

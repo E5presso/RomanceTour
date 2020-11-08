@@ -44,7 +44,18 @@ namespace Core.Collections
 			tail = 0;
 			Count = 0;
 		}
-
+		/// <summary>
+		/// 최초 데이터를 이용하여 RingBuffer 클래스를 초기화합니다.
+		/// </summary>
+		/// <param name="initial">버퍼에 초기 데이터를 지정합니다.</param>
+		public RingBuffer(byte[] initial)
+		{
+			array = (byte[])initial.Clone();
+			head = 0;
+			tail = initial.Length;
+			Count = initial.Length;
+		}
+		
 		/// <summary>
 		/// 버퍼에 지정한 데이터를 기록합니다.
 		/// </summary>
@@ -305,6 +316,17 @@ namespace Core.Collections
 			head = 0;
 			tail = 0;
 			Count = 0;
+		}
+		/// <summary>
+		/// 최초 데이터를 이용하여 RingBuffer 클래스를 초기화합니다.
+		/// </summary>
+		/// <param name="initial">버퍼에 초기 데이터를 지정합니다.</param>
+		public RingBuffer(T[] initial)
+		{
+			array = (T[])initial.Clone();
+			head = 0;
+			tail = initial.Length;
+			Count = initial.Length;
 		}
 
 		/// <summary>

@@ -74,6 +74,9 @@ namespace RomanceTour.Middlewares
 		public static string AppointmentSubject => config["configuration"]["appointment"]["subject"].InnerText;
 		public static string AppointmentTemplate => config["configuration"]["appointment"]["template"].InnerText;
 
+		public static string CancelSubject => config["configuration"]["cancel-appointment"]["subject"].InnerText;
+		public static string CancelTemplate => config["configuration"]["cancel-appointment"]["template"].InnerText;
+
 		public static string KakaoAPI => config["configuration"]["kakao"]["api-key"].InnerText;
 
 		static XmlConfiguration()

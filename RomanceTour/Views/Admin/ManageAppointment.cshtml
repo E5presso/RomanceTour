@@ -18,6 +18,27 @@
 <link rel="stylesheet" href="~/views/admin/manage-appointment.css" />
 <script src="~/views/admin/manage-appointment.js"></script>
 
+<div id="popup-container">
+	<div id="popup">
+		<span class="title">
+			예약취소 안내문자 발송
+		</span>
+		<div id="message-content" class="form-group">
+			<label>
+				취소 사유 및 환불 안내
+			</label>
+			<textarea id="message" class="form-control"></textarea>
+		</div>
+		<div id="message-send" class="form-group">
+			<button id="send-message" class="btn" disabled>
+				<span class="btn-icon fas fa-paper-plane"></span>
+				<span class="btn-text">
+					메세지 발송
+				</span>
+			</button>
+		</div>
+	</div>
+</div>
 <div class="page-back">
 	<button class="btn second go-back">
 		<span class="fa fa-arrow-left btn-icon"></span>
@@ -39,7 +60,7 @@
 					<option value="confirmed">출발 확정</option>
 				</select>
 				<div class="search-bar-second search-user">
-					<input type="search" id="product-keyword" class="form-control search-text has-shadow" placeholder="검색어 입력" />
+					<input type="search" id="product-keyword" class="form-control search-text-admin has-shadow" placeholder="검색어 입력" />
 					<button class="btn second user-search-btn">
 						<span class="fa fa-search"></span>
 					</button>
@@ -293,7 +314,7 @@
 					}
 				</select>
 				<div class="search-bar-second search-user">
-					<input type="search" id="appointment-keyword" class="form-control search-text has-shadow" placeholder="검색어 입력" />
+					<input type="search" id="appointment-keyword" class="form-control search-text-admin has-shadow" placeholder="검색어 입력" />
 					<button class="btn second user-search-btn">
 						<span class="fa fa-search"></span>
 					</button>
@@ -389,6 +410,11 @@
 										case AppointmentStatus.CANCELED:
 										{
 											<option value="@((int)status)">예약취소</option>
+											break;
+										}
+										case AppointmentStatus.REFUNDED:
+										{
+											<option value="@((int)status)">환불완료</option>
 											break;
 										}
 									}

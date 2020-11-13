@@ -36,9 +36,23 @@
 		<subject>[낭만투어] 예약완료 안내</subject>
 		<template>{0}님, 요청하신 상품에 대한 예약이 완료되었습니다.
 상품명 : {1}
-출발날짜 : {2}
-자세한 사항은 아래의 링크를 눌러 확인해주세요.
+날짜 : {2}
+자세한 사항은 아래의 링크에 접속하여 확인해주세요.
 감사합니다.
+
 {3}</template>
 	</appointment>
+	<cancel-appointment>
+		<subject>[낭만투어] 예약취소 안내</subject>
+		<template>상품명 : {0}
+날짜 : {1}
+아래의 사유로 인해 해당 예약이 취소되었습니다.
+
+{2}
+
+자세한 내용은 고객센터를 통해
+문의해주시기 바랍니다.
+이용에 불편을 드려
+진심으로 죄송합니다.</template>
+	</cancel-appointment>
 </configuration>

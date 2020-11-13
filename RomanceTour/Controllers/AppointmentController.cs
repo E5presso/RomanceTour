@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Core.Security;
+using Core.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,7 +44,7 @@ namespace RomanceTour.Controllers
                             .ThenInclude(x => x.Product)
                         .Where(x => x.Name == name && x.Phone == phone)
                         .ToListAsync();
-
+                    matched.ForEach(x => x.Status = x.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : x.Status);
                     ViewBag.Back = Back;
                     ViewBag.Appointments = matched;
                     return View("ListAppointment");
@@ -72,7 +73,7 @@ namespace RomanceTour.Controllers
                                 .ThenInclude(x => x.Product)
                             .Where(x => x.UserId == SessionId)
                             .ToListAsync();
-
+                        matched.ForEach(x => x.Status = x.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : x.Status);
                         ViewBag.Back = Back;
                         ViewBag.Appointments = matched;
                         return View();
@@ -112,6 +113,7 @@ namespace RomanceTour.Controllers
                                     .ThenInclude(x => x.ProductBilling)
                                         .ThenInclude(x => x.Billing)
                             .SingleOrDefaultAsync(x => x.UserId == SessionId && x.Id == id);
+                        matched.Status = matched.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : matched.Status;
 
                         if (matched != null)
                         {
@@ -160,6 +162,7 @@ namespace RomanceTour.Controllers
                                             .ThenInclude(x => x.ProductBilling)
                                                 .ThenInclude(x => x.Billing)
                                     .SingleOrDefaultAsync(x => x.UserId == SessionId && x.Id == id);
+                                matched.Status = matched.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : matched.Status;
 
                                 ViewBag.Back = Back;
                                 ViewBag.Appointment = matched;
@@ -182,6 +185,36 @@ namespace RomanceTour.Controllers
                 await LogManager.ErrorAsync(e);
                 return RedirectToAction("Error", "Home");
             }
+        }
+        public async Task<IActionResult> ViewAppointment(string link)
+        {
+            using var db = new RomanceTourDbContext();
+            var matched = await db.Appointment
+                .Include(x => x.User)
+                .Include(x => x.Person)
+                    .ThenInclude(x => x.Departure)
+                .Include(x => x.Person)
+                    .ThenInclude(x => x.Option)
+                        .ThenInclude(x => x.PriceRule)
+                .Include(x => x.DateSession)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.Category)
+                .Include(x => x.DateSession)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductBilling)
+                            .ThenInclude(x => x.Billing)
+                .SingleOrDefaultAsync(x => x.Link == link);
+
+            if (matched != null)
+            {
+                matched.Status = matched.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : matched.Status;
+
+                ViewBag.Back = Back;
+                ViewBag.Appointment = matched;
+                ViewBag.Type = "View";
+                return View("GetAppointment");
+            }
+            else return RedirectToAction("PageNotFound", "Home");
         }
 
         public async Task<IActionResult> AddUserAppointment(int id)
@@ -331,13 +364,13 @@ namespace RomanceTour.Controllers
                             var session = product.DateSession.SingleOrDefault(x => x.Date == appointment.Date);
                             if (session != null)
                             {
-                                string link = Base64.Encode(Guid.NewGuid().ToByteArray());
+                                string link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
                                 var check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
                                 while (check != null)
-								{
-                                    link = Base64.Encode(Guid.NewGuid().ToByteArray());
+                                {
+                                    link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
                                     check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
-								}
+                                }
                                 var item = new Appointment
                                 {
                                     DateSessionId = session.Id,
@@ -452,11 +485,11 @@ namespace RomanceTour.Controllers
                         var session = product.DateSession.SingleOrDefault(x => x.Date == appointment.Date);
                         if (session != null)
                         {
-                            string link = Base64.Encode(Guid.NewGuid().ToByteArray());
+                            string link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
                             var check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
                             while (check != null)
                             {
-                                link = Base64.Encode(Guid.NewGuid().ToByteArray());
+                                link = Converter.ToHexCode(Guid.NewGuid().ToByteArray());
                                 check = await db.Appointment.SingleOrDefaultAsync(x => x.Link == link);
                             }
                             var salt = KeyGenerator.GenerateString(32);
@@ -586,7 +619,7 @@ namespace RomanceTour.Controllers
                     return Json(new Response
                     {
                         Result = ResultType.SUCCESS,
-                        Model = await matched.ToArrayAsync()
+                        Model = await matched.OrderBy(x => x.Date).ToArrayAsync()
                     });
                 }
                 else return Json(new Response
@@ -655,7 +688,15 @@ namespace RomanceTour.Controllers
                 if (IsAdministrator)
                 {
                     using var db = new RomanceTourDbContext();
-                    var session = await db.DateSession.SingleOrDefaultAsync(x => x.Id == id);
+                    var session = await db.DateSession
+                        .Include(x => x.Appointment)
+                        .SingleOrDefaultAsync(x => x.Id == id);
+                    if (session.Status == DateSessionStatus.CANCELED && (DateSessionStatus)status != DateSessionStatus.CANCELED)
+					{
+                        session.Reserved = session.Appointment.Sum(x => x.Ammount);
+                        session.Paid = session.Appointment.Where(x => x.Status == AppointmentStatus.CONFIRMED).Sum(x => x.Ammount);
+                        session.Sales = session.Appointment.Where(x => x.Status == AppointmentStatus.CONFIRMED).Sum(x => x.Price);
+                    }
                     session.Status = (DateSessionStatus)status;
                     db.DateSession.Update(session);
                     await db.SaveChangesAsync();
@@ -765,7 +806,7 @@ namespace RomanceTour.Controllers
                             Name = x.IsUserAppointment ? x.User.Name : x.Name,
                             Ammount = x.Ammount,
                             IsUser = x.IsUserAppointment,
-                            Status = x.Status,
+                            Status = x.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : x.Status,
                             Phone = x.IsUserAppointment ? x.User.Phone : x.Phone,
                             Address = x.IsUserAppointment ? x.User.Address : x.Address,
                             BillingName = x.IsUserAppointment ? x.User.BillingName : x.BillingName,
@@ -774,18 +815,19 @@ namespace RomanceTour.Controllers
                             Price = x.Price
                         });
                     if (status != -1) matched = matched.Where(x => x.Status == (AppointmentStatus)status);
-                    matched = matched.Where(x =>
-                        EF.Functions.Like(x.Name, $"%{keyword}%") ||
-                        EF.Functions.Like(x.Phone, $"%{keyword}%") ||
-                        EF.Functions.Like(x.Address, $"%{keyword}%") ||
-                        EF.Functions.Like(x.BillingName, $"%{keyword}%") ||
-                        EF.Functions.Like(x.BillingBank, $"%{keyword}%") ||
-                        EF.Functions.Like(x.BillingNumber, $"%{keyword}%")
-                    );
+                    var converted = await matched.ToArrayAsync();
+                    converted = converted.Where(x =>
+                        x.Name.Contains($"{keyword}") ||
+                        x.Phone.Contains($"{keyword}") ||
+                        x.Address.Contains($"{keyword}") ||
+                        x.BillingName.Contains($"{keyword}") ||
+                        x.BillingBank.Contains($"{keyword}") ||
+                        x.BillingNumber.Contains($"{keyword}")
+                    ).ToArray();
                     return Json(new Response
                     {
                         Result = ResultType.SUCCESS,
-                        Model = await matched.ToArrayAsync()
+                        Model = converted
                     });
                 }
                 else return Json(new Response
@@ -810,12 +852,25 @@ namespace RomanceTour.Controllers
                 if (IsAdministrator)
                 {
                     using var db = new RomanceTourDbContext();
-                    var matched = await db.Appointment.SingleOrDefaultAsync(x => x.Id == id);
-                    return Json(new Response
+                    var matched = await db.Appointment
+                        .Include(x => x.DateSession)
+                        .SingleOrDefaultAsync(x => x.Id == id);
+                    if (matched != null)
                     {
-                        Result = ResultType.SUCCESS,
-                        Model = (int)matched.Status
-                    });
+                        return Json(new Response
+                        {
+                            Result = ResultType.SUCCESS,
+                            Model = matched.DateSession.Status == DateSessionStatus.CANCELED ? (int)AppointmentStatus.CANCELED : (int)matched.Status
+                        });
+                    }
+                    else
+                    {
+                        return Json(new Response
+                        {
+                            Result = ResultType.SUCCESS,
+                            Model = false
+                        });
+                    }
                 }
                 else return Json(new Response
                 {
@@ -856,17 +911,30 @@ namespace RomanceTour.Controllers
                         matched.DateSession.Sales += matched.Price;
                     }
                     else matched.DateSession.Paid = matched.DateSession.Paid;
-                    matched.Status = (AppointmentStatus)status;
-
-                    db.Appointment.Update(matched);
-                    db.DateSession.Update(matched.DateSession);
-
-                    await db.SaveChangesAsync();
-                    return Json(new Response
+                    if ((AppointmentStatus)status == AppointmentStatus.REFUNDED)
                     {
-                        Result = ResultType.SUCCESS,
-                        Model = true
-                    });
+                        matched.DateSession.Reserved -= matched.Person.Sum(x => x.Ammount);
+                        db.DateSession.Update(matched.DateSession);
+                        db.Appointment.Remove(matched);
+                        await db.SaveChangesAsync();
+                        return Json(new Response
+                        {
+                            Result = ResultType.SUCCESS,
+                            Model = true
+                        });
+                    }
+                    else
+                    {
+                        matched.Status = (AppointmentStatus)status;
+                        db.Appointment.Update(matched);
+                        db.DateSession.Update(matched.DateSession);
+                        await db.SaveChangesAsync();
+                        return Json(new Response
+                        {
+                            Result = ResultType.SUCCESS,
+                            Model = true
+                        });
+                    }
                 }
                 else return Json(new Response
                 {
@@ -884,33 +952,48 @@ namespace RomanceTour.Controllers
             }
         }
 
-        public async Task<IActionResult> ViewAppointment(string link)
+        public async Task<IActionResult> CancelSession(int id, string message)
 		{
-            using var db = new RomanceTourDbContext();
-            var matched = await db.Appointment
-                .Include(x => x.User)
-                .Include(x => x.Person)
-                    .ThenInclude(x => x.Departure)
-                .Include(x => x.Person)
-                    .ThenInclude(x => x.Option)
-                        .ThenInclude(x => x.PriceRule)
-                .Include(x => x.DateSession)
-                    .ThenInclude(x => x.Product)
-                        .ThenInclude(x => x.Category)
-                .Include(x => x.DateSession)
-                    .ThenInclude(x => x.Product)
-                        .ThenInclude(x => x.ProductBilling)
-                            .ThenInclude(x => x.Billing)
-                .SingleOrDefaultAsync(x => x.Link == link);
-
-            if (matched != null)
+            try
             {
-                ViewBag.Back = Back;
-                ViewBag.Appointment = matched;
-                ViewBag.Type = "View";
-                return View("GetAppointment");
+                if (IsAdministrator)
+                {
+                    using var db = new RomanceTourDbContext();
+                    var session = await db.DateSession
+                        .Include(x => x.Product)
+                        .Include(x => x.Appointment)
+                            .ThenInclude(x => x.User)
+                        .SingleOrDefaultAsync(x => x.Id == id);
+
+                    var phone = session.Appointment.Where(x => !x.IsUserAppointment).Select(x => x.Phone).ToList();
+                    phone.AddRange(session.Appointment.Where(x => x.IsUserAppointment).Select(x => x.User.Phone));
+                    session.Reserved = 0;
+                    session.Paid = 0;
+                    session.Sales = 0;
+                    session.Status = DateSessionStatus.CANCELED;
+                    db.DateSession.Update(session);
+                    await db.SaveChangesAsync();
+                    var result = await MessageSender.SendCustomMessage(phone.ToArray(), session.Product.Title, session.Date, message);
+                    return Json(new Response
+                    {
+                        Result = ResultType.SUCCESS,
+                        Model = result
+                    });
+                }
+                else return Json(new Response
+                {
+                    Result = ResultType.ACCESS_DENIED
+                });
             }
-            else return RedirectToAction("PageNotFound", "Home");
+            catch (Exception e)
+            {
+                await LogManager.ErrorAsync(e);
+                return Json(new Response
+                {
+                    Result = ResultType.SYSTEM_ERROR,
+                    Error = e
+                });
+            }
         }
-    }
+   }
 }

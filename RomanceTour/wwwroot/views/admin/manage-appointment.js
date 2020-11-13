@@ -25,6 +25,8 @@ var sessionStatus = {
 	"CANCELED": 3
 };
 
+var DURATION = 300;
+
 function ListProduct()
 {
 	var category = $("#product-category option:selected").val();
@@ -77,10 +79,18 @@ function GetSession()
 function UpdateSession()
 {
 	var status = parseInt($("#session-input-status").val());
-	Ajax("/Appointment/UpdateSession", {
-		id: selectedSession,
-		status: status
-	}, UpdateSessionCallback);
+	if (status == 3)
+	{
+		if (confirm("해당 날짜를 취소할 경우 여기에 연결된 모든 예약이 취소처리됩니다.\n이 작업은 되돌릴 수 없습니다.\n계속 하시겠습니까?"))
+			ShowPopup();
+	}
+	else
+	{
+		Ajax("/Appointment/UpdateSession", {
+			id: selectedSession,
+			status: status
+		}, UpdateSessionCallback);
+	}
 }
 function CountDeparture()
 {
@@ -117,10 +127,32 @@ function GetAppointment()
 function UpdateAppointment()
 {
 	var status = parseInt($("#appointment-input-status").val());
-	Ajax("/Appointment/UpdateAppointmentStatus", {
-		id: selectedAppointment,
-		status: status
-	}, UpdateAppointmentCallback);
+	if (status == 3)
+	{
+		if (confirm("정말로 해당 예약을 취소하시겠습니까?\n이 작업은 되돌릴 수 없습니다."))
+		{
+			Ajax("/Appointment/UpdateAppointmentStatus", {
+				id: selectedAppointment,
+				status: status
+			}, UpdateAppointmentCallback);
+		}
+		else $("#appointment-input-status").val(0);
+	}
+	else
+	{
+		Ajax("/Appointment/UpdateAppointmentStatus", {
+			id: selectedAppointment,
+			status: status
+		}, UpdateAppointmentCallback);
+	}
+}
+function CancelSession()
+{
+	var message = $("#message").val();
+	Ajax("/Appointment/CancelSession", {
+		id: selectedSession,
+		message: message
+	}, CancelSessionCallback);
 }
 
 function ListProductCallback(model)
@@ -173,7 +205,102 @@ function ListSessionCallback(model)
 	$("#session-list tbody").html("");
 	$.each(model, function (index, item)
 	{
-		$("#session-list tbody").append(`
+		if (item.Reserved > 0 && item.Paid == item.Reserved)
+		{
+			$("#session-list tbody").append(`
+			<tr class="session-item item-fully" id="session-${item.Id}">
+				<td>
+					<span class="table-body">
+						${new Date(item.Date).format(`yyyy년 MM월 dd일`)}
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Reserved}명
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Paid}명
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Status == "AVAILABLE" ?
+					"예약가능" : item.Status == "APPROVED" ?
+						"출발확정" : item.Status == "FULLED" ?
+							"예약마감" : item.Status == "CANCELED" ?
+								"예약취소" : "오류"}
+					</span>
+				</td>
+			</tr>
+		`);
+		}
+		else if (item.Reserved > 0 && item.Paid == 0)
+		{
+			$("#session-list tbody").append(`
+			<tr class="session-item item-somethings-wrong" id="session-${item.Id}">
+				<td>
+					<span class="table-body">
+						${new Date(item.Date).format(`yyyy년 MM월 dd일`)}
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Reserved}명
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Paid}명
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Status == "AVAILABLE" ?
+					"예약가능" : item.Status == "APPROVED" ?
+						"출발확정" : item.Status == "FULLED" ?
+							"예약마감" : item.Status == "CANCELED" ?
+								"예약취소" : "오류"}
+					</span>
+				</td>
+			</tr>
+		`);
+		}
+		else if (item.Reserved > 0 && item.Paid < item.Reserved)
+		{
+			$("#session-list tbody").append(`
+			<tr class="session-item item-warning" id="session-${item.Id}">
+				<td>
+					<span class="table-body">
+						${new Date(item.Date).format(`yyyy년 MM월 dd일`)}
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Reserved}명
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Paid}명
+					</span>
+				</td>
+				<td>
+					<span class="table-body">
+						${item.Status == "AVAILABLE" ?
+					"예약가능" : item.Status == "APPROVED" ?
+						"출발확정" : item.Status == "FULLED" ?
+							"예약마감" : item.Status == "CANCELED" ?
+								"예약취소" : "오류"}
+					</span>
+				</td>
+			</tr>
+		`);
+		}
+		else
+		{
+			$("#session-list tbody").append(`
 			<tr class="session-item" id="session-${item.Id}">
 				<td>
 					<span class="table-body">
@@ -193,14 +320,15 @@ function ListSessionCallback(model)
 				<td>
 					<span class="table-body">
 						${item.Status == "AVAILABLE" ?
-				"예약가능" : item.Status == "APPROVED" ?
-					"출발확정" : item.Status == "FULLED" ?
-						"예약마감" : item.Status == "CANCELED" ?
-							"예약취소" : "오류"}
+					"예약가능" : item.Status == "APPROVED" ?
+						"출발확정" : item.Status == "FULLED" ?
+							"예약마감" : item.Status == "CANCELED" ?
+								"예약취소" : "오류"}
 					</span>
 				</td>
 			</tr>
 		`);
+		}
 		$(`#session-${item.Id}`).on("mouseover", function ()
 		{
 			$(this).addClass("hovered");
@@ -253,7 +381,6 @@ function GetSessionCallback(model)
 	CountDeparture();
 	CountPriceRule();
 
-	console.log(sessionStatus[model.Status]);
 	$(`#session-input-status option`).attr("selected", false);
 	$(`#session-input-status`).val(sessionStatus[model.Status]);
 }
@@ -301,7 +428,7 @@ function ListAppointmentCallback(model)
 				</td>
 				<td>
 					<span class="table-body">
-						${item.Status == "READY_TO_PAY" ? "입금대기" : item.Status == "CONFIRMED" ? "입금완료" : item.Status == "CANCELED" ? "예약취소" : "오류"}
+						${item.Status == "READY_TO_PAY" ? "입금대기" : item.Status == "CONFIRMED" ? "입금완료" : item.Status == "CANCELED" ? "예약취소" : item.Status == "REFUNDED" ? "환불완료" : "오류"}
 					</span>
 				</td>
 				<td>
@@ -362,10 +489,21 @@ function ListAppointmentCallback(model)
 }
 function GetAppointmentCallback(model)
 {
-	$("#appointment-input-status").prop("disabled", false);
-	$(`#appointment-input-status option`).attr("selected", false);
-	$(`#appointment-input-status`).val(model);
-	$("#appointment-save").prop("disabled", false);
+	console.log(model);
+	if (model === false)
+	{
+		$("#appointment-input-status").prop("disabled", true);
+		$(`#appointment-input-status option`).attr("selected", true);
+		$(`#appointment-input-status`).val(0);
+		$("#appointment-save").prop("disabled", true);
+	}
+	else
+	{
+		$("#appointment-input-status").prop("disabled", false);
+		$(`#appointment-input-status option`).attr("selected", false);
+		$(`#appointment-input-status`).val(model);
+		$("#appointment-save").prop("disabled", false);
+	}
 }
 function UpdateAppointmentCallback(_)
 {
@@ -396,6 +534,28 @@ function PaidChangeCallback(data)
 	fromPaid = data.from;
 	toPaid = data.to;
 }
+function CancelSessionCallback(data)
+{
+	if (data)
+	{
+		$("#message").val('');
+		alert("예약이 정상적으로 취소되었습니다.");
+		HidePopup();
+		ListProduct();
+		ListSession();
+		GetSession();
+		ListAppointment();
+	}
+	else location.href = "/Home/Error";
+}
+
+function ValidateMessageForm()
+{
+	var content = $("#message").val();
+	if (content.length > 0)
+		$("#send-message").prop("disabled", false);
+	else $("#send-message").prop("disabled", true);
+}
 
 function Initialize()
 {
@@ -415,7 +575,7 @@ function Initialize()
 		onChange: AppointmentChangeCallback,
 		onUpdate: AppointmentUpdateCallback
 	});
-	$(".search-bar-second .search-text").on("focus", function ()
+	$(".search-bar-second .search-text-admin").on("focus", function ()
 	{
 		$(this).parent().css("box-shadow", "0px 0px 10px #FFC3BD");
 		$(this).parent().css("border", "1px solid #FFC3BD");
@@ -424,7 +584,7 @@ function Initialize()
 			"text-shadow": "0px 0px 10px #FFC3BD"
 		});
 	});
-	$(".search-bar-second .search-text").on("focusout", function ()
+	$(".search-bar-second .search-text-admin").on("focusout", function ()
 	{
 		$(this).parent().css("box-shadow", "2px 2px 5px rgba(18, 18, 18, 0.3)");
 		$(this).parent().css("border", "1px solid #FFC3BD");
@@ -534,6 +694,69 @@ function Initialize()
 	{
 		UpdateAppointment();
 	});
+
+	var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
+	var collapse = $(".collapse").css("display") == "none" || $(".top-menu").css("display") != "none" ? 0 : parseFloat($(".collapse").height());
+	var padding = parseFloat($("#popup-container").css("paddingTop"));
+
+	$("article").css("top", header - collapse);
+	$("#popup-container").css("top", header - collapse);
+	$("#popup-container").height(window.innerHeight - header + collapse - (padding * 2));
+	$(window).resize(function ()
+	{
+		var header = parseFloat($("header").height()) + parseFloat($("header").css("paddingTop")) * 2;
+		var collapse = $(".collapse").css("display") == "none" || $(".top-menu").css("display") != "none" ? 0 : parseFloat($(".collapse").height() + 10);
+		var padding = parseFloat($("#popup-container").css("paddingTop"));
+
+		$("article").css("top", header - collapse);
+		$("#popup-container").css("top", header - collapse);
+		$("#popup-container").height(window.innerHeight - header + collapse - (padding * 2));
+	});
+	var header = parseFloat($("header").height());
+	var collapse = $(".collapse").css("display") == "none" || $(window).width() >= 1200 ? 0 : parseFloat($(".collapse").height());
+	var scroll = $(window).scrollTop();
+	if (header - collapse <= scroll)
+	{
+		if ($(".collapse").css("display") == "none" || $(window).width() >= 1200)
+		{
+			$(".top-menu").css("background", "rgba(1, 15, 59, 0.8)");
+			$(".gnb").css("background", "rgba(2, 56, 89, 0.5)");
+		}
+		else
+		{
+			$(".top-menu").css("background", "rgba(1, 15, 59, 1)");
+			$(".gnb").css("background", "rgba(2, 56, 89, 1)");
+		}
+	}
+	else
+	{
+		$(".top-menu").css("background", "rgba(1, 15, 59, 1)");
+		$(".gnb").css("background", "rgba(2, 56, 89, 1)");
+	}
+
+	$("#popup-container").on("touchmove mousewheel DOMMouseScroll scroll", function (e)
+	{
+		e.preventDefault();
+	});
+	$("#message").on("keyup", function ()
+	{
+		ValidateMessageForm();
+	});
+	$("#send-message").on("click", function ()
+	{
+		CancelSession();
+	});
+}
+
+function ShowPopup()
+{
+	$("#popup-container").fadeIn(DURATION);
+	$("#popup-container").css("display", "flex");
+	$("#content").focus();
+}
+function HidePopup()
+{
+	$("#popup-container").fadeOut(DURATION);
 }
 
 $(document).ready(function ()

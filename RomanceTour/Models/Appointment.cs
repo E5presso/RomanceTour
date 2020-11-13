@@ -9,6 +9,7 @@ namespace RomanceTour.Models
         READY_TO_PAY,   // 결제 대기중
         CONFIRMED,      // 예약 완료
         CANCELED,       // 취소됨
+        REFUNDED        // 환불 완료
     }
     public partial class Appointment
     {

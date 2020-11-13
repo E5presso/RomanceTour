@@ -7,8 +7,12 @@ namespace RomanceTour.Middlewares
 	public static class MessageSender
 	{
 		private static readonly Sens sens;
-		private static readonly string subject = XmlConfiguration.AppointmentSubject;
-		private static readonly string template = XmlConfiguration.AppointmentTemplate;
+
+		private static readonly string appointmentSubject = XmlConfiguration.AppointmentSubject;
+		private static readonly string appointmentTemplate = XmlConfiguration.AppointmentTemplate;
+
+		private static readonly string cancelSubject = XmlConfiguration.CancelSubject;
+		private static readonly string cancelTemplate = XmlConfiguration.CancelTemplate;
 
 		static MessageSender()
 		{
@@ -18,7 +22,11 @@ namespace RomanceTour.Middlewares
 
 		public static async Task<bool> SendAppointmentMessage(string phone, string name, string productName, DateTime date, string link)
 		{
-			return await sens.SendMessage(MessageType.LMS, subject, phone, string.Format(template, name, productName, date.ToShortDateString(), link));
+			return await sens.SendMessage(MessageType.LMS, appointmentSubject, phone, string.Format(appointmentTemplate, name, productName, date.ToShortDateString(), link));
+		}
+		public static async Task<bool> SendCustomMessage(string[] phone, string productName, DateTime date, string message)
+		{
+			return await sens.SendMessage(MessageType.LMS, cancelSubject, string.Format(cancelTemplate, productName, date.ToShortDateString(), message), phone);
 		}
 	}
 }

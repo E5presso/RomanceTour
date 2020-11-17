@@ -214,7 +214,7 @@
 	white-space: nowrap;
 }
 
-tr
+tbody tr
 {
 	cursor: pointer;
 }
@@ -379,6 +379,11 @@ tbody td:first-child
 	background: #FFC3BD;
 }
 
+.btn-third:nth-child(1)
+{
+	margin-right: 5px;
+}
+
 .btn-third > *
 {
 	color: #FCFCFC;
@@ -435,7 +440,7 @@ tbody td:first-child
 	background: rgba(18, 18, 18, 0.75);
 }
 
-#popup .title
+.popup .title
 {
 	width: 100%;
 	display: flex;
@@ -447,8 +452,10 @@ tbody td:first-child
 	margin-bottom: 10px;
 }
 
-#popup
+.popup
 {
+	display: none;
+	position: relative;
 	width: 90%;
 	max-width: 480px;
 	height: 90%;
@@ -456,34 +463,34 @@ tbody td:first-child
 	background: #FCFCFC;
 	border-radius: 0.25rem;
 	padding: 30px;
-	overflow: hidden;
+	overflow: auto;
 }
 
-#popup label
+.popup label
 {
 	margin-bottom: 10px;
 	height: 20px;
 }
 
-#popup .form-control
+.popup .form-control
 {
 	border: 1px solid #FFC3BD;
 	height: calc(100% - 20px);
 }
 
-#popup .btn
+.popup .btn
 {
 	background: #FFC3BD;
 	width: 100%;
 	transition: background 0.3s, border 0.3s;
 }
 
-#popup #message-content
+.popup #message-content
 {
 	height: calc(100% - 90px);
 }
 
-#popup #message-send
+.popup #message-send
 {
 	height: 60px;
 }
@@ -493,20 +500,20 @@ tbody td:first-child
 	resize: none;
 }
 
-#popup .btn > .btn-icon, #popup .btn > .btn-text
+.popup .btn > .btn-icon, .popup .btn > .btn-text
 {
 	color: #FCFCFC;
 	font-size: 1.2rem;
 	transition: color 0.3s;
 }
 
-#popup .btn:not(:disabled):hover
+.popup .btn:not(:disabled):hover
 {
 	background: #FCFCFC;
 	border: 1px solid #FFC3BD;
 }
 
-#popup .btn:not(:disabled):hover > .btn-icon, #popup .btn:not(:disabled):hover > .btn-text
+.popup .btn:not(:disabled):hover > .btn-icon, .popup .btn:not(:disabled):hover > .btn-text
 {
 	color: #FFC3BD;
 }

@@ -1,0 +1,355 @@
+﻿.datepicker--cell
+{
+	overflow: hidden !important;
+}
+
+.datepicker--cell.-selected-
+{
+	background: #777777 !important;
+}
+
+.datepicker--cell.-focus-
+{
+	background: #ACACAC !important;
+}
+
+.datepicker--cell.-selected-.-focus-
+{
+	background: #131313 !important;
+}
+
+.datepicker--day-name
+{
+	color: #03588C !important;
+}
+
+.datepicker--button
+{
+	color: #03588C !important;
+}
+
+.date-picker
+{
+	cursor: initial;
+}
+
+.form-control:read-only
+{
+	background: #FCFCFC;
+}
+
+.date-cell
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.date-cell-day
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.0rem;
+	font-weight: initial;
+	color: #FCFCFC;
+}
+
+.date-cell-status
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.7rem;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.date-cell-disabled
+{
+	opacity: 0.3;
+}
+
+.date-cell-disabled > .date-cell-day
+{
+	font-size: 1.0rem;
+	color: #131313;
+}
+
+.explanation-area
+{
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+.explanation-group
+{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 5px;
+}
+
+.explanation-text, .explanation-icon
+{
+	font-size: 1.5rem;
+}
+
+.explanation-text
+{
+	color: #131313;
+	white-space: nowrap;
+	margin-right: 10px;
+}
+
+.date-available
+{
+	color: rgba(0, 200, 0, 0.5);
+	background: rgba(0, 200, 0, 0.5);
+}
+
+.date-approved
+{
+	color: rgba(0, 0, 200, 0.6);
+	background: rgba(0, 0, 200, 0.6);
+}
+
+.date-fulled
+{
+	color: rgba(200, 0, 0, 0.6);
+	background: rgba(200, 0, 0, 0.6);
+}
+
+.date-canceled
+{
+	color: rgba(200, 200, 0, 0.6);
+	background: rgba(200, 200, 0, 0.6);
+}
+
+.date-normal > .date-cell-day
+{
+	color: #03588C;
+}
+
+body
+{
+	margin: 0;
+}
+
+.container
+{
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 0 auto;
+	padding: 30px 10px 10px 10px;
+}
+
+.title
+{
+	font-size: 2.0rem;
+}
+
+.form-divider
+{
+	width: 100%;
+	padding: 30px;
+	margin: 10px;
+	border: 2px solid #FFC3BD;
+	border-radius: 0.25rem;
+}
+
+.form-group
+{
+	width: 100%;
+}
+
+.form-group > .form-control
+{
+	width: 100%;
+	border: 1px solid #FFC3BD !important;
+}
+
+.date-picker
+{
+	cursor: initial;
+}
+
+.input-spinner
+{
+	border: 1px solid #FFC3BD !important;
+}
+
+.dropdown-toggle, .filter-option,
+.dropdown-toggle:hover, .filter-option:hover,
+.dropdown-toggle:active, .filter-option:active,
+.dropdown-toggle:focus, .filter-option:focus
+{
+	width: 100%;
+	height: 100%;
+	background: #FCFCFC;
+	color: #131313;
+}
+
+.dropdown-menu
+{
+	background: #FCFCFC;
+	width: 100%;
+}
+
+.dropdown-item
+{
+	color: #131313;
+	transition: background 0.3s;
+	width: 100%;
+	padding: 0px 10px 5px 10px;
+}
+
+.dropdown-item > .text
+{
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 0 !important;
+	font-size: 1.0rem;
+}
+
+.dropdown-item:hover
+{
+	background: #FFC3BD;
+	color: #FCFCFC;
+}
+
+.check-mark
+{
+	font-size: 1.0rem;
+	top: 3px !important;
+}
+
+.btn-increment, .btn-decrement, .input-spinner
+{
+	border: 1px solid #FFC3BD;
+	height: 45px;
+}
+
+.btn-increment:hover, .btn-decrement:hover
+{
+	background: #FFC3BD;
+}
+
+.btn-increment > strong, .btn-decrement > strong
+{
+	color: #FFC3BD;
+}
+
+.btn-increment:hover > strong, .btn-decrement:hover > strong
+{
+	color: #FCFCFC;
+}
+
+.btn-increment:hover, .btn-decrement:hover
+{
+	border: 1px solid #FFC3BD;
+}
+
+.form-group > .btn
+{
+	width: 100%;
+	background: #FFC3BD;
+	transition: background 0.3s, border 0.3s;
+}
+
+.form-group > .btn > *
+{
+	color: #FCFCFC;
+	transition: color 0.3s;
+}
+
+.form-group > .btn:hover
+{
+	background: #FCFCFC;
+	border: 1px solid #FFC3BD;
+}
+
+.form-group > .btn:hover > *
+{
+	color: #FFC3BD;
+}
+
+.input-group
+{
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.input-group > .btn
+{
+	width: 50%;
+	background: #FFC3BD;
+	transition: background 0.3s, border 0.3s;
+}
+
+.input-group > .btn > *
+{
+	color: #FCFCFC;
+	transition: color 0.3s;
+}
+
+.input-group > .btn:not(:disabled):hover
+{
+	background: #FCFCFC;
+	border: 1px solid #FFC3BD;
+}
+
+.input-group > .btn:not(:disabled):hover > *
+{
+	color: #FFC3BD;
+}
+
+.input-group > .btn:first-child
+{
+	margin-right: 5px;
+}
+
+.price-section
+{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.price-title
+{
+	margin-right: 10px;
+}
+
+#person-form
+{
+	display: none;
+}
+
+.price-section > *
+{
+	font-size: 1.8rem;
+}
+
+.person
+{
+	display: none;
+}

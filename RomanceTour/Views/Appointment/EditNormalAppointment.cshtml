@@ -1,0 +1,323 @@
+﻿@{
+	ViewData["DATA"] = "EditNormalAppointment";
+	ViewData["TITLE"] = "비회원 예약변경";
+
+	Layout = null;
+	string[] banks = new string[]
+	{
+		"국민",
+		"신한",
+		"우리",
+		"하나",
+		"농협",
+		"수협",
+		"신협",
+		"산업",
+		"기업",
+		"토스",
+		"카카오"
+	};
+	Appointment appointment = ViewBag.Appointment;
+	Product product = appointment.DateSession.Product;
+}
+
+<html>
+<head>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="~/lib/fontawesome/dist/css/fontawesome.css" />
+	<link rel="stylesheet" href="~/lib/fontawesome/dist/css/all.css" />
+	<link rel="stylesheet" href="~/lib/chart/dist/chart.css" />
+	<link rel="stylesheet" href="~/lib/air-datepicker/dist/css/datepicker.css" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/lib/jquery-ui/dist/js/jquery-ui.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="~/lib/fontawesome/dist/js/fontawesome.js"></script>
+	<script src="~/lib/hammer/dist/hammer.js"></script>
+	<script src="~/lib/jquery-hammer/dist/jquery.hammer.js"></script>
+	<script src="~/lib/hammer-propagation/dist/hammer.propagation.js"></script>
+	<script src="~/lib/chart/dist/chart.js"></script>
+	<script src="~/lib/air-datepicker/dist/js/datepicker.js"></script>
+	<script src="~/lib/air-datepicker/dist/js/i18n/datepicker.ko.js"></script>
+
+	<link rel="stylesheet" href="~/shared/css/reset.css" />
+	<link rel="stylesheet" href="~/shared/css/layout.css" />
+	<link rel="stylesheet" href="~/shared/css/theme.css" />
+	<link rel="stylesheet" href="~/shared/css/fonts.css" />
+
+	<script src="~/shared/js/common.js"></script>
+	<script src="~/shared/js/ui.js"></script>
+
+	<meta name="format-detection" content="telephone=no" />
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=@XmlConfiguration.KakaoAPI"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script src="~/lib/bootstrap-input-spinner/dist/js/bootstrap-input-spinner.js"></script>
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+	<link rel="stylesheet" href="~/views/appointment/edit-normal-appointment.css" />
+	<script src="~/views/appointment/edit-normal-appointment.js"></script>
+</head>
+<body>
+	<input type="hidden" id="product-id" value="@appointment.DateSession.Product.Id" />
+	<input type="hidden" id="appointment-id" value="@appointment.Id" />
+	<input type="hidden" id="appointment-price" value="@appointment.Price" />
+	<input type="hidden" id="person-count" value="@appointment.Person.Count" />
+	<div id="person-form" class="form-divider container-fluid">
+		<div class="row">
+			<div class="form-group col-12 col-md-6">
+				<label>구분</label>
+				<select class="age form-control">
+					@foreach (var item in product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.PERCENT_AS).Select(x => x.PriceRule))
+					{
+						<option value="@item.Id-@item.RuleType-@(product.Price / 100 * (int)item.Price)">
+							@item.RuleName - &#8361;@string.Format("{0:N0}", product.Price / 100 * (int)item.Price)
+						</option>
+					}
+				</select>
+			</div>
+			<div class="form-group col-12 col-md-6">
+				<label>탑승지</label>
+				<select class="departure form-control">
+					@foreach (var item in product.ProductDeparture.Select(x => x.Departure))
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+				</select>
+			</div>
+			<div class="form-group col-12 col-md-6">
+				<label>옵션추가</label>
+				<select class="option form-control multiple-select" multiple data-selected-text-format="count">
+					@foreach (var item in product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.STATIC_PLUS).Select(x => x.PriceRule))
+					{
+						<option value="@item.Id-@item.RuleType-@item.Price">@item.RuleName + &#8361;@string.Format("{0:N0}", item.Price)</option>
+					}
+					@foreach (var item in product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.STATIC_MINUS).Select(x => x.PriceRule))
+					{
+						<option value="@item.Id-@item.RuleType-@item.Price">@item.RuleName - &#8361;@string.Format("{0:N0}", item.Price)</option>
+					}
+				</select>
+			</div>
+			<div class="form-group col-12 col-md-6">
+				<label class="d-none d-md-block">인원</label>
+				<input class="ammount form-control input-spinner" type="number" value="1" min="1" max="100" step="1" />
+			</div>
+			<div class="form-group col-12">
+				<button class="delete-person btn">
+					<span class="btn-icon fa fa-trash"></span>
+					<span class="btn-text">
+						제거
+					</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<span class="title">
+			회원 예약정보 변경
+		</span>
+		<div class="form-divider container-fluid">
+			<div class="row">
+				<div class="form-group col-12">
+					<label>날짜</label>
+					<div class="explanation-area container-fluid">
+						<div class="row">
+							<div class="explanation-group col-6 col-sm-3">
+								<span class="explanation-text">
+									예약가능 :
+								</span>
+								<span class="explanation-icon fa fa-square date-available"></span>
+							</div>
+							<div class="explanation-group col-6 col-sm-3">
+								<span class="explanation-text">
+									출발확정 :
+								</span>
+								<span class="explanation-icon fa fa-square date-approved"></span>
+							</div>
+							<div class="explanation-group col-6 col-sm-3">
+								<span class="explanation-text">
+									예약마감 :
+								</span>
+								<span class="explanation-icon fa fa-square date-fulled"></span>
+							</div>
+							<div class="explanation-group col-6 col-sm-3">
+								<span class="explanation-text">
+									예약취소 :
+								</span>
+								<span class="explanation-icon fa fa-square date-canceled"></span>
+							</div>
+						</div>
+					</div>
+					<input type="text" class="form-control date-picker" readonly="readonly" id="date" placeholder="출발날짜를 선택해주세요." value="@appointment.DateSession.Date.ToString("yyyy'/'MM'/'dd")" />
+				</div>
+				<div class="form-group col-12 col-md-6 col-xl-4">
+					<label>이름</label>
+					<input type="text" class="form-control" id="name" value="@appointment.Name" />
+				</div>
+				<div class="form-group col-12 col-md-6 col-xl-4">
+					<label>휴대폰 번호</label>
+					<input type="text" class="form-control" id="phone" value="@appointment.Phone" />
+				</div>
+				<div class="form-group col-12 col-md-6 col-xl-4">
+					<label>주소</label>
+					<input type="text" class="form-control" id="address" value="@appointment.Address" />
+				</div>
+				<div class="form-group col-12 col-md-6 col-xl-4">
+					<label>예금주명</label>
+					<input type="text" class="form-control" id="billing-name" value="@appointment.BillingName" />
+				</div>
+				<div class="form-group col-12 col-md-4 col-xl-3">
+					<label>은행</label>
+					<select id="billing-bank" class="form-control">
+						@foreach (var bank in banks)
+						{
+							if (bank == appointment.BillingBank)
+							{
+								<option value="@bank" selected>@bank</option>
+							}
+							else
+							{
+								<option value="@bank">@bank</option>
+							}
+						}
+					</select>
+				</div>
+				<div class="form-group col-12 col-md-8 col-xl-5">
+					<label>계좌번호</label>
+					<input type="text" class="form-control" id="billing-number" value="@appointment.BillingNumber" />
+				</div>
+				<div class="form-group col-12">
+					<label>비밀번호</label>
+					<input type="password" class="form-control" id="password" />
+				</div>
+			</div>
+		</div>
+		@foreach (var person in appointment.Person)
+		{
+			<div id="person-@(appointment.Person.ToList().IndexOf(person))" class="form-divider container-fluid person">
+				<div class="row">
+					<div class="form-group col-12 col-md-6">
+						<label>구분</label>
+						<select class="age form-control">
+							@foreach (var item in product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.PERCENT_AS).Select(x => x.PriceRule))
+							{
+								if (person.Option.SingleOrDefault(x => x.PriceRule == item) != null)
+								{
+									<option value="@item.Id-@item.RuleType-@(product.Price / 100 * (int)item.Price)" selected>
+										@item.RuleName - &#8361;@string.Format("{0:N0}", product.Price / 100 * (int)item.Price)
+									</option>
+								}
+								else
+								{
+									<option value="@item.Id-@item.RuleType-@(product.Price / 100 * (int)item.Price)">
+										@item.RuleName - &#8361;@string.Format("{0:N0}", product.Price / 100 * (int)item.Price)
+									</option>
+								}
+							}
+						</select>
+					</div>
+					<div class="form-group col-12 col-md-6">
+						<label>탑승지</label>
+						<select class="departure form-control">
+							@foreach (var item in product.ProductDeparture.Select(x => x.Departure))
+							{
+								if (person.Departure == item)
+								{
+									<option value="@item.Id" selected>@item.Name</option>
+								}
+								else
+								{
+									<option value="@item.Id">@item.Name</option>
+								}
+							}
+						</select>
+					</div>
+					<div class="form-group col-12 col-md-6">
+						<label>옵션추가</label>
+						<select class="option form-control multiple-select" multiple data-selected-text-format="count">
+							@foreach (var item in product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.STATIC_PLUS).Select(x => x.PriceRule))
+							{
+								if (person.Option.SingleOrDefault(x => x.PriceRule == item) != null)
+								{
+									<option value="@item.Id-@item.RuleType-@item.Price" selected>@item.RuleName + &#8361;@string.Format("{0:N0}", item.Price)</option>
+								}
+								else
+								{
+									<option value="@item.Id-@item.RuleType-@item.Price">@item.RuleName + &#8361;@string.Format("{0:N0}", item.Price)</option>
+								}
+							}
+							@foreach (var item in product.ProductPriceRule.Where(x => x.PriceRule.RuleType == PriceRuleType.STATIC_MINUS).Select(x => x.PriceRule))
+							{
+								if (person.Option.SingleOrDefault(x => x.PriceRule == item) != null)
+								{
+									<option value="@item.Id-@item.RuleType-@item.Price" selected>@item.RuleName - &#8361;@string.Format("{0:N0}", item.Price)</option>
+								}
+								else
+								{
+									<option value="@item.Id-@item.RuleType-@item.Price">@item.RuleName - &#8361;@string.Format("{0:N0}", item.Price)</option>
+								}
+							}
+						</select>
+					</div>
+					<div class="form-group col-12 col-md-6">
+						<label class="d-none d-md-block">인원</label>
+						<input class="ammount form-control input-spinner" type="number" value="@person.Ammount" min="1" max="100" step="1" />
+					</div>
+					<div class="form-group col-12">
+						<button class="delete-person btn">
+							<span class="btn-icon fa fa-trash"></span>
+							<span class="btn-text">
+								제거
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		}
+		<div class="form-divider container-fluid">
+			<div class="row">
+				<span class="price-section col-12 col-lg-4">
+					<span class="price-title">
+						기존 금액 :
+					</span>
+					<span id="original-price-value">
+						&#8361;@string.Format("{0:N0}", appointment.Price)
+					</span>
+				</span>
+				<span class="price-section col-12 col-lg-4">
+					<span class="price-title">
+						결제 금액 :
+					</span>
+					<span id="price-value">
+						&#8361;@string.Format("{0:N0}", appointment.Price)
+					</span>
+				</span>
+				<span class="price-section col-12 col-lg-4">
+					<span class="price-title">
+						결제 차액 :
+					</span>
+					<span id="price-diff-value">
+						&#8361;0
+					</span>
+				</span>
+			</div>
+		</div>
+		<div class="input-group">
+			<button id="add-person" class="btn">
+				<span class="btn-icon fas fa-user-plus"></span>
+				<span class="btn-text">
+					인원추가
+				</span>
+			</button>
+			<button id="save-appointment" class="btn" disabled>
+				<span class="btn-icon fas fa-edit"></span>
+				<span class="btn-text">
+					예약변경
+				</span>
+			</button>
+		</div>
+	</div>
+</body>
+</html>

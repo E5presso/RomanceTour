@@ -12,7 +12,6 @@ namespace RomanceTour.Models
     public partial class RomanceTourDbContext : DbContext
     {
         private readonly IDataEncryptionProvider encryptor = new GcmEncryptionProvider(new Gcm(XmlConfiguration.SecretKey));
-        private string Key => XmlConfiguration.SecretKey;
         private readonly IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
         public virtual DbSet<Appointment> Appointment { get; set; }

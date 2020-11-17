@@ -1,6 +1,13 @@
 ﻿.a-suppress
 {
 	color: #131313;
+	transition: color 0.3s, text-shadow 0.3s;
+}
+
+.a-suppress:hover
+{
+	color: #D0B8F5;
+	text-shadow: 0px 0px 10px #D0B8F5;
 }
 
 .page-back
@@ -117,6 +124,16 @@
 	transition: box-shadow 0.3s;
 }
 
+.custom-switch
+{
+	width: 100%;
+	min-height: initial;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0px !important;
+}
+
 .form-control:focus
 {
 	box-shadow: 0 0 10px #D0B8F5;
@@ -131,6 +148,11 @@
 	transition: box-shadow 0.3s;
 	border: 1px solid #D0B8F5;
 	transition: border 0.3s, box-shadow 0.3s;
+}
+
+.table td
+{
+	vertical-align: middle;
 }
 
 table

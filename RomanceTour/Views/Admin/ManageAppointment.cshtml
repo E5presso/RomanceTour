@@ -19,7 +19,7 @@
 <script src="~/views/admin/manage-appointment.js"></script>
 
 <div id="popup-container">
-	<div id="popup">
+	<div id="popup-send-message" class="popup">
 		<span class="title">
 			예약취소 안내문자 발송
 		</span>
@@ -422,6 +422,11 @@
 							</select>
 						</div>
 						<div class="col-12 control-set">
+							<button id="appointment-edit" class="btn btn-third" disabled>
+								<span class="btn-text">
+									변경
+								</span>
+							</button>
 							<button id="appointment-save" class="btn btn-third" disabled>
 								<span class="btn-text">
 									저장

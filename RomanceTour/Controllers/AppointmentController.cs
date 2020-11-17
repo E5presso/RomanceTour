@@ -809,9 +809,9 @@ namespace RomanceTour.Controllers
                             Status = x.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : x.Status,
                             Phone = x.IsUserAppointment ? x.User.Phone : x.Phone,
                             Address = x.IsUserAppointment ? x.User.Address : x.Address,
-                            BillingName = x.IsUserAppointment ? x.User.BillingName : x.BillingName,
-                            BillingBank = x.IsUserAppointment ? x.User.BillingBank : x.BillingBank,
-                            BillingNumber = x.IsUserAppointment ? x.User.BillingNumber : x.BillingNumber,
+                            BillingName = x.BillingName,
+                            BillingBank = x.BillingBank,
+                            BillingNumber = x.BillingNumber,
                             Price = x.Price
                         });
                     if (status != -1) matched = matched.Where(x => x.Status == (AppointmentStatus)status);
@@ -948,6 +948,421 @@ namespace RomanceTour.Controllers
                 {
                     Result = ResultType.SYSTEM_ERROR,
                     Error = e
+                });
+            }
+        }
+
+        public async Task<IActionResult> EditAppointment(int id)
+        {
+            try
+            {
+                if (IsLoggedIn)
+                {
+                    if (IsAdministrator)
+                    {
+                        using var db = new RomanceTourDbContext();
+                        var matched = await db.Appointment
+                            .Include(x => x.User)
+                            .Include(x => x.Person)
+                                .ThenInclude(x => x.Departure)
+                            .Include(x => x.Person)
+                                .ThenInclude(x => x.Option)
+                                    .ThenInclude(x => x.PriceRule)
+                            .Include(x => x.DateSession)
+                                .ThenInclude(x => x.Product)
+                                    .ThenInclude(x => x.Category)
+                            .Include(x => x.DateSession)
+                                .ThenInclude(x => x.Product)
+                                    .ThenInclude(x => x.ProductPriceRule)
+                                        .ThenInclude(x => x.PriceRule)
+                            .Include(x => x.DateSession)
+                                .ThenInclude(x => x.Product)
+                                    .ThenInclude(x => x.ProductDeparture)
+                                        .ThenInclude(x => x.Departure)
+                            .SingleOrDefaultAsync(x => x.Id == id);
+                        matched.Status = matched.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : matched.Status;
+
+                        if (matched != null)
+                        {
+                            ViewBag.Appointment = matched;
+                            if (matched.IsUserAppointment) return View("EditUserAppointment");
+                            else return View("EditNormalAppointment");
+                        }
+                        else return RedirectToAction("PageNotFound", "Home");
+                    }
+                    else return RedirectToAction("AccessDenied", "Home");
+                }
+                else return RedirectToAction("TryGetAppointment", "Appointment", new { id });
+            }
+            catch (Exception e)
+            {
+                await LogManager.ErrorAsync(e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+        public async Task<IActionResult> UpdateAppointment(AppointmentVM appointment)
+        {
+            try
+            {
+                if (IsLoggedIn)
+				{
+                    if (IsAdministrator)
+                    {
+                        using var db = new RomanceTourDbContext();
+                        var matched = await db.Appointment
+                            .Include(x => x.User)
+                            .Include(x => x.DateSession)
+                                .ThenInclude(x => x.Product)
+                            .Include(x => x.Person)
+                                .ThenInclude(x => x.Option)
+                                    .ThenInclude(x => x.PriceRule)
+                            .SingleOrDefaultAsync(x => x.Id == appointment.Id);
+                        if (matched != null)
+                        {
+                            if (appointment.IsUserAppointment)
+                            {
+                                if (matched.DateSession.Date == appointment.Date)
+								{
+                                    var date = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
+
+                                    matched.TimeStamp = DateTime.Now;
+                                    matched.BillingName = appointment.BillingName;
+                                    matched.BillingBank = appointment.BillingBank;
+                                    matched.BillingNumber = appointment.BillingNumber;
+                                    date.Reserved -= matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        date.Paid -= matched.Ammount;
+                                        date.Sales -= matched.Price;
+                                    }
+                                    matched.Person.Clear();
+                                    foreach (var x in appointment.People)
+                                    {
+                                        var person = new Person
+                                        {
+                                            DepartureId = x.Departure,
+                                            Ammount = x.Ammount
+                                        };
+                                        var priceId = x.Price;
+                                        person.Option.Add(new Option
+                                        {
+                                            PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == priceId)
+                                        });
+                                        if (x.Options != null)
+                                        {
+                                            foreach (var y in x.Options)
+                                            {
+                                                person.Option.Add(new Option
+                                                {
+                                                    PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == y)
+                                                });
+                                            }
+                                        }
+                                        matched.Person.Add(person);
+                                    }
+
+                                    matched.Ammount = appointment.People.Sum(x => x.Ammount);
+                                    matched.Price = matched.Person.Sum
+                                    (
+                                        x => x.Option.Sum
+                                        (
+                                            x => x.PriceRule.RuleType switch
+                                            {
+                                                PriceRuleType.PERCENT_AS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_PLUS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_MINUS => -1 * matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.STATIC_PLUS => x.PriceRule.Price,
+                                                PriceRuleType.STATIC_MINUS => -1 * x.PriceRule.Price,
+                                                _ => 0
+                                            }
+                                        ) * x.Ammount
+                                    );
+
+                                    date.Reserved += matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        date.Paid += matched.Ammount;
+                                        date.Sales += matched.Price;
+                                    }
+                                    db.Appointment.Update(matched);
+                                    db.DateSession.Update(date);
+                                    await db.SaveChangesAsync();
+                                    return Json(new Response
+                                    {
+                                        Result = ResultType.SUCCESS,
+                                        Model = new
+										{
+                                            Result = true,
+                                            Message = "예약이 성공적으로 변경되었습니다."
+										}
+                                    });
+                                }
+                                else
+								{
+                                    var oldDate = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
+                                    var newDate = await db.DateSession.SingleOrDefaultAsync(x => x.ProductId == matched.DateSession.ProductId && x.Date == appointment.Date);
+
+                                    matched.TimeStamp = DateTime.Now;
+                                    matched.DateSession = newDate;
+                                    matched.BillingName = appointment.BillingName;
+                                    matched.BillingBank = appointment.BillingBank;
+                                    matched.BillingNumber = appointment.BillingNumber;
+                                    oldDate.Reserved -= matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        oldDate.Paid -= matched.Ammount;
+                                        oldDate.Sales -= matched.Price;
+                                    }
+                                    matched.Person.Clear();
+                                    foreach (var x in appointment.People)
+                                    {
+                                        var person = new Person
+                                        {
+                                            DepartureId = x.Departure,
+                                            Ammount = x.Ammount
+                                        };
+                                        var priceId = x.Price;
+                                        person.Option.Add(new Option
+                                        {
+                                            PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == priceId)
+                                        });
+                                        if (x.Options != null)
+                                        {
+                                            foreach (var y in x.Options)
+                                            {
+                                                person.Option.Add(new Option
+                                                {
+                                                    PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == y)
+                                                });
+                                            }
+                                        }
+                                        matched.Person.Add(person);
+                                    }
+
+                                    matched.Ammount = appointment.People.Sum(x => x.Ammount);
+                                    matched.Price = matched.Person.Sum
+                                    (
+                                        x => x.Option.Sum
+                                        (
+                                            x => x.PriceRule.RuleType switch
+                                            {
+                                                PriceRuleType.PERCENT_AS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_PLUS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_MINUS => -1 * matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.STATIC_PLUS => x.PriceRule.Price,
+                                                PriceRuleType.STATIC_MINUS => -1 * x.PriceRule.Price,
+                                                _ => 0
+                                            }
+                                        ) * x.Ammount
+                                    );
+
+                                    newDate.Reserved += matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        newDate.Paid += matched.Ammount;
+                                        newDate.Sales += matched.Price;
+                                    }
+                                    db.Appointment.Update(matched);
+                                    db.DateSession.Update(oldDate);
+                                    db.DateSession.Update(newDate);
+                                    await db.SaveChangesAsync();
+                                    return Json(new Response
+                                    {
+                                        Result = ResultType.SUCCESS,
+                                        Model = new
+                                        {
+                                            Result = true,
+                                            Message = "예약이 성공적으로 변경되었습니다."
+                                        }
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                if (matched.DateSession.Date == appointment.Date)
+                                {
+                                    var date = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
+
+                                    matched.TimeStamp = DateTime.Now;
+                                    matched.Name = appointment.Name;
+                                    matched.Phone = appointment.Phone;
+                                    matched.Address = appointment.Address;
+                                    matched.BillingName = appointment.BillingName;
+                                    matched.BillingBank = appointment.BillingBank;
+                                    matched.BillingNumber = appointment.BillingNumber;
+                                    date.Reserved -= matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        date.Paid -= matched.Ammount;
+                                        date.Sales -= matched.Price;
+                                    }
+                                    matched.Person.Clear();
+                                    foreach (var x in appointment.People)
+                                    {
+                                        var person = new Person
+                                        {
+                                            DepartureId = x.Departure,
+                                            Ammount = x.Ammount
+                                        };
+                                        var priceId = x.Price;
+                                        person.Option.Add(new Option
+                                        {
+                                            PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == priceId)
+                                        });
+                                        if (x.Options != null)
+                                        {
+                                            foreach (var y in x.Options)
+                                            {
+                                                person.Option.Add(new Option
+                                                {
+                                                    PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == y)
+                                                });
+                                            }
+                                        }
+                                        matched.Person.Add(person);
+                                    }
+
+                                    matched.Ammount = appointment.People.Sum(x => x.Ammount);
+                                    matched.Price = matched.Person.Sum
+                                    (
+                                        x => x.Option.Sum
+                                        (
+                                            x => x.PriceRule.RuleType switch
+                                            {
+                                                PriceRuleType.PERCENT_AS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_PLUS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_MINUS => -1 * matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.STATIC_PLUS => x.PriceRule.Price,
+                                                PriceRuleType.STATIC_MINUS => -1 * x.PriceRule.Price,
+                                                _ => 0
+                                            }
+                                        ) * x.Ammount
+                                    );
+
+                                    date.Reserved += matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        date.Paid += matched.Ammount;
+                                        date.Sales += matched.Price;
+                                    }
+                                    db.Appointment.Update(matched);
+                                    db.DateSession.Update(date);
+                                    await db.SaveChangesAsync();
+                                    return Json(new Response
+                                    {
+                                        Result = ResultType.SUCCESS,
+                                        Model = new
+                                        {
+                                            Result = true,
+                                            Message = "예약이 성공적으로 변경되었습니다."
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    var oldDate = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
+                                    var newDate = await db.DateSession.SingleOrDefaultAsync(x => x.ProductId == matched.DateSession.ProductId && x.Date == appointment.Date);
+
+                                    matched.TimeStamp = DateTime.Now;
+                                    matched.Name = appointment.Name;
+                                    matched.Phone = appointment.Phone;
+                                    matched.Address = appointment.Address;
+                                    matched.DateSession = newDate;
+                                    matched.BillingName = appointment.BillingName;
+                                    matched.BillingBank = appointment.BillingBank;
+                                    matched.BillingNumber = appointment.BillingNumber;
+                                    oldDate.Reserved -= matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        oldDate.Paid -= matched.Ammount;
+                                        oldDate.Sales -= matched.Price;
+                                    }
+                                    matched.Person.Clear();
+                                    foreach (var x in appointment.People)
+                                    {
+                                        var person = new Person
+                                        {
+                                            DepartureId = x.Departure,
+                                            Ammount = x.Ammount
+                                        };
+                                        var priceId = x.Price;
+                                        person.Option.Add(new Option
+                                        {
+                                            PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == priceId)
+                                        });
+                                        if (x.Options != null)
+                                        {
+                                            foreach (var y in x.Options)
+                                            {
+                                                person.Option.Add(new Option
+                                                {
+                                                    PriceRule = await db.PriceRule.SingleOrDefaultAsync(x => x.Id == y)
+                                                });
+                                            }
+                                        }
+                                        matched.Person.Add(person);
+                                    }
+
+                                    matched.Ammount = appointment.People.Sum(x => x.Ammount);
+                                    matched.Price = matched.Person.Sum
+                                    (
+                                        x => x.Option.Sum
+                                        (
+                                            x => x.PriceRule.RuleType switch
+                                            {
+                                                PriceRuleType.PERCENT_AS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_PLUS => matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.PERCENT_MINUS => -1 * matched.DateSession.Product.Price / 100 * x.PriceRule.Price,
+                                                PriceRuleType.STATIC_PLUS => x.PriceRule.Price,
+                                                PriceRuleType.STATIC_MINUS => -1 * x.PriceRule.Price,
+                                                _ => 0
+                                            }
+                                        ) * x.Ammount
+                                    );
+
+                                    newDate.Reserved += matched.Ammount;
+                                    if (matched.Status == AppointmentStatus.CONFIRMED)
+                                    {
+                                        newDate.Paid += matched.Ammount;
+                                        newDate.Sales += matched.Price;
+                                    }
+                                    db.Appointment.Update(matched);
+                                    db.DateSession.Update(oldDate);
+                                    db.DateSession.Update(newDate);
+                                    await db.SaveChangesAsync();
+                                    return Json(new Response
+                                    {
+                                        Result = ResultType.SUCCESS,
+                                        Model = new
+                                        {
+                                            Result = true,
+                                            Message = "예약이 성공적으로 변경되었습니다."
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        else return Json(new Response
+                        {
+                            Result = ResultType.SUCCESS,
+                            Model = new
+							{
+                                Result = false,
+                                Message = "해당 예약을 찾을 수 없습니다."
+							}
+                        });
+                    }
+                    else return Json(new Response { Result = ResultType.ACCESS_DENIED });
+				}
+                else return Json(new Response { Result = ResultType.LOGIN_REQUIRED });
+            }
+            catch (Exception e)
+            {
+                await LogManager.ErrorAsync(e);
+                return Json(new Response
+                {
+                    Error = e,
+                    Result = ResultType.SYSTEM_ERROR
                 });
             }
         }

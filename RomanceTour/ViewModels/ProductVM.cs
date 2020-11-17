@@ -15,6 +15,8 @@ namespace RomanceTour.ViewModels
 		public string SubTitle { get; set; }
 		public int Price { get; set; }
 		public bool Confirmed { get; set; }
+		public bool Visible { get; set; }
+		public bool Expose { get; set; }
 		public IEnumerable<DateTime> Available { get; set; }
 		public DateTime FastAvailable { get; set; }
 	}

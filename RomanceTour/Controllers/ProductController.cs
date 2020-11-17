@@ -284,7 +284,9 @@ namespace RomanceTour.Controllers
 							.Min(),
 						Confirmed = x.DateSession
 							.Where(y => y.Status == DateSessionStatus.APPROVED)
-							.Count() > 0
+							.Count() > 0,
+						Visible = x.Visible,
+						Expose = x.Expose
 					});
 				if (filter.Sorting != null) array = filter.Sorting switch
 				{
@@ -587,6 +589,167 @@ namespace RomanceTour.Controllers
 					{
 						Result = ResultType.SUCCESS,
 						Model = false
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+
+		public async Task<IActionResult> AdminFilterProduct(int category, ProductFilterVM filter)
+		{
+			try
+			{
+				if (IsLoggedIn)
+				{
+					if (IsAdministrator)
+					{
+						using var db = new RomanceTourDbContext();
+						var array = db.Product
+							.Include(x => x.Category)
+							.Include(x => x.DateSession)
+								.ThenInclude(x => x.Appointment)
+							.Where(x => category == 0 ? true : x.CategoryId == category)
+							.Select(x => new ProductVM
+							{
+								Id = x.Id,
+								CategoryId = x.CategoryId,
+								CategoryName = x.Category.Name,
+								Title = x.Title,
+								SubTitle = x.SubTitle,
+								Thumbnail = x.Thumbnail,
+								Price = x.Price,
+								Available = x.DateSession
+									.Where(y => y.Status == DateSessionStatus.AVAILABLE)
+									.OrderBy(y => y.Date)
+									.Select(y => y.Date),
+								FastAvailable = x.DateSession
+									.Where(y => y.Status == DateSessionStatus.AVAILABLE)
+									.Select(y => y.Date)
+									.Min(),
+								Confirmed = x.DateSession
+									.Where(y => y.Status == DateSessionStatus.APPROVED)
+									.Count() > 0,
+								Visible = x.Visible,
+								Expose = x.Expose
+							});
+						if (filter.Sorting != null) array = filter.Sorting switch
+						{
+							0 => array.OrderByDescending(x => x.Id),
+							1 => array.OrderBy(x => x.Id),
+							2 => array.OrderByDescending(x => x.Price),
+							3 => array.OrderBy(x => x.Price),
+							4 => array.OrderBy(x => x.FastAvailable),
+							5 => array.OrderByDescending(x => x.FastAvailable),
+							_ => array.OrderByDescending(x => x.Id)
+						};
+						if (filter.Keyword != null) array = array.Where(x =>
+							EF.Functions.Like(x.Title, $"%{filter.Keyword}%")
+							|| EF.Functions.Like(x.SubTitle, $"%{filter.Keyword}%"));
+						if (filter.FromPrice != null && filter.ToPrice != null) array = array.Where(x => x.Price >= filter.FromPrice && x.Price <= filter.ToPrice);
+						if (filter.Date != null) array = array.Where(x => x.Available.Any(x => x.Date.Year == ((DateTime)filter.Date).Year
+							&& x.Date.Month == ((DateTime)filter.Date).Month
+							&& x.Date.Day == ((DateTime)filter.Date).Day));
+						if (filter.Confirmed != null) array = array.Where(x => !(bool)filter.Confirmed || x.Confirmed);
+
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = await array.ToArrayAsync()
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.ACCESS_DENIED
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.LOGIN_REQUIRED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+		public async Task<IActionResult> SetVisible(int id, bool visible)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					var matched = await db.Product.SingleOrDefaultAsync(x => x.Id == id);
+					if (matched != null)
+					{
+						matched.Visible = visible;
+						db.Product.Update(matched);
+						await db.SaveChangesAsync();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = true
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.NOT_FOUND
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+		public async Task<IActionResult> SetExpose(int id, bool expose)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					var matched = await db.Product.SingleOrDefaultAsync(x => x.Id == id);
+					if (matched != null)
+					{
+						matched.Expose = expose;
+						db.Product.Update(matched);
+						await db.SaveChangesAsync();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = true
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.NOT_FOUND
 					});
 				}
 				else return Json(new Response

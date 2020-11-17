@@ -13,6 +13,7 @@ namespace RomanceTour
 {
 	public class Startup
 	{
+		private readonly IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;

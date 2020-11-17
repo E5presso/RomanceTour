@@ -1,4 +1,13 @@
-﻿function FilterProductCallback(model)
+﻿function SetVisibleCallback(model)
+{
+
+}
+function SetExposeCallback(model)
+{
+
+}
+
+function FilterProductCallback(model)
 {
 	$(".product-list").html('');
 	$.each(model, function (_index, item)
@@ -26,6 +35,18 @@
 					<span class="table-body">
 						&#8361;${item.Price}
 					</span>
+				</td>
+				<td class="d-none d-lg-table-cell">
+					<div class="custom-control custom-switch">
+						<input type="checkbox" class="custom-control-input" id="set-visible-${item.Id}" ${item.Visible ? "checked" : ""} />
+						<label class="custom-control-label" for="set-visible-${item.Id}">${item.Visible ? "검색 가능" : "검색 불가"}</label>
+					</div>
+				</td>
+				<td class="d-none d-lg-table-cell">
+					<div class="custom-control custom-switch">
+						<input type="checkbox" class="custom-control-input" id="set-expose-${item.Id}" ${item.Expose ? "checked" : ""} />
+						<label class="custom-control-label" for="set-expose-${item.Id}">${item.Expose ? "추천 노출" : "추천 안함"}</label>
+					</div>
 				</td>
 				<td class="d-table-cell">
 					<span class="table-body">
@@ -59,12 +80,30 @@
 				});
 			}
 		});
+		$(` #set-visible-${item.Id}`).on("change", function ()
+		{
+			if ($(this).is(":checked")) $(this).siblings(".custom-control-label").text("검색 가능");
+			else $(this).siblings(".custom-control-label").text("검색 불가");
+			Ajax("/Product/SetVisible", {
+				id: item.Id,
+				visible: $(this).is(":checked")
+			}, SetVisibleCallback);
+		});
+		$(` #set-expose-${item.Id}`).on("change", function ()
+		{
+			if ($(this).is(":checked")) $(this).siblings(".custom-control-label").text("추천 노출");
+			else $(this).siblings(".custom-control-label").text("추천 안함");
+			Ajax("/Product/SetExpose", {
+				id: item.Id,
+				expose: $(this).is(":checked")
+			}, SetExposeCallback);
+		});
 	});
 }
 function RefreshList()
 {
 	var category = parseInt($("#category option:selected").val());
-	Ajax("/Product/FilterProduct", {
+	Ajax("/Product/AdminFilterProduct", {
 		category: category
 	}, FilterProductCallback);
 }
@@ -110,7 +149,7 @@ $(document).ready(function ()
 		switch (option)
 		{
 			case 0: {
-				AjaxWithoutLoading("/Product/FilterProduct", {
+				AjaxWithoutLoading("/Product/AdminFilterProduct", {
 					category: category,
 					filter: {
 						Keyword: keyword
@@ -119,7 +158,7 @@ $(document).ready(function ()
 				break;
 			}
 			case 1: {
-				AjaxWithoutLoading("/Product/FilterProduct", {
+				AjaxWithoutLoading("/Product/AdminFilterProduct", {
 					category: category,
 					filter: {
 						FromPrice: parseInt(keyword),

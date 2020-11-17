@@ -82,7 +82,7 @@ function UpdateSession()
 	if (status == 3)
 	{
 		if (confirm("해당 날짜를 취소할 경우 여기에 연결된 모든 예약이 취소처리됩니다.\n이 작업은 되돌릴 수 없습니다.\n계속 하시겠습니까?"))
-			ShowPopup();
+			ShowSendMessagePopup();
 	}
 	else
 	{
@@ -495,6 +495,7 @@ function GetAppointmentCallback(model)
 		$("#appointment-input-status").prop("disabled", true);
 		$(`#appointment-input-status option`).attr("selected", true);
 		$(`#appointment-input-status`).val(0);
+		$("#appointment-edit").prop("disabled", true);
 		$("#appointment-save").prop("disabled", true);
 	}
 	else
@@ -502,6 +503,7 @@ function GetAppointmentCallback(model)
 		$("#appointment-input-status").prop("disabled", false);
 		$(`#appointment-input-status option`).attr("selected", false);
 		$(`#appointment-input-status`).val(model);
+		$("#appointment-edit").prop("disabled", false);
 		$("#appointment-save").prop("disabled", false);
 	}
 }
@@ -540,7 +542,7 @@ function CancelSessionCallback(data)
 	{
 		$("#message").val('');
 		alert("예약이 정상적으로 취소되었습니다.");
-		HidePopup();
+		HideSendMessagePopup();
 		ListProduct();
 		ListSession();
 		GetSession();
@@ -690,6 +692,23 @@ function Initialize()
 		appointmentKeyword = $("#appointment-keyword").val();
 		ListAppointment();
 	});
+	$("#appointment-edit").on("click", function ()
+	{
+		var options = "width=1200, height=1000, status=no, menubar=no, toolbar=no, resizable=no";
+		var popup = window.open(`/Appointment/EditAppointment?id=${selectedAppointment}`, "예약변경", options);
+		var interval = setInterval(function ()
+		{
+			try
+			{
+				if (popup == null || popup.closed)
+				{
+					clearInterval(interval);
+					UpdateAppointmentCallback();
+				}
+			}
+			catch (e) { }
+		}, 100);
+	});
 	$("#appointment-save").on("click", function ()
 	{
 		UpdateAppointment();
@@ -734,10 +753,6 @@ function Initialize()
 		$(".gnb").css("background", "rgba(2, 56, 89, 1)");
 	}
 
-	$("#popup-container").on("touchmove mousewheel DOMMouseScroll scroll", function (e)
-	{
-		e.preventDefault();
-	});
 	$("#message").on("keyup", function ()
 	{
 		ValidateMessageForm();
@@ -748,14 +763,15 @@ function Initialize()
 	});
 }
 
-function ShowPopup()
+function ShowSendMessagePopup()
 {
 	$("#popup-container").fadeIn(DURATION);
 	$("#popup-container").css("display", "flex");
-	$("#content").focus();
+	$("#popup-send-message").fadeIn(DURATION);
 }
-function HidePopup()
+function HideSendMessagePopup()
 {
+	$("#popup-send-message").fadeOut(DURATION);
 	$("#popup-container").fadeOut(DURATION);
 }
 

@@ -25,17 +25,18 @@ function ValidateForm()
 }
 function CheckAccountCallback(model)
 {
-	if (model)
+	if (model.Result)
 	{
+		alert(model.Message);
 		var back = $("#back").val();
-		alert("로그인이 완료되었습니다.");
 		window.location.href = back;
 	}
 	else
 	{
-		alert("아이디 또는 비밀번호가 잘못되었습니다.");
+		alert(model.Message);
 		$(".password").val('');
 		$(".password").focus();
+		$(".check-account").prop("disabled", true);
 	}
 }
 

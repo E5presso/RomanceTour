@@ -6,6 +6,7 @@ using Core.Security;
 using RomanceTour.Models;
 using RomanceTour.Middlewares;
 using System.Linq;
+using RomanceTour.ViewModels;
 
 namespace RomanceTour.Controllers
 {
@@ -191,13 +192,21 @@ namespace RomanceTour.Controllers
 						return Json(new Response
 						{
 							Result = ResultType.SUCCESS,
-							Model = true
+							Model = new
+							{
+								Result = true,
+								Message = "로그인이 완료되었습니다."
+							}
 						});
 					}
 					else return Json(new Response
 					{
 						Result = ResultType.SUCCESS,
-						Model = false
+						Model = new
+						{
+							Result = false,
+							Message = "아이디 또는 비밀번호가 잘못되었습니다."
+						}
 					});
 				}
 				else
@@ -206,17 +215,85 @@ namespace RomanceTour.Controllers
 					var matched = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
 					if (matched != null && matched.Password == Password.Hash(user.Password, matched.HashSalt))
 					{
-						AddSession(matched.Id, matched.Name);
-						return Json(new Response
+						switch (matched.Status)
 						{
-							Result = ResultType.SUCCESS,
-							Model = true
-						});
+							case UserStatus.GREEN:
+							{
+								AddSession(matched.Id, matched.Name);
+								matched.LastLogin = DateTime.Now;
+								db.User.Update(matched);
+								await db.SaveChangesAsync();
+								return Json(new Response
+								{
+									Result = ResultType.SUCCESS,
+									Model = new
+									{
+										Result = true,
+										Message = "로그인이 완료되었습니다."
+									}
+								});
+							}
+							case UserStatus.YELLOW:
+							{
+								AddSession(matched.Id, matched.Name);
+								matched.LastLogin = DateTime.Now;
+								db.User.Update(matched);
+								await db.SaveChangesAsync();
+								return Json(new Response
+								{
+									Result = ResultType.SUCCESS,
+									Model = new
+									{
+										Result = true,
+										Message = "의심스러운 사용자 활동으로 인해 1회 경고가 부가됩니다.\n향후 이러한 활동이 지속될 경우 계정이 정지될 수 있습니다.\n자세한 내용은 고객센터에 문의해주세요."
+									}
+								});
+							}
+							case UserStatus.RED:
+							{
+								return Json(new Response
+								{
+									Result = ResultType.SUCCESS,
+									Model = new
+									{
+										Result = false,
+										Message = "이용이 정지된 계정입니다.\n자세한 내용은 고객센터에 문의해주세요."
+									}
+								});
+							}
+							case UserStatus.GREY:
+							{
+								return Json(new Response
+								{
+									Result = ResultType.SUCCESS,
+									Model = new
+									{
+										Result = false,
+										Message = "현재 휴면상태인 계정입니다.\n계정 활성화를 원하시면 고객센터로 문의해주세요."
+									}
+								});
+							}
+							default:
+							{
+								return Json(new Response
+								{
+									Result = ResultType.SUCCESS,
+									Model = new
+									{
+										Result = false
+									}
+								});
+							}
+						}
 					}
 					else return Json(new Response
 					{
 						Result = ResultType.SUCCESS,
-						Model = false
+						Model = new
+						{
+							Result = false,
+							Message = "아이디 또는 비밀번호가 잘못되었습니다."
+						}
 					});
 				}
 			}
@@ -344,6 +421,203 @@ namespace RomanceTour.Controllers
 					{
 						Result = ResultType.SUCCESS,
 						Model = false
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+
+		public async Task<IActionResult> AdminGetUser(int id)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					var matched = await db.User.SingleOrDefaultAsync(x => x.Id == id);
+					if (matched != null) return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = new
+						{
+							Result = true,
+							Data = matched
+						}
+					});
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = new
+						{
+							Result = false,
+							Message = "해당 사용자를 조회할 수 없습니다."
+						}
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+		public async Task<IActionResult> AdminGetUserHistory(int id)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					var matched = await db.User.SingleOrDefaultAsync(x => x.Id == id);
+					if (matched != null)
+					{
+						var logs = db.Log.Where(x => x.UserId == id).OrderByDescending(x => x.TimeStamp).Take(500);
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = new
+							{
+								Result = true,
+								Data = logs.Select(x => new LogVM
+								{
+									TimeStamp = x.TimeStamp,
+									IpAddress = x.IpAddress,
+									Controller = ResourceMapper.GetControllerResource(x.Controller),
+									Action = ResourceMapper.GetActionResource(x.Action)
+								}).ToArray()
+							}
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = new
+						{
+							Result = false,
+							Message = "해당 사용자를 조회할 수 없습니다."
+						}
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+		public async Task<IActionResult> AdminUpdateUser(int id, User user)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					var matched = await db.User.SingleOrDefaultAsync(x => x.Id == id);
+					if (matched != null)
+					{
+						matched.Name = user.Name;
+						matched.Phone = user.Phone;
+						matched.Address = user.Address;
+						matched.Birthday = user.Birthday;
+						matched.BillingName = user.BillingName;
+						matched.BillingBank = user.BillingBank;
+						matched.BillingNumber = user.BillingNumber;
+						db.User.Update(matched);
+						await db.SaveChangesAsync();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = new
+							{
+								Result = true,
+								Message = "사용자 정보를 성공적으로 변경했습니다."
+							}
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = new
+						{
+							Result = false,
+							Message = "해당 사용자를 조회할 수 없습니다."
+						}
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
+		public async Task<IActionResult> AdminUpdateUserStatus(int id, string status)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					var matched = await db.User.SingleOrDefaultAsync(x => x.Id == id);
+					if (matched != null)
+					{
+						matched.Status = Enum.Parse<UserStatus>(status);
+						db.User.Update(matched);
+						await db.SaveChangesAsync();
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = new
+							{
+								Result = true,
+								Message = "사용자 상태를 성공적으로 변경했습니다."
+							}
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = new
+						{
+							Result = false,
+							Message = "해당 사용자를 조회할 수 없습니다."
+						}
 					});
 				}
 				else return Json(new Response

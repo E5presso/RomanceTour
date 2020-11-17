@@ -1183,6 +1183,8 @@ namespace RomanceTour.Controllers
                                 {
                                     var date = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
 
+                                    matched.HashSalt = KeyGenerator.GenerateString(32);
+                                    matched.Password = Password.Hash(appointment.Password, matched.HashSalt);
                                     matched.TimeStamp = DateTime.Now;
                                     matched.Name = appointment.Name;
                                     matched.Phone = appointment.Phone;
@@ -1263,6 +1265,8 @@ namespace RomanceTour.Controllers
                                     var oldDate = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
                                     var newDate = await db.DateSession.SingleOrDefaultAsync(x => x.ProductId == matched.DateSession.ProductId && x.Date == appointment.Date);
 
+                                    matched.HashSalt = KeyGenerator.GenerateString(32);
+                                    matched.Password = Password.Hash(appointment.Password, matched.HashSalt);
                                     matched.TimeStamp = DateTime.Now;
                                     matched.Name = appointment.Name;
                                     matched.Phone = appointment.Phone;

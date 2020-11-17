@@ -18,7 +18,7 @@ function AppointmentChangeCallback(data)
 	toAppointment = data.to;
 }
 
-function FilterProductCallback(model)
+function FilterUserCallback(model)
 {
 	$(".product-list").html('');
 	if (model.length > 0) $.each(model, function (index, item)
@@ -76,7 +76,7 @@ function FilterProductCallback(model)
 	});
 	else $(".product-list").append(`<span>검색조건에 맞는 상품을 찾을 수 없습니다.</span>`);
 }
-function FilterProduct()
+function FilterUser()
 {
 	var category = $("#category-select").children("option:selected").val();
 	var sorting = $("#sorting-select").children("option:selected").val();
@@ -92,7 +92,7 @@ function FilterProduct()
 			Date: datepicker.selectedDates[0] ? datepicker.selectedDates[0].toISOString() : null,
 			Confirmed: $("#product-confirmed").is(":checked")
 		}
-	}, FilterProductCallback);
+	}, FilFilterUserCallback
 }
 function Initialize()
 {
@@ -128,27 +128,27 @@ function Initialize()
 	$("#product-confirmed").prop("checked", $("#confirmed").val());
 	if (date) datepicker.selectDate(new Date(parseInt(date)));
 
-	FilterProduct();
+	FilterUser();
 }
 
 $(document).ready(function ()
 {
 	$("#category-select").on("change", function ()
 	{
-		FilterProduct();
+		FilterUser();
 	});
 	$("#sorting-select").on("change", function ()
 	{
-		FilterProduct();
+		FilterUser();
 	});
 	$("#product-keyword").on("keyup", function ()
 	{
-		FilterProduct();
+		FilterUser();
 	});
 	$("#option-apply").on("click", function ()
 	{
 		$("#search-option-dropdown").dropdown("toggle");
-		FilterProduct();
+		FilterUser();
 	});
 	$("#option-reset").on("click", function ()
 	{
@@ -160,7 +160,7 @@ $(document).ready(function ()
 		$("#product-confirmed").prop("checked", false);
 
 		$("#search-option-dropdown").dropdown("toggle");
-		FilterProduct();
+		FilterUser();
 	});
 
 	Initialize();

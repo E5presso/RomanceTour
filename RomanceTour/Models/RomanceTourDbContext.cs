@@ -392,6 +392,10 @@ namespace RomanceTour.Models
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
+                entity.Property(e => e.LastLogin)
+                    .IsRequired()
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnType("varchar(max)");

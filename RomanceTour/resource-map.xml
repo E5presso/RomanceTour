@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resource-map>
+	<controller>
+		<Admin>관리자 리소스</Admin>
+		<Appointment>예약 리소스</Appointment>
+		<Home>홈</Home>
+		<Product>상품 리소스</Product>
+		<User>사용자 리소스</User>
+	</controller>
+	<action>
+		<!-- 관리자 -->
+		<Dashboard>대시보드</Dashboard>
+		<ManageUser>사용자 관리</ManageUser>
+		<ManageAppointment>예약 관리</ManageAppointment>
+		<ManageProduct>상품 관리</ManageProduct>
+		<WriteProduct>상품 추가</WriteProduct>
+		<EditProduct>상품 편집</EditProduct>
+
+		<!-- 예약 -->
+		<CheckAppointment>예약 확인</CheckAppointment>
+		<LookupAppointment>예약 검색</LookupAppointment>
+		<ListAppointment>예약 목록조회</ListAppointment>
+		<GetAppointment>예약 확인</GetAppointment>
+		<TryGetAppointment>비회원 예약확인</TryGetAppointment>
+		<ViewAppointment>예약 확인서</ViewAppointment>
+		<AddUserAppointment>회원 예약 추가</AddUserAppointment>
+		<AddNormalAppointment>비회원 예약 추가</AddNormalAppointment>
+		<SearchAppointment>예약 검색</SearchAppointment>
+		<GetAvailable>출발일 조회</GetAvailable>
+		<AddAppointment>예약 추가</AddAppointment>
+		<FilterSession>출발일 검색</FilterSession>
+		<GetSession>출발일 조회</GetSession>
+		<UpdateSession>출발일 수정</UpdateSession>
+		<CountDeparture>탑승지 별 인원 계산</CountDeparture>
+		<CountPriceRule>옵션 별 인원 계산</CountPriceRule>
+		<FilterAppointment>예약 검색</FilterAppointment>
+		<GetAppointmentStatus>예약 상태 조회</GetAppointmentStatus>
+		<UpdateAppointmentStatus>예약 상태 변경</UpdateAppointmentStatus>
+		<EditAppointment>예약 변경</EditAppointment>
+		<UpdateAppointment>예약 변경</UpdateAppointment>
+		<CancelSession>예약 취소</CancelSession>
+
+		<!-- 홈 -->
+		<Index>메인 페이지</Index>
+		<AccessDenied>접근 거부</AccessDenied>
+		<LoginRequired>로그인 필요</LoginRequired>
+		<PageNotFound>존재하지 않는 리소스</PageNotFound>
+		<Error>에러</Error>
+		<ExtendSessionTime>세션 시간 연장</ExtendSessionTime>
+	
+		<!-- 상품 -->
+		<ListProduct>상품 목록조회</ListProduct>
+		<GetProduct>상품 조회</GetProduct>
+		<AddFile>이미지 업로드</AddFile>
+		<GetFile>이미지 가져오기</GetFile>
+		<GetForm>폼 가져오기</GetForm>
+		<GetAppointment>출발일 가져오기</GetAppointment>
+		<AjaxGetProduct>상품 조회</AjaxGetProduct>
+		<AjaxListProduct>상품 목록조회</AjaxListProduct>
+		<FilterProduct>상품 검색</FilterProduct>
+		<AddProduct>상품 추가</AddProduct>
+		<UpdateProduct>상품 수정</UpdateProduct>
+		<RemoveProduct>상품 삭제</RemoveProduct>
+		<AdminFilterProduct>관리자 상품 검색</AdminFilterProduct>
+		<SetVisible>상품 검색가능 여부 설정</SetVisible>
+		<SetExpose>상품 노출 여부 설정</SetExpose>
+		
+		<!-- 사용자 -->
+		<Login>로그인 페이지</Login>
+		<Register>회원가입 페이지</Register>
+		<Logout>로그아웃</Logout>
+		<Mypage>마이 페이지</Mypage>
+		<CheckDuplication>아이디 중복검사</CheckDuplication>
+		<CreateAccount>회원가입</CreateAccount>
+		<CheckAccount>로그인</CheckAccount>
+		<ListUser>사용자 목록조회</ListUser>
+		<SearchUser>사용자 검색</SearchUser>
+		<RemoveUser>사용자 삭제</RemoveUser>
+		<AdminGetUser>관리자 사용자 조회</AdminGetUser>
+		<AdminGetUserHistory>관리자 이용기록 조회</AdminGetUserHistory>
+		<AdminUpdateUser>관리자 사용자 수정</AdminUpdateUser>
+		<AdminUpdateUserStatus>관리자 사용자 상태 변경</AdminUpdateUserStatus>
+		<VerifyPhone>휴대폰 인증 요청</VerifyPhone>
+		<Challenge>인증코드 확인</Challenge>
+		<ChangePersonalInfo>개인정보 변경</ChangePersonalInfo>
+		<ChangePhoneNumber>휴대폰 번호 변경</ChangePhoneNumber>
+		<ChangePaymentInfo>결제정보 변경</ChangePaymentInfo>
+		<ChangePassword>비밀번호 변경</ChangePassword>
+		<Unregister>회원 탈퇴</Unregister>
+	</action>
+</resource-map>

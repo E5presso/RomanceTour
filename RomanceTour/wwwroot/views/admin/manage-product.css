@@ -13,7 +13,7 @@
 .page-back
 {
 	width: 100%;
-	padding: 20px 40px 10px 40px;
+	padding: 15px 15px 10px 15px;
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: flex-start;
@@ -45,27 +45,29 @@
 .search-area
 {
 	width: 100%;
-	padding: 10px 40px 0px 40px;
+	padding: 10px 15px 0px 15px;
 	display: flex;
 	flex-flow: row nowrap;
 }
 
 .search-option-1
 {
-	width: 120px;
+	width: 107px;
 	border: 1px solid #D0B8F5;
 	background: #D0B8F5;
 	color: #FCFCFC;
 	margin-right: 5px;
+	box-shadow: 2px 2px 5px rgba(18, 18, 18, 0.3);
 }
 
 .search-option-2
 {
-	width: 100px;
+	width: 80px;
 	border: 1px solid #D0B8F5;
 	background: #D0B8F5;
 	color: #FCFCFC;
 	margin-right: 5px;
+	box-shadow: 2px 2px 5px rgba(18, 18, 18, 0.3);
 }
 
 .fourth
@@ -77,6 +79,7 @@
 	align-items: center;
 	background: #D0B8F5;
 	transition: box-shadow 0.3s;
+	box-shadow: 2px 2px 5px rgba(18, 18, 18, 0.3);
 }
 
 .fourth:hover
@@ -148,6 +151,12 @@
 	transition: box-shadow 0.3s;
 	border: 1px solid #D0B8F5;
 	transition: border 0.3s, box-shadow 0.3s;
+	box-shadow: 2px 2px 5px rgba(18, 18, 18, 0.3);
+}
+
+.table
+{
+	box-shadow: 2px 2px 5px rgba(18, 18, 18, 0.3);
 }
 
 .table td
@@ -190,7 +199,7 @@ tr
 .table-responsive
 {
 	width: 100%;
-	padding: 10px 40px 0px 40px;
+	padding: 10px 15px 10px 15px;
 }
 
 .table

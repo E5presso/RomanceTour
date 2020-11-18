@@ -136,7 +136,7 @@ function UpdateAppointment()
 				status: status
 			}, UpdateAppointmentCallback);
 		}
-		else $("#appointment-input-status").val(0);
+		else GetAppointment();
 	}
 	else
 	{
@@ -496,7 +496,6 @@ function GetAppointmentCallback(model)
 		$(`#appointment-input-status option`).attr("selected", true);
 		$(`#appointment-input-status`).val(0);
 		$("#appointment-edit").prop("disabled", true);
-		$("#appointment-save").prop("disabled", true);
 	}
 	else
 	{
@@ -504,7 +503,6 @@ function GetAppointmentCallback(model)
 		$(`#appointment-input-status option`).attr("selected", false);
 		$(`#appointment-input-status`).val(model);
 		$("#appointment-edit").prop("disabled", false);
-		$("#appointment-save").prop("disabled", false);
 	}
 }
 function UpdateAppointmentCallback(_)
@@ -694,7 +692,7 @@ function Initialize()
 	});
 	$("#appointment-edit").on("click", function ()
 	{
-		var options = "width=1200, height=1000, status=no, menubar=no, toolbar=no, resizable=no";
+		var options = `width=${screen.width / 3}, height=${screen.height / 4 * 3}, status=no, menubar=no, toolbar=no, resizable=no`;
 		var popup = window.open(`/Appointment/EditAppointment?id=${selectedAppointment}`, "예약변경", options);
 		var interval = setInterval(function ()
 		{
@@ -709,7 +707,7 @@ function Initialize()
 			catch (e) { }
 		}, 100);
 	});
-	$("#appointment-save").on("click", function ()
+	$("#appointment-input-status").on("change", function ()
 	{
 		UpdateAppointment();
 	});

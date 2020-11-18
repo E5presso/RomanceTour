@@ -468,7 +468,6 @@ function Initialize()
 		appointment.append("Name", $("#name").val());
 		appointment.append("Phone", $("#phone").val());
 		appointment.append("Address", $("#address").val());
-		appointment.append("Password", $("#password").val());
 		appointment.append("BillingName", $("#billing-name").val());
 		appointment.append("BillingBank", $("#billing-bank option:selected").val());
 		appointment.append("BillingNumber", $("#billing-number").val());

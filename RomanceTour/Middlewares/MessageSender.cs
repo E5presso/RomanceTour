@@ -24,9 +24,13 @@ namespace RomanceTour.Middlewares
 		{
 			return await sens.SendMessage(MessageType.LMS, appointmentSubject, phone, string.Format(appointmentTemplate, name, productName, date.ToShortDateString(), link));
 		}
-		public static async Task<bool> SendCustomMessage(string[] phone, string productName, DateTime date, string message)
+		public static async Task<bool> SendCancelAppointmentMessage(string[] phone, string productName, DateTime date, string message)
 		{
 			return await sens.SendMessage(MessageType.LMS, cancelSubject, string.Format(cancelTemplate, productName, date.ToShortDateString(), message), phone);
+		}
+		public static async Task<bool> SendCustomMessage(string[] phone, string subject, string message)
+		{
+			return await sens.SendMessage(MessageType.LMS, $"[낭만투어] {subject}", message, phone);
 		}
 	}
 }

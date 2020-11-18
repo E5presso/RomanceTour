@@ -14,13 +14,16 @@
 		"기업",
 		"토스",
 		"카카오"
-			};
+					};
 }
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="~/views/admin/manage-user.css" />
 <script src="~/views/admin/manage-user.js"></script>
 
+<input type="hidden" id="error-action" value="@ResourceMapper.GetActionResource("Error")" />
+<input type="hidden" id="access-denied-action" value="@ResourceMapper.GetActionResource("AccessDenied")" />
+<input type="hidden" id="page-not-found-action" value="@ResourceMapper.GetActionResource("PageNotFound")" />
 <div id="popup-container">
 	<div id="popup-user-info" class="popup">
 		<input type="hidden" id="user-id" />
@@ -103,7 +106,7 @@
 		<button id="close-popup-user-history" class="cancel-btn">
 			<span class="btn-icon fas fa-times"></span>
 		</button>
-		<textarea id="user-history" class="form-control" readonly></textarea>
+		<div id="user-history" class="form-control"></div>
 	</div>
 </div>
 <div class="page-back">

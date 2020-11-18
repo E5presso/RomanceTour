@@ -157,5 +157,51 @@ namespace RomanceTour.Controllers
 				return RedirectToAction("Error", "Home");
 			}
 		}
+		public async Task<IActionResult> SendMessage()
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					var db = new RomanceTourDbContext();
+					ViewBag.Users = await db.User.ToListAsync();
+					return View();
+				}
+				else return RedirectToAction("AccessDenied", "Home");
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return RedirectToAction("Error", "Home");
+			}
+		}
+
+		public async Task<IActionResult> SendCustomMessage(string[] contacts, string subject, string content)
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					var result = await MessageSender.SendCustomMessage(contacts, subject, content);
+					return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = result
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.ACCESS_DENIED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR
+				});
+			}
+		}
 	}
 }

@@ -7,7 +7,7 @@ function SetExposeCallback(model)
 
 }
 
-function FilterUserCallback(model)
+function FilterProductCallback(model)
 {
 	$(".product-list").html('');
 	$.each(model, function (_index, item)
@@ -105,7 +105,7 @@ function RefreshList()
 	var category = parseInt($("#category option:selected").val());
 	Ajax("/Product/AdminFilterProduct", {
 		category: category
-	}, FilterUserCallback);
+	}, FilterProductCallback);
 }
 
 $(document).ready(function ()
@@ -154,7 +154,7 @@ $(document).ready(function ()
 					filter: {
 						Keyword: keyword
 					}
-				}, FilterUserCallback);
+				}, FilterProductCallback);
 				break;
 			}
 			case 1: {
@@ -164,7 +164,7 @@ $(document).ready(function ()
 						FromPrice: parseInt(keyword),
 						ToPrice: 10000000
 					}
-				}, FilterUserCallback);
+				}, FilterProductCallback);
 				break;
 			}
 		}

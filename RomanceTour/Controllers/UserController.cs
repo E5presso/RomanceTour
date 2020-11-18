@@ -348,7 +348,8 @@ namespace RomanceTour.Controllers
 					{
 						case 0:
 						{
-							var matched = await db.User.Where(x => EF.Functions.Like(x.Name, $"%{keyword}%")).ToArrayAsync();
+							var matched = await db.User.ToListAsync();
+							matched = matched.Where(x => x.Name.Contains(keyword ?? string.Empty)).ToList();
 							return Json(new Response
 							{
 								Result = ResultType.SUCCESS,
@@ -357,7 +358,8 @@ namespace RomanceTour.Controllers
 						}
 						case 1:
 						{
-							var matched = await db.User.Where(x => EF.Functions.Like(x.UserName, $"%{keyword}%")).ToArrayAsync();
+							var matched = await db.User.ToListAsync();
+							matched = matched.Where(x => x.UserName.Contains(keyword ?? string.Empty)).ToList();
 							return Json(new Response
 							{
 								Result = ResultType.SUCCESS,
@@ -366,7 +368,8 @@ namespace RomanceTour.Controllers
 						}
 						case 2:
 						{
-							var matched = await db.User.Where(x => EF.Functions.Like(x.Phone, $"%{keyword}%")).ToArrayAsync();
+							var matched = await db.User.ToListAsync();
+							matched = matched.Where(x => x.Phone.Contains(keyword ?? string.Empty)).ToList();
 							return Json(new Response
 							{
 								Result = ResultType.SUCCESS,

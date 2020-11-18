@@ -175,17 +175,17 @@
 .product-list
 {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 400px);
-	grid-gap: 20px;
+	grid-template-columns: repeat(auto-fill, 360px);
+	grid-gap: 10px;
 	justify-content: space-evenly;
 	align-content: flex-start;
 	flex-flow: row wrap;
-	padding: 20px;
+	padding: 10px;
 }
 
 .product-item
 {
-	width: 400px;
+	width: 360px;
 	height: 300px;
 	border-radius: 0.25rem;
 	overflow: hidden;

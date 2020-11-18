@@ -7,12 +7,12 @@ var UserStatus =
 	GREY: "GREY"
 };
 
-function FilterUser()
+function FilterProduct()
 {
-	Ajax("/User/ListUser", {}, FilterUserCallback);
+	Ajax("/User/ListUser", {FilterProductCallbackack);
 }
 
-function FilterUserCallback(model)
+functiFilterProductCallbackack(model)
 {
 	$(".user-list").html('');
 	$.each(model, function (index, item)
@@ -121,7 +121,7 @@ function AdminGetUserCallback(model)
 	else
 	{
 		alert(model.Message);
-		FilterUser();
+		FilterProduct();
 	}
 }
 function AdminGetUserHistoryCallback(model)
@@ -129,18 +129,24 @@ function AdminGetUserHistoryCallback(model)
 	if (model.Result)
 	{
 		var logs = model.Data;
-		var text = "";
+		var message = "";
+		var error = $("#error-action").val();
+		var accessDenied = $("#access-denied-action").val();
+		var pageNotFound = $("#page-not-found-action").val();
 		$.each(logs, function (index, item)
 		{
-			text += `[${new Date(item.TimeStamp).format("yyyy-MM-dd HH:mm:ss")}] ${item.IpAddress}에서 ${item.Controller}의 ${item.Action}에 접근하였습니다.\n`;
+			if (item.Action == error || item.Action == accessDenied || item.Action == pageNotFound)
+				message += `<span class="log-message something-suspicious">[${new Date(item.TimeStamp).format("yyyy-MM-dd HH:mm:ss")}] ${item.IpAddress}에서 ${item.Action}에 접근하였습니다.</span>\n`;
+			else
+				message += `<span class="log-message">[${new Date(item.TimeStamp).format("yyyy-MM-dd HH:mm:ss")}] ${item.IpAddress}에서 ${item.Controller}의 ${item.Action}에 접근하였습니다.</span>\n`;
 		});
-		$("#user-history").val(text);
+		$("#user-history").html(message);
 		ShowUserHistoryPopup();
 	}
 	else
 	{
 		alert(model.Message);
-		FilterUser();
+		FilterProduct();
 	}
 }
 function AdminUpdateUserCallback(model)
@@ -149,31 +155,31 @@ function AdminUpdateUserCallback(model)
 	{
 		alert(model.Message);
 		HideUserInfoPopup();
-		FilterUser();
+		FilterProduct();
 	}
 	else
 	{
 		alert(model.Message);
-		FilterUser();
+		FilterProduct();
 	}
 }
 function AdminUpdateUserStatusCallback(model)
 {
 	if (model.Result)
 	{
-		FilterUser();
+		FilterProduct();
 	}
 	else
 	{
 		alert(model.Message);
-		FilterUser();
+		FilterProduct();
 	}
 }
 function RemoveUserCallback(model)
 {
 	if (model) alert("사용자가 정상적으로 제거되었습니다.");
 	else alert("사용자 제거에 실패하였습니다.");
-	Ajax("/User/ListUser", {}, FilterUserCallback);
+	Ajax("FilterProductCallback}, FilterUserCallback);
 }
 
 function ShowUserInfoPopup()
@@ -181,7 +187,6 @@ function ShowUserInfoPopup()
 	$("#popup-container").fadeIn(DURATION);
 	$("#popup-container").css("display", "flex");
 	$("#popup-user-info").fadeIn(DURATION);
-	$("#user-name").focus();
 }
 function HideUserInfoPopup()
 {
@@ -279,8 +284,7 @@ function Initialize()
 		var keyword = $(this).val();
 		AjaxWithoutLoading("/User/SearchUser", {
 			option: option,
-			keyword: keyword
-		}, FilterUserCallback);
+			keFilterProductCallback}, FilterUserCallback);
 	});
 
 	$("#user-address").on("focus", function ()
@@ -338,5 +342,5 @@ function Initialize()
 $(document).ready(function ()
 {
 	Initialize();
-	FilterUser();
+	FilterProduct();
 });

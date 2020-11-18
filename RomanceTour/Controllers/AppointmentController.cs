@@ -113,10 +113,9 @@ namespace RomanceTour.Controllers
                                     .ThenInclude(x => x.ProductBilling)
                                         .ThenInclude(x => x.Billing)
                             .SingleOrDefaultAsync(x => x.UserId == SessionId && x.Id == id);
-                        matched.Status = matched.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : matched.Status;
-
                         if (matched != null)
                         {
+                            matched.Status = matched.DateSession.Status == DateSessionStatus.CANCELED ? AppointmentStatus.CANCELED : matched.Status;
                             ViewBag.Back = Back;
                             ViewBag.Appointment = matched;
                             return View();
@@ -1183,8 +1182,6 @@ namespace RomanceTour.Controllers
                                 {
                                     var date = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
 
-                                    matched.HashSalt = KeyGenerator.GenerateString(32);
-                                    matched.Password = Password.Hash(appointment.Password, matched.HashSalt);
                                     matched.TimeStamp = DateTime.Now;
                                     matched.Name = appointment.Name;
                                     matched.Phone = appointment.Phone;
@@ -1265,8 +1262,6 @@ namespace RomanceTour.Controllers
                                     var oldDate = await db.DateSession.SingleOrDefaultAsync(x => x.Id == matched.DateSessionId);
                                     var newDate = await db.DateSession.SingleOrDefaultAsync(x => x.ProductId == matched.DateSession.ProductId && x.Date == appointment.Date);
 
-                                    matched.HashSalt = KeyGenerator.GenerateString(32);
-                                    matched.Password = Password.Hash(appointment.Password, matched.HashSalt);
                                     matched.TimeStamp = DateTime.Now;
                                     matched.Name = appointment.Name;
                                     matched.Phone = appointment.Phone;
@@ -1392,7 +1387,7 @@ namespace RomanceTour.Controllers
                     session.Status = DateSessionStatus.CANCELED;
                     db.DateSession.Update(session);
                     await db.SaveChangesAsync();
-                    var result = await MessageSender.SendCustomMessage(phone.ToArray(), session.Product.Title, session.Date, message);
+                    var result = await MessageSender.SendCancelAppointmentMessage(phone.ToArray(), session.Product.Title, session.Date, message);
                     return Json(new Response
                     {
                         Result = ResultType.SUCCESS,

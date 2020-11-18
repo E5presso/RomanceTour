@@ -1,4 +1,10 @@
-﻿.datepicker--cell
+﻿html, body
+{
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.datepicker--cell
 {
 	overflow: hidden !important;
 }
@@ -138,11 +144,6 @@
 	color: #03588C;
 }
 
-body
-{
-	margin: 0;
-}
-
 .container
 {
 	display: flex;
@@ -150,13 +151,15 @@ body
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	margin: 0 auto;
-	padding: 30px 10px 10px 10px;
+	max-width: none !important;
+	padding: 30px 15px 10px 15px;
+	margin: 0px;
 }
 
 .title
 {
 	font-size: 2.0rem;
+	margin-bottom: 10px;
 }
 
 .form-divider

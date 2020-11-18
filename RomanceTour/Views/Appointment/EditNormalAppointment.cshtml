@@ -23,6 +23,15 @@
 
 <html>
 <head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="
+		width=device-width,
+		initial-scale=1.0,
+		maximum-scale=1.0,
+		minimum-scale=1.0,
+		user-scalable=no" />
+	<title>낭만투어 - @ViewData["TITLE"]</title>
+
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" href="~/lib/fontawesome/dist/css/fontawesome.css" />
 	<link rel="stylesheet" href="~/lib/fontawesome/dist/css/all.css" />
@@ -115,9 +124,7 @@
 		</div>
 	</div>
 	<div class="container">
-		<span class="title">
-			회원 예약정보 변경
-		</span>
+		<span class="title">@ViewData["TITLE"]</span>
 		<div class="form-divider container-fluid">
 			<div class="row">
 				<div class="form-group col-12">
@@ -187,10 +194,6 @@
 				<div class="form-group col-12 col-md-8 col-xl-5">
 					<label>계좌번호</label>
 					<input type="text" class="form-control" id="billing-number" value="@appointment.BillingNumber" />
-				</div>
-				<div class="form-group col-12">
-					<label>비밀번호</label>
-					<input type="password" class="form-control" id="password" />
 				</div>
 			</div>
 		</div>

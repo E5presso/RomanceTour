@@ -7,12 +7,12 @@ var UserStatus =
 	GREY: "GREY"
 };
 
-function FilterProduct()
+function FilterUser()
 {
-	Ajax("/User/ListUser", {FilterProductCallbackack);
+	Ajax("/User/ListUser", {}, FilterUserCallback);
 }
 
-functiFilterProductCallbackack(model)
+function FilterUserCallback(model)
 {
 	$(".user-list").html('');
 	$.each(model, function (index, item)
@@ -179,7 +179,7 @@ function RemoveUserCallback(model)
 {
 	if (model) alert("사용자가 정상적으로 제거되었습니다.");
 	else alert("사용자 제거에 실패하였습니다.");
-	Ajax("FilterProductCallback}, FilterUserCallback);
+	Ajax("FilterProductCallback", {}, FilterUserCallback);
 }
 
 function ShowUserInfoPopup()
@@ -284,7 +284,8 @@ function Initialize()
 		var keyword = $(this).val();
 		AjaxWithoutLoading("/User/SearchUser", {
 			option: option,
-			keFilterProductCallback}, FilterUserCallback);
+			keyword: keyword
+		}, FilterUserCallback);
 	});
 
 	$("#user-address").on("focus", function ()
@@ -342,5 +343,5 @@ function Initialize()
 $(document).ready(function ()
 {
 	Initialize();
-	FilterProduct();
+	FilterUser();
 });

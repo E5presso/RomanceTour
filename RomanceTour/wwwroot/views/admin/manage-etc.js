@@ -1,4 +1,6 @@
-﻿function ListCategory()
+﻿var isPopupOpened = false;
+
+function ListCategory()
 {
 	Ajax("/Etc/ListCategory", {}, ListCategoryCallback);
 }
@@ -786,6 +788,26 @@ function Initialize()
 			}, AddHostCallback);
 		}
 	});
+
+	$("#host-address").on("focus", function ()
+	{
+		if (!isPopupOpened)
+		{
+			new daum.Postcode({
+				oncomplete: function (result)
+				{
+					$("#host-address").val(result.address);
+				},
+				onclose: function ()
+				{
+					isPopupOpened = false;
+					$("#host-host-name").focus();
+				}
+			}).open();
+			isPopupOpened = true;
+		}
+	});
+
 }
 
 function ShowPopup(popup)

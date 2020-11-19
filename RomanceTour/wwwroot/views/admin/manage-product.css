@@ -102,7 +102,13 @@
 	width: 100%;
 }
 
-.search-user > .search-text
+.search-text-admin
+{
+	border: 0;
+	font-size: 1.2rem;
+}
+
+.search-user > .search-text-admin
 {
 	width: 100%;
 	box-sizing: border-box;

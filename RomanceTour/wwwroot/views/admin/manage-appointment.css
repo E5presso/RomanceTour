@@ -39,12 +39,12 @@
 	text-shadow: none;
 }
 
-.container-fluid
+article .container-fluid
 {
 	padding: 0px 15px 10px 15px;
 }
 
-.row
+article .row
 {
 	padding: 0px;
 }

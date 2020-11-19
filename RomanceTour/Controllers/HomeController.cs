@@ -99,7 +99,11 @@ namespace RomanceTour.Controllers
 			catch (Exception e)
 			{
 				await LogManager.ErrorAsync(e);
-				return RedirectToAction("Error", "Home");
+				return Json(new Response
+				{
+					Error = e,
+					Result = ResultType.SYSTEM_ERROR
+				});
 			}
 		}
 	}

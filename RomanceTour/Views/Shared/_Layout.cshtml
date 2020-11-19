@@ -2,6 +2,8 @@
 	var isLoggedIn = Context.Session.GetInt32(Session.Id) != null;
 	var sessionId = Context.Session.GetInt32(Session.Id);
 	var Back = ViewBag.Back ?? "/Home/Index";
+	var db = new RomanceTourDbContext();
+	var categories = await db.Category.ToArrayAsync();
 }
 
 <!DOCTYPE html>
@@ -325,34 +327,16 @@
 									</span>
 								</a>
 							</li>
-							<li class="nav-item active">
-								<a class="nav-link menu-btn" href="/Product/ListProduct?category=1">
-									<span class="btn-text">
-										당일 여행
-									</span>
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link menu-btn" href="/Product/ListProduct?category=2">
-									<span class="btn-text">
-										숙박 여행
-									</span>
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link menu-btn" href="/Product/ListProduct?category=3">
-									<span class="btn-text">
-										섬 여행
-									</span>
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link menu-btn" href="/Product/ListProduct?category=4">
-									<span class="btn-text">
-										제주도 여행
-									</span>
-								</a>
-							</li>
+							@foreach (var category in categories)
+							{
+								<li class="nav-item active">
+									<a class="nav-link menu-btn" href="/Product/ListProduct?category=@category.Id">
+										<span class="btn-text">
+											@category.Name
+										</span>
+									</a>
+								</li>
+							}
 							<li class="nav-item">
 								<a class="nav-link menu-btn" href="/Product/ListProduct?confirmed=true">
 									<span class="btn-text">

@@ -230,15 +230,15 @@
 	transition: background 0.3s;
 }
 
+#unregister > .my-page-form-group > .btn:not(:disabled):hover
+{
+	background: #FFB53D;
+}
+
 #unregister > .my-page-form-group > .btn > .btn-text
 {
 	font-size: 1.2rem;
 	color: #FCFCFC;
-}
-
-#unregister > .my-page-form-group > .btn:not(:disabled):hover
-{
-	background: #0378A6;
 }
 
 .my-page-form-group > .input-bundle

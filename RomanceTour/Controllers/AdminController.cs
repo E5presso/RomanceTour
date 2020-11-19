@@ -88,6 +88,24 @@ namespace RomanceTour.Controllers
 				return RedirectToAction("Error", "Home");
 			}
 		}
+		public async Task<IActionResult> ManageEtc()
+		{
+			try
+			{
+				if (IsAdministrator)
+				{
+					using var db = new RomanceTourDbContext();
+					ViewBag.Back = Back;
+					return View();
+				}
+				else return RedirectToAction("AccessDenied", "Home");
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return RedirectToAction("Error", "Home");
+			}
+		}
 		public async Task<IActionResult> WriteProduct()
 		{
 			try
@@ -199,6 +217,7 @@ namespace RomanceTour.Controllers
 				await LogManager.ErrorAsync(e);
 				return Json(new Response
 				{
+					Error = e,
 					Result = ResultType.SYSTEM_ERROR
 				});
 			}

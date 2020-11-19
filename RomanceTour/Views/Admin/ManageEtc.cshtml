@@ -1,0 +1,534 @@
+﻿@{
+	ViewData["DATA"] = "ManageEtc";
+	ViewData["TITLE"] = "기타관리";
+	string[] banks = new string[]
+	{
+		"국민",
+		"신한",
+		"우리",
+		"하나",
+		"농협",
+		"수협",
+		"신협",
+		"산업",
+		"기업",
+		"토스",
+		"카카오"
+	};
+}
+
+<link rel="stylesheet" href="~/views/admin/manage-etc.css" />
+<script src="~/views/admin/manage-etc.js"></script>
+
+<div id="popup-container">
+	<div id="category-popup" class="popup">
+		<input id="category-id" class="id-field" type="hidden" />
+		<span class="title">
+			카테고리
+		</span>
+		<button class="cancel-btn">
+			<span class="btn-icon fas fa-times"></span>
+		</button>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="form-group col-12">
+					<label>
+						카테고리 이름
+					</label>
+					<input type="text" id="category-name" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						설명
+					</label>
+					<input type="text" id="category-description" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<button id="save-category" class="btn">
+						<span class="btn-icon fas fa-save"></span>
+						<span class="btn-text">
+							저장하기
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="billing-popup" class="popup">
+		<input id="billing-id" class="id-field" type="hidden" />
+		<span class="title">
+			입금계좌
+		</span>
+		<button class="cancel-btn">
+			<span class="btn-icon fas fa-times"></span>
+		</button>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="form-group col-12">
+					<label>
+						예금주명
+					</label>
+					<input type="text" id="billing-name" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						은행
+					</label>
+					<select id="billing-bank" class="form-control">
+						@foreach (var bank in banks)
+						{
+							<option value="@bank">@bank</option>
+						}
+					</select>
+				</div>
+				<div class="form-group col-12">
+					<label>
+						계좌번호
+					</label>
+					<input type="text" id="billing-number" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<button id="save-billing" class="btn">
+						<span class="btn-icon fas fa-save"></span>
+						<span class="btn-text">
+							저장하기
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="departure-popup" class="popup">
+		<input id="departure-id" class="id-field" type="hidden" />
+		<span class="title">
+			탑승지
+		</span>
+		<button class="cancel-btn">
+			<span class="btn-icon fas fa-times"></span>
+		</button>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="form-group col-12">
+					<label>
+						탑승지 이름
+					</label>
+					<input type="text" id="departure-name" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						위도
+					</label>
+					<input type="number" id="departure-latitude" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						경도
+					</label>
+					<input type="number" id="departure-longitude" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<button id="save-departure" class="btn">
+						<span class="btn-icon fas fa-save"></span>
+						<span class="btn-text">
+							저장하기
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="price-rule-popup" class="popup">
+		<input id="price-rule-id" class="id-field" type="hidden" />
+		<span class="title">
+			가격정책
+		</span>
+		<button class="cancel-btn">
+			<span class="btn-icon fas fa-times"></span>
+		</button>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="form-group col-12">
+					<label>
+						정책 유형
+					</label>
+					<select id="popup-price-rule-type" class="form-control">
+						<option value="@PriceRuleType.PERCENT_AS.ToString()">@PriceRuleType.PERCENT_AS.ToString()</option>
+						<option value="@PriceRuleType.PERCENT_PLUS.ToString()">@PriceRuleType.PERCENT_PLUS.ToString()</option>
+						<option value="@PriceRuleType.PERCENT_MINUS.ToString()">@PriceRuleType.PERCENT_MINUS.ToString()</option>
+						<option value="@PriceRuleType.STATIC_PLUS.ToString()">@PriceRuleType.STATIC_PLUS.ToString()</option>
+						<option value="@PriceRuleType.STATIC_MINUS.ToString()">@PriceRuleType.STATIC_MINUS.ToString()</option>
+					</select>
+				</div>
+				<div class="form-group col-12">
+					<label>
+						정책 이름
+					</label>
+					<input type="text" id="price-rule-name" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						설명
+					</label>
+					<input type="text" id="price-rule-description" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						가격
+					</label>
+					<input type="number" id="price-rule-price" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<button id="save-price-rule" class="btn">
+						<span class="btn-icon fas fa-save"></span>
+						<span class="btn-text">
+							저장하기
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="host-popup" class="popup">
+		<input id="host-id" class="id-field" type="hidden" />
+		<span class="title">
+			제휴업체
+		</span>
+		<button class="cancel-btn">
+			<span class="btn-icon fas fa-times"></span>
+		</button>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="form-group col-12">
+					<label>
+						유형
+					</label>
+					<select id="popup-host-type" class="form-control">
+						<option value="0">숙소</option>
+						<option value="1">식당</option>
+					</select>
+				</div>
+				<div class="form-group col-12">
+					<label>
+						업체명
+					</label>
+					<input type="text" id="host-name" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						주소지
+					</label>
+					<input type="text" id="host-address" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						성명
+					</label>
+					<input type="text" id="host-host-name" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						연락처
+					</label>
+					<input type="text" id="host-host-phone" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<label>
+						은행
+					</label>
+					<select id="host-host-bank" class="form-control">
+						@foreach (var bank in banks)
+						{
+							<option value="@bank">@bank</option>
+						}
+					</select>
+				</div>
+				<div class="form-group col-12">
+					<label>
+						계좌번호
+					</label>
+					<input type="text" id="host-host-billing-number" class="form-control" />
+				</div>
+				<div class="form-group col-12">
+					<button id="save-host" class="btn">
+						<span class="btn-icon fas fa-save"></span>
+						<span class="btn-text">
+							저장하기
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-back">
+	<button class="btn second go-back">
+		<span class="fa fa-arrow-left btn-icon"></span>
+		<span class="btn-text">
+			이전 페이지
+		</span>
+	</button>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="section col-12 col-md-6 col-xl-4">
+			<div class="search-area">
+				<span class="table-title">
+					카테고리
+				</span>
+				<div class="search-bar-second search-user">
+					<input type="search" id="category-keyword" class="form-control search-text-admin" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+				<button id="add-category" class="add-btn btn">
+					<span class="btn-icon fas fa-plus"></span>
+					<span class="btn-text">
+						추가
+					</span>
+				</button>
+			</div>
+			<div class="list-area">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									카테고리 이름
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									설명
+								</span>
+							</th>
+							<th class="d-table-cell">
+								<span class="table-header">
+									작업
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="category-list"></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-md-6 col-xl-4">
+			<div class="search-area">
+				<span class="table-title">
+					입금계좌
+				</span>
+				<div class="search-bar-second search-user">
+					<input type="search" id="billing-keyword" class="form-control search-text-admin" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+				<button id="add-billing" class="add-btn btn">
+					<span class="btn-icon fas fa-plus"></span>
+					<span class="btn-text">
+						추가
+					</span>
+				</button>
+			</div>
+			<div class="list-area">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									예금주명
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									은행
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									계좌번호
+								</span>
+							</th>
+							<th class="d-table-cell">
+								<span class="table-header">
+									작업
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="billing-list"></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-md-6 col-lg-5 col-xl-4">
+			<div class="search-area">
+				<span class="table-title">
+					탑승지
+				</span>
+				<div class="search-bar-second search-user">
+					<input type="search" id="departure-keyword" class="form-control search-text-admin" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+				<button id="add-departure" class="add-btn btn">
+					<span class="btn-icon fas fa-plus"></span>
+					<span class="btn-text">
+						추가
+					</span>
+				</button>
+			</div>
+			<div class="list-area">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									탑승지 이름
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									위도
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									경도
+								</span>
+							</th>
+							<th class="d-table-cell">
+								<span class="table-header">
+									작업
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="departure-list"></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-md-6 col-lg-7 col-xl-5">
+			<div class="search-area">
+				<span class="table-title">
+					가격정책
+				</span>
+				<div class="search-bar-second search-user">
+					<input type="search" id="price-rule-keyword" class="form-control search-text-admin" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+				<button id="add-price-rule" class="add-btn btn">
+					<span class="btn-icon fas fa-plus"></span>
+					<span class="btn-text">
+						추가
+					</span>
+				</button>
+			</div>
+			<div class="list-area">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									정책 유형
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									정책 이름
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									설명
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									가격
+								</span>
+							</th>
+							<th class="d-table-cell">
+								<span class="table-header">
+									작업
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="price-rule-list"></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="section col-12 col-xl-7">
+			<div class="search-area">
+				<span class="table-title">
+					제휴업체
+				</span>
+				<div class="search-bar-second search-user">
+					<input type="search" id="host-keyword" class="form-control search-text-admin" placeholder="검색어 입력" />
+					<button class="btn second user-search-btn">
+						<span class="fa fa-search"></span>
+					</button>
+				</div>
+				<button id="add-host" class="add-btn btn">
+					<span class="btn-icon fas fa-plus"></span>
+					<span class="btn-text">
+						추가
+					</span>
+				</button>
+			</div>
+			<div class="list-area">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								<span class="table-header">
+									유형
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									업체명
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									주소지
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									성명
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									연락처
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									은행
+								</span>
+							</th>
+							<th>
+								<span class="table-header">
+									계좌번호
+								</span>
+							</th>
+							<th class="d-table-cell">
+								<span class="table-header">
+									작업
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="host-list"></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

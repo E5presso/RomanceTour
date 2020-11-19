@@ -146,6 +146,7 @@ namespace RomanceTour.Controllers
 						{
 							user.HashSalt = KeyGenerator.GenerateString(32);
 							user.Password = Password.Hash(user.Password, user.HashSalt);
+							user.LastLogin = DateTime.Now;
 							db.User.Add(user);
 							await db.SaveChangesAsync();
 							var registered = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
@@ -865,30 +866,58 @@ namespace RomanceTour.Controllers
 			try
 			{
 				using var db = new RomanceTourDbContext();
-				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				var matched = await db.User
+					.Include(x => x.Appointment)
+						.ThenInclude(x => x.DateSession)
+					.SingleOrDefaultAsync(x => x.Id == SessionId && x.UserName == user.UserName);
 				if (matched != null)
 				{
 					if (matched.Password == Password.Hash(user.Password, matched.HashSalt))
 					{
-						db.User.Remove(matched);
-						await db.SaveChangesAsync();
-						RemoveSession();
-						return Json(new Response
+						var appointments = matched.Appointment.Where(x => x.DateSession.Date > DateTime.Now);
+						if (appointments.Count() > 0) return Json(new Response
 						{
 							Result = ResultType.SUCCESS,
-							Model = true
+							Model = new
+							{
+								Result = false,
+								Message = "아직 진행되지 않은 예약이 남아있어\n회원 탈퇴를 진행할 수 없습니다.\n자세한 내용은 고객센터에 문의해주세요."
+							}
 						});
+						else
+						{
+							db.User.Remove(matched);
+							await db.SaveChangesAsync();
+							RemoveSession();
+							return Json(new Response
+							{
+								Result = ResultType.SUCCESS,
+								Model = new
+								{
+									Result = true,
+									Message = "정상적으로 탈퇴 처리되었습니다.\n다시 찾아주시길 기다리겠습니다."
+								}
+							});
+						}
 					}
 					else return Json(new Response
 					{
 						Result = ResultType.SUCCESS,
-						Model = false
+						Model = new
+						{
+							Result = false,
+							Message = "아이디 또는 비밀번호가 잘못되었습니다."
+						}
 					});
 				}
 				else return Json(new Response
 				{
 					Result = ResultType.SUCCESS,
-					Model = false
+					Model = new
+					{
+						Result = false,
+						Message = "아이디 또는 비밀번호가 잘못되었습니다."
+					}
 				});
 			}
 			catch (Exception e)

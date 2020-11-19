@@ -13,8 +13,8 @@ namespace RomanceTour.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public double? X { get; set; }
-        public double? Y { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
 
         public virtual ICollection<Person> Person { get; set; }
         public virtual ICollection<ProductDeparture> ProductDeparture { get; set; }

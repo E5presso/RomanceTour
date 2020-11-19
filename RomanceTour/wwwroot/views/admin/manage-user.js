@@ -24,6 +24,11 @@ function FilterUserCallback(model)
 						${item.UserName}
 					</span>
 				</td>
+				<td class="d-none d-md-table-cell">
+					<span class="table-body">
+						${new Date(item.LastLogin).format("yyyy-MM-dd")}
+					</span>
+				</td>
 				<td class="d-table-cell">
 					<select class="table-body form-control user-status">
 						<option value="${UserStatus.GREEN}" ${item.Status == UserStatus.GREEN ? "selected" : ""}>정상</option>
@@ -42,14 +47,14 @@ function FilterUserCallback(model)
 						${item.Phone}
 					</span>
 				</td>
-				<td class="d-none d-lg-table-cell">
+				<td class="d-none d-xl-table-cell">
 					<span class="table-body">
 						${item.Address}
 					</span>
 				</td>
 				<td class="d-none d-xl-table-cell">
 					<span class="table-body">
-						${new Date(item.Birthday).toLocaleDateString()}
+						${new Date(item.Birthday).format("yyyy-MM-dd")}
 					</span>
 				</td>
 				<td class="d-table-cell">
@@ -260,7 +265,7 @@ function Initialize()
 	{
 		window.location.href = "/Admin/Dashboard";
 	});
-	$(".search-bar-second .search-text").on("focus", function ()
+	$(".search-bar-second .search-text-admin").on("focus", function ()
 	{
 		$(this).parent().css("box-shadow", "0px 0px 10px #B0C8EB");
 		$(this).parent().css("border", "1px solid #B0C8EB");
@@ -269,16 +274,16 @@ function Initialize()
 			"text-shadow": "0px 0px 10px #B0C8EB"
 		});
 	});
-	$(".search-bar-second .search-text").on("focusout", function ()
+	$(".search-bar-second .search-text-admin").on("focusout", function ()
 	{
-		$(this).parent().css("box-shadow", "initial");
+		$(this).parent().css("box-shadow", "2px 2px 5px rgba(18, 18, 18, 0.3)");
 		$(this).parent().css("border", "1px solid #B0C8EB");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
 			"color": "#B0C8EB",
 			"text-shadow": "none"
 		});
 	});
-	$(".search-bar-second .search-text").on("keyup", function ()
+	$(".search-bar-second .search-text-admin").on("keyup", function ()
 	{
 		var option = $(".search-option option:selected").val();
 		var keyword = $(this).val();

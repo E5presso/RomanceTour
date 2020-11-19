@@ -114,7 +114,7 @@ $(document).ready(function ()
 	{
 		window.location.href = "/Admin/Dashboard";
 	});
-	$(".search-bar-second .search-text").on("focus", function ()
+	$(".search-bar-second .search-text-admin").on("focus", function ()
 	{
 		$(this).parent().css("box-shadow", "0px 0px 10px #D0B8F5");
 		$(this).parent().css("border", "1px solid #D0B8F5");
@@ -123,9 +123,9 @@ $(document).ready(function ()
 			"text-shadow": "0px 0px 10px #D0B8F5"
 		});
 	});
-	$(".search-bar-second .search-text").on("focusout", function ()
+	$(".search-bar-second .search-text-admin").on("focusout", function ()
 	{
-		$(this).parent().css("box-shadow", "initial");
+		$(this).parent().css("box-shadow", "2px 2px 5px rgba(18, 18, 18, 0.3)");
 		$(this).parent().css("border", "1px solid #D0B8F5");
 		$(this).parent().find(".user-search-btn > .fa-search").css({
 			"color": "#D0B8F5",

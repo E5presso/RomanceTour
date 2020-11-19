@@ -229,6 +229,31 @@ function ChangePasswordCallback(model)
 	}
 }
 
+// 회원 탈퇴
+function ValidateUnregister()
+{
+	var username = $("#unregister-username").val();
+	var password = $("#unregister-password").val();
+	if (username.length > 0 && password.length > 0)
+		$("#do-unregister").prop("disabled", false);
+	else $("#do-unregister").prop("disabled", true);
+}
+function UnregisterCallback(model)
+{
+	if (model.Result)
+	{
+		alert(model.Message);
+		location.href = "/Home/Index";
+	}
+	else
+	{
+		alert(model.Message);
+		$("#unregister-username").val("");
+		$("#unregister-password").val("");
+		ValidateUnregister();
+	}
+}
+
 $(document).ready(function ()
 {
 	Initialize();
@@ -536,5 +561,25 @@ $(document).ready(function ()
 			oldPassword: oldPassword,
 			newPassword: newPassword
 		}, ChangePasswordCallback);
+	});
+
+	// 회원 탈퇴
+	$("#unregister-username").on("keyup", function ()
+	{
+		ValidateUnregister();
+	});
+	$("#unregister-password").on("keyup", function ()
+	{
+		ValidateUnregister();
+	});
+	$("#do-unregister").on("click", function ()
+	{
+		var username = $("#unregister-username").val();
+		var password = $("#unregister-password").val();
+
+		Ajax("/User/Unregister", {
+			UserName: username,
+			Password: password
+		}, UnregisterCallback);
 	});
 });

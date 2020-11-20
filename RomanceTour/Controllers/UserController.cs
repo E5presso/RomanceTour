@@ -231,79 +231,177 @@ namespace RomanceTour.Controllers
 				else
 				{
 					using var db = new RomanceTourDbContext();
-					var matched = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
-					if (matched != null && matched.Password == Password.Hash(user.Password, matched.HashSalt))
+					var matchedByUserName = await db.User.SingleOrDefaultAsync(x => x.UserName == user.UserName);
+					var matchedByPhone = await db.User.SingleOrDefaultAsync(x => x.Phone == user.UserName);
+					if (matchedByUserName != null)
 					{
-						switch (matched.Status)
+						if (matchedByUserName.Password == Password.Hash(user.Password, matchedByUserName.HashSalt))
 						{
-							case UserStatus.GREEN:
+							switch (matchedByUserName.Status)
 							{
-								AddSession(matched.Id, matched.Name);
-								matched.LastLogin = DateTime.Now;
-								db.User.Update(matched);
-								await db.SaveChangesAsync();
-								return Json(new Response
+								case UserStatus.GREEN:
 								{
-									Result = ResultType.SUCCESS,
-									Model = new
+									AddSession(matchedByUserName.Id, matchedByUserName.Name);
+									matchedByUserName.LastLogin = DateTime.Now;
+									db.User.Update(matchedByUserName);
+									await db.SaveChangesAsync();
+									return Json(new Response
 									{
-										Result = true,
-										Message = "로그인이 완료되었습니다."
-									}
-								});
-							}
-							case UserStatus.YELLOW:
-							{
-								AddSession(matched.Id, matched.Name);
-								matched.LastLogin = DateTime.Now;
-								db.User.Update(matched);
-								await db.SaveChangesAsync();
-								return Json(new Response
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = true,
+											Message = "로그인이 완료되었습니다."
+										}
+									});
+								}
+								case UserStatus.YELLOW:
 								{
-									Result = ResultType.SUCCESS,
-									Model = new
+									AddSession(matchedByUserName.Id, matchedByUserName.Name);
+									matchedByUserName.LastLogin = DateTime.Now;
+									db.User.Update(matchedByUserName);
+									await db.SaveChangesAsync();
+									return Json(new Response
 									{
-										Result = true,
-										Message = "의심스러운 사용자 활동으로 인해 1회 경고가 부가됩니다.\n향후 이러한 활동이 지속될 경우 계정이 정지될 수 있습니다.\n자세한 내용은 고객센터에 문의해주세요."
-									}
-								});
-							}
-							case UserStatus.RED:
-							{
-								return Json(new Response
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = true,
+											Message = "의심스러운 사용자 활동으로 인해 1회 경고가 부가됩니다.\n향후 이러한 활동이 지속될 경우 계정이 정지될 수 있습니다.\n자세한 내용은 고객센터에 문의해주세요."
+										}
+									});
+								}
+								case UserStatus.RED:
 								{
-									Result = ResultType.SUCCESS,
-									Model = new
+									return Json(new Response
 									{
-										Result = false,
-										Message = "이용이 정지된 계정입니다.\n자세한 내용은 고객센터에 문의해주세요."
-									}
-								});
-							}
-							case UserStatus.GREY:
-							{
-								return Json(new Response
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = false,
+											Message = "이용이 정지된 계정입니다.\n자세한 내용은 고객센터에 문의해주세요."
+										}
+									});
+								}
+								case UserStatus.GREY:
 								{
-									Result = ResultType.SUCCESS,
-									Model = new
+									return Json(new Response
 									{
-										Result = false,
-										Message = "현재 휴면상태인 계정입니다.\n계정 활성화를 원하시면 고객센터로 문의해주세요."
-									}
-								});
-							}
-							default:
-							{
-								return Json(new Response
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = false,
+											Message = "현재 휴면상태인 계정입니다.\n계정 활성화를 원하시면 고객센터로 문의해주세요."
+										}
+									});
+								}
+								default:
 								{
-									Result = ResultType.SUCCESS,
-									Model = new
+									return Json(new Response
 									{
-										Result = false
-									}
-								});
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = false
+										}
+									});
+								}
 							}
 						}
+						else return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = new
+							{
+								Result = false,
+								Message = "아이디 또는 비밀번호가 잘못되었습니다."
+							}
+						});
+					}
+					else if (matchedByPhone != null)
+					{
+						if (matchedByPhone.Password == Password.Hash(user.Password, matchedByPhone.HashSalt))
+						{
+							switch (matchedByPhone.Status)
+							{
+								case UserStatus.GREEN:
+								{
+									AddSession(matchedByPhone.Id, matchedByPhone.Name);
+									matchedByPhone.LastLogin = DateTime.Now;
+									db.User.Update(matchedByPhone);
+									await db.SaveChangesAsync();
+									return Json(new Response
+									{
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = true,
+											Message = "로그인이 완료되었습니다."
+										}
+									});
+								}
+								case UserStatus.YELLOW:
+								{
+									AddSession(matchedByPhone.Id, matchedByPhone.Name);
+									matchedByPhone.LastLogin = DateTime.Now;
+									db.User.Update(matchedByPhone);
+									await db.SaveChangesAsync();
+									return Json(new Response
+									{
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = true,
+											Message = "의심스러운 사용자 활동으로 인해 1회 경고가 부가됩니다.\n향후 이러한 활동이 지속될 경우 계정이 정지될 수 있습니다.\n자세한 내용은 고객센터에 문의해주세요."
+										}
+									});
+								}
+								case UserStatus.RED:
+								{
+									return Json(new Response
+									{
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = false,
+											Message = "이용이 정지된 계정입니다.\n자세한 내용은 고객센터에 문의해주세요."
+										}
+									});
+								}
+								case UserStatus.GREY:
+								{
+									return Json(new Response
+									{
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = false,
+											Message = "현재 휴면상태인 계정입니다.\n계정 활성화를 원하시면 고객센터로 문의해주세요."
+										}
+									});
+								}
+								default:
+								{
+									return Json(new Response
+									{
+										Result = ResultType.SUCCESS,
+										Model = new
+										{
+											Result = false
+										}
+									});
+								}
+							}
+						}
+						else return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = new
+							{
+								Result = false,
+								Message = "아이디 또는 비밀번호가 잘못되었습니다."
+							}
+						});
 					}
 					else return Json(new Response
 					{

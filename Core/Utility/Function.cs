@@ -76,9 +76,9 @@ namespace Core.Utility
 			{
 				while (true)
 				{
-					await Task.Delay(time);
 					if (token.IsCancellationRequested) break;
 					else callback();
+					await Task.Delay(time);
 				}
 			}, token).Start();
 			return new TaskHandle(cts);
@@ -97,9 +97,9 @@ namespace Core.Utility
 			{
 				while (true)
 				{
-					await Task.Delay(time);
 					if (token.IsCancellationRequested) break;
 					else callback();
+					await Task.Delay(time);
 				}
 			}, token).Start();
 			return new TaskHandle(cts);

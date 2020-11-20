@@ -67,6 +67,10 @@ $(document).ready(function ()
 		e.preventDefault();
 		window.location.href = "/User/Register";
 	});
+	$("#forgot-password").on("click", function ()
+	{
+		window.location.href = "/User/FindMyPassword";
+	});
 
 	ValidateForm();
 	$(".id").focus();

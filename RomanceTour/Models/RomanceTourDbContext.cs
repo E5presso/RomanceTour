@@ -379,6 +379,12 @@ namespace RomanceTour.Models
                     .IsRequired()
                     .HasColumnType("varchar(max)");
 
+                entity.Property(e => e.AllowMarketingPromotions)
+                    .IsRequired();
+
+                entity.Property(e => e.AllowTermsAndConditions)
+                    .IsRequired();
+
                 entity.Property(e => e.BillingBank).HasColumnType("varchar(max)");
 
                 entity.Property(e => e.BillingName).HasColumnType("varchar(max)");

@@ -91,6 +91,24 @@ namespace RomanceTour.Controllers
 			}
 		}
 
+		public async Task<IActionResult> FindMyPassword()
+		{
+			try
+			{
+				if (!IsLoggedIn)
+				{
+					ViewBag.Back = Back;
+					return View();
+				}
+				else return RedirectToAction("Index", "Home");
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return RedirectToAction("Error", "Home");
+			}
+		}
+
 		public async Task<IActionResult> CheckDuplication(User user)
 		{
 			try
@@ -680,6 +698,55 @@ namespace RomanceTour.Controllers
 				});
 			}
 		}
+		public async Task<IActionResult> VerifyPhoneForUser(string phone)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				int count = db.Verification.Count(x => x.TimeStamp.Date == DateTime.Now.Date && x.IpAddress == IPAddress);
+				if (count <= XmlConfiguration.Verification.MaxRequest)
+				{
+					var matched = await db.User.SingleOrDefaultAsync(x => x.Phone == phone);
+					if (matched != null)
+					{
+						var result = await PhoneVerifier.CreateVerification(phone);
+						if (result == VerificationResult.SUCCESS)
+						{
+							db.Verification.Add(new Models.Verification
+							{
+								IpAddress = IPAddress,
+								TimeStamp = DateTime.Now
+							});
+							await db.SaveChangesAsync();
+						}
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = result
+						});
+					}
+					else return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = VerificationResult.USER_NOT_FOUND
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = VerificationResult.MAX_REQUEST_REACHED
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e
+				});
+			}
+		}
 		public async Task<IActionResult> Challenge(string phone, string code)
 		{
 			try
@@ -704,6 +771,38 @@ namespace RomanceTour.Controllers
 					Error = e
 				});
 			}
+		}
+
+		public async Task<IActionResult> ResetPassword(string token, string newPassword)
+		{
+			string phone = PhoneVerifier.Retrieve(token);
+			if (phone != null)
+			{
+				var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Phone == phone);
+				if (matched != null)
+				{
+					matched.HashSalt = KeyGenerator.GenerateString(32);
+					matched.Password = Password.Hash(newPassword, matched.HashSalt);
+					db.User.Update(matched);
+					await db.SaveChangesAsync();
+					return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = true
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			else return Json(new Response
+			{
+				Result = ResultType.SUCCESS,
+				Model = false
+			});
 		}
 
 		public async Task<IActionResult> ChangePersonalInfo(User user)

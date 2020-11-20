@@ -142,6 +142,7 @@ function CheckVerificationCodeCallback(model)
 	$("#verification-code").prop("disabled", false);
 	if (model.Result)
 	{
+		clearInterval(timer);
 		token = model.Token;
 		alert("휴대폰 인증에 성공하였습니다.");
 		$("#new-phone-number").prop("disabled", true);

@@ -177,3 +177,17 @@
 	align-items: center;
 	font-size: 1.2rem;
 }
+
+.link-text
+{
+	font-size: 1.2rem;
+	color: #FCFCFC;
+	transition: color 0.3s, text-shadow 0.3s;
+	cursor: pointer;
+}
+
+.link-text:hover
+{
+	color: #F2B705;
+	text-shadow: 0 0 10px #F2B705;
+}

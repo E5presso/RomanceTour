@@ -23,6 +23,8 @@ namespace RomanceTour.Models
 
         public int Id { get; set; }
         public DateTime LastLogin { get; set; }
+        public bool AllowTermsAndConditions { get; set; }
+        public bool AllowMarketingPromotions { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string HashSalt { get; set; }

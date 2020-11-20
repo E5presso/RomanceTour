@@ -10,10 +10,11 @@ namespace RomanceTour.Middlewares
 {
 	public enum VerificationResult
 	{
-		SUCCESS,			// 발송 성공 시
-		FAILURE,			// 발송 실패 시
-		TOO_MUCH_REQUEST,	// 너무 빠른 요청
-		MAX_REQUEST_REACHED	// 일일 요청한도 도달
+		SUCCESS,				// 발송 성공 시
+		FAILURE,				// 발송 실패 시
+		TOO_MUCH_REQUEST,		// 너무 빠른 요청
+		MAX_REQUEST_REACHED,	// 일일 요청한도 도달
+		USER_NOT_FOUND			// 존재하지 않는 사용자
 	}
 	public static class PhoneVerifier
 	{

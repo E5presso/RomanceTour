@@ -1,50 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
-	<domain>https://www.romancetour.ml/</domain>
-	<secret-key>jp61YDqAuNwmpnX4W7izgB3d6wsVgFzXBQD7vUXDmHU=</secret-key>
-	<directories>
-		<root>D:\RomanceTour</root>
-		<form>D:\RomanceTour\Forms</form>
-		<file>D:\RomanceTour\Files</file>
-		<log>D:\RomanceTour\Logs</log>
-	</directories>
-	<administrator>
-		<session-id>0</session-id>
-		<username>root</username>
-		<hashsalt>N3vRAWIaIwYH2oxpkoF7qGTI/YS1fTz9AzSj6eDvGQU=</hashsalt>
-		<password>/zsd6Ze2yKgdmhAofbe5bsmBCHiPenUEohidSzm9j48=</password>
-		<name>루트 관리자 계정</name>
-	</administrator>
-	<ncloud>
-		<url>https://sens.apigw.ntruss.com</url>
-		<uri>/sms/v2/services/{0}/messages</uri>
-		<service-id>ncp:sms:kr:260165252261:romance_tour</service-id>
-		<access-key>eQLq6kKSxChwuTrhcZDB</access-key>
-		<sceret-key>8p7Wt6dm07SgXWaNsbaEH36zbxE0HsMomyTMhocF</sceret-key>
-		<from>01064308733</from>
-	</ncloud>
-	<kakao>
-		<api-key>e9c264ffe6d09d9178478c1eb1afb5d2</api-key>
-	</kakao>
-	<verification>
-		<template>[낭만투어] 인증번호 : [{0}]를 입력해주세요.</template>
-		<time-limit>3</time-limit>
-		<code-length>6</code-length>
-		<max-request>10</max-request>
-	</verification>
-	<appointment>
-		<subject>[낭만투어] 예약완료 안내</subject>
-		<template>{0}님, 요청하신 상품에 대한 예약이 완료되었습니다.
+  <domain>https://www.romancetour.ml/</domain>
+  <secret-key>wo9PcMLNPpWf3WmNAVSyhFxaFztXIZ3loLUpP1xQSGI=</secret-key>
+  <directories>
+    <root>D:\RomanceTour</root>
+    <form>D:\RomanceTour\Forms</form>
+    <file>D:\RomanceTour\Files</file>
+    <log>D:\RomanceTour\Logs</log>
+  </directories>
+  <administrator>
+    <session-id>0</session-id>
+    <username>root</username>
+    <hashsalt>N3vRAWIaIwYH2oxpkoF7qGTI/YS1fTz9AzSj6eDvGQU=</hashsalt>
+    <password>/zsd6Ze2yKgdmhAofbe5bsmBCHiPenUEohidSzm9j48=</password>
+    <name>루트 관리자 계정</name>
+  </administrator>
+  <ncloud>
+    <url>https://sens.apigw.ntruss.com</url>
+    <uri>/sms/v2/services/{0}/messages</uri>
+    <service-id>ncp:sms:kr:260165252261:romance_tour</service-id>
+    <access-key>eQLq6kKSxChwuTrhcZDB</access-key>
+    <sceret-key>8p7Wt6dm07SgXWaNsbaEH36zbxE0HsMomyTMhocF</sceret-key>
+    <from>01064308733</from>
+  </ncloud>
+  <kakao>
+    <api-key>e9c264ffe6d09d9178478c1eb1afb5d2</api-key>
+  </kakao>
+  <verification>
+    <template>[낭만투어] 인증번호 : [{0}]를 입력해주세요.</template>
+    <time-limit>3</time-limit>
+    <code-length>6</code-length>
+    <max-request>10</max-request>
+  </verification>
+  <appointment>
+    <subject>[낭만투어] 예약완료 안내</subject>
+    <template>{0}님, 요청하신 상품에 대한 예약이 완료되었습니다.
 상품명 : {1}
 날짜 : {2}
 자세한 사항은 아래의 링크에 접속하여 확인해주세요.
 감사합니다.
-
 {3}</template>
-	</appointment>
-	<cancel-appointment>
-		<subject>[낭만투어] 예약취소 안내</subject>
-		<template>상품명 : {0}
+  </appointment>
+  <cancel-appointment>
+    <subject>[낭만투어] 예약취소 안내</subject>
+    <template>상품명 : {0}
 날짜 : {1}
 아래의 사유로 인해 해당 예약이 취소되었습니다.
 
@@ -54,5 +53,5 @@
 문의해주시기 바랍니다.
 이용에 불편을 드려
 진심으로 죄송합니다.</template>
-	</cancel-appointment>
+  </cancel-appointment>
 </configuration>

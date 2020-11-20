@@ -85,6 +85,7 @@ namespace RomanceTour.Middlewares
 		public static void SaveChanges()
 		{
 			config.Save(ConfigPath);
+			config.Load(ConfigPath);
 		}
 	}
 }

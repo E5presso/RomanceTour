@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Core.Security;
 using Core.Utility;
 using Microsoft.EntityFrameworkCore;
 using RomanceTour.Models;
@@ -40,6 +41,18 @@ namespace RomanceTour.Middlewares
 				db.Product.UpdateRange(products);
 				await db.SaveChangesAsync();
 			}, TimeSpan.FromDays(1));
+			// 암호화 키 교체
+			Function.SetInterval(() =>
+			{
+				var db = new RomanceTourDbContext();
+				var users = db.User.ToList();
+				var appointments = db.Appointment.ToList();
+				XmlConfiguration.SecretKey = KeyGenerator.GenerateString(32);
+				XmlConfiguration.SaveChanges();
+				db.User.UpdateRange(users);
+				db.Appointment.UpdateRange(appointments);
+				db.SaveChanges();
+			}, TimeSpan.FromDays(15));
 		}
 	}
 }

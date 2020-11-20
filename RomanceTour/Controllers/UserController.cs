@@ -918,6 +918,39 @@ namespace RomanceTour.Controllers
 				});
 			}
 		}
+		public async Task<IActionResult> ChangeTermsAgreement(bool agreement)
+		{
+			try
+			{
+				using var db = new RomanceTourDbContext();
+				var matched = await db.User.SingleOrDefaultAsync(x => x.Id == SessionId);
+				if (matched != null)
+				{
+					matched.AllowMarketingPromotions = agreement;
+					db.User.Update(matched);
+					await db.SaveChangesAsync();
+					return Json(new Response
+					{
+						Result = ResultType.SUCCESS,
+						Model = true
+					});
+				}
+				else return Json(new Response
+				{
+					Result = ResultType.SUCCESS,
+					Model = false
+				});
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return Json(new Response
+				{
+					Result = ResultType.SYSTEM_ERROR,
+					Error = e,
+				});
+			}
+		}
 		public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
 		{
 			try

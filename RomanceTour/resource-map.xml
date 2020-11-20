@@ -3,6 +3,7 @@
 	<controller>
 		<Admin>관리자 리소스</Admin>
 		<Appointment>예약 리소스</Appointment>
+		<Etc>기타 리소스</Etc>
 		<Home>홈</Home>
 		<Product>상품 리소스</Product>
 		<User>사용자 리소스</User>
@@ -13,6 +14,7 @@
 		<ManageUser>사용자 관리</ManageUser>
 		<ManageAppointment>예약 관리</ManageAppointment>
 		<ManageProduct>상품 관리</ManageProduct>
+		<ManageEtc>기타 관리</ManageEtc>
 		<WriteProduct>상품 추가</WriteProduct>
 		<EditProduct>상품 편집</EditProduct>
 		<SendMessage>메세지 발송 페이지</SendMessage>
@@ -41,6 +43,43 @@
 		<EditAppointment>예약 변경</EditAppointment>
 		<UpdateAppointment>예약 변경</UpdateAppointment>
 		<CancelSession>예약 취소</CancelSession>
+
+		<!-- 기타 -->
+		<ListCategory>카테고리 목록조회</ListCategory>
+		<ListBilling>입금계좌 목록조회</ListBilling>
+		<ListDeparture>탑승지 목록조회</ListDeparture>
+		<ListPriceRule>가격정책 목록조회</ListPriceRule>
+		<ListHost>제휴업체 목록조회</ListHost>
+		
+		<FilterCategory>카테고리 검색조회</FilterCategory>
+		<FilterBilling>입금계좌 검색조회</FilterBilling>
+		<FilterDeparture>탑승지 검색조회</FilterDeparture>
+		<FilterPriceRule>가격정책 검색조회</FilterPriceRule>
+		<FilterHost>제휴업체 검색조회</FilterHost>
+		
+		<GetCategory>카테고리 단일조회</GetCategory>
+		<GetBilling>입금계좌 단일조회</GetBilling>
+		<GetDeparture>탑승지 단일조회</GetDeparture>
+		<GetPriceRule>가격정책 단일조회</GetPriceRule>
+		<GetHost>제휴업체 단일조회</GetHost>
+		
+		<AddCategory>카테고리 추가</AddCategory>
+		<AddBilling>입금계좌 추가</AddBilling>
+		<AddDeparture>탑승지 추가</AddDeparture>
+		<AddPriceRule>가격정책 추가</AddPriceRule>
+		<AddHost>제휴업체 추가</AddHost>
+		
+		<UpdateCategory>카테고리 수정</UpdateCategory>
+		<UpdateBilling>입금계좌 수정</UpdateBilling>
+		<UpdateDeparture>탑승지 수정</UpdateDeparture>
+		<UpdatePriceRule>가격정책 수정</UpdatePriceRule>
+		<UpdateHost>제휴업체 수정</UpdateHost>
+		
+		<RemoveCategory>카테고리 제거</RemoveCategory>
+		<RemoveBilling>입금계좌 제거</RemoveBilling>
+		<RemoveDeparture>탑승지 제거</RemoveDeparture>
+		<RemovePriceRule>가격정책 제거</RemovePriceRule>
+		<RemoveHost>제휴업체 제거</RemoveHost>
 
 		<!-- 홈 -->
 		<Index>메인 페이지</Index>
@@ -72,6 +111,7 @@
 		<Register>회원가입 페이지</Register>
 		<Logout>로그아웃</Logout>
 		<Mypage>마이 페이지</Mypage>
+		<FindMyPassword>마이 페이지</FindMyPassword>
 		<CheckDuplication>아이디 중복검사</CheckDuplication>
 		<CreateAccount>회원가입</CreateAccount>
 		<CheckAccount>로그인</CheckAccount>
@@ -83,10 +123,13 @@
 		<AdminUpdateUser>관리자 사용자 수정</AdminUpdateUser>
 		<AdminUpdateUserStatus>관리자 사용자 상태 변경</AdminUpdateUserStatus>
 		<VerifyPhone>휴대폰 인증 요청</VerifyPhone>
+		<VerifyPhoneForUser>회원 휴대폰 인증 요청</VerifyPhoneForUser>
 		<Challenge>인증코드 확인</Challenge>
+		<ResetPassword>비밀번호 재설정</ResetPassword>
 		<ChangePersonalInfo>개인정보 변경</ChangePersonalInfo>
 		<ChangePhoneNumber>휴대폰 번호 변경</ChangePhoneNumber>
 		<ChangePaymentInfo>결제정보 변경</ChangePaymentInfo>
+		<ChangeTermsAgreement>약관 동의 변경</ChangeTermsAgreement>
 		<ChangePassword>비밀번호 변경</ChangePassword>
 		<Unregister>회원 탈퇴</Unregister>
 	</action>

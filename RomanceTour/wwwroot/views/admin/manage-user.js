@@ -37,6 +37,11 @@ function FilterUserCallback(model)
 						<option value="${UserStatus.GREY}" ${item.Status == UserStatus.GREY ? "selected" : ""}>휴면</option>
 					</select>
 				</td>
+				<td class="d-none d-xl-table-cell">
+					<span class="table-body">
+						${item.AllowMarketingPromotions ? "동의" : "거부"}
+					</span>
+				</td>
 				<td class="d-table-cell">
 					<span class="table-body">
 						${item.Name}
@@ -126,7 +131,7 @@ function AdminGetUserCallback(model)
 	else
 	{
 		alert(model.Message);
-		FilterProduct();
+		FilterUser();
 	}
 }
 function AdminGetUserHistoryCallback(model)
@@ -151,7 +156,7 @@ function AdminGetUserHistoryCallback(model)
 	else
 	{
 		alert(model.Message);
-		FilterProduct();
+		FilterUser();
 	}
 }
 function AdminUpdateUserCallback(model)
@@ -160,31 +165,34 @@ function AdminUpdateUserCallback(model)
 	{
 		alert(model.Message);
 		HideUserInfoPopup();
-		FilterProduct();
+		FilterUser();
 	}
 	else
 	{
 		alert(model.Message);
-		FilterProduct();
+		FilterUser();
 	}
 }
 function AdminUpdateUserStatusCallback(model)
 {
 	if (model.Result)
 	{
-		FilterProduct();
+		FilterUser();
 	}
 	else
 	{
 		alert(model.Message);
-		FilterProduct();
+		FilterUser();
 	}
 }
 function RemoveUserCallback(model)
 {
-	if (model) alert("사용자가 정상적으로 제거되었습니다.");
+	if (model)
+	{
+		alert("사용자가 정상적으로 제거되었습니다.");
+		FilterUser();
+	}
 	else alert("사용자 제거에 실패하였습니다.");
-	Ajax("FilterProductCallback", {}, FilterUserCallback);
 }
 
 function ShowUserInfoPopup()

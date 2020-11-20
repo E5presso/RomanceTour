@@ -1,4 +1,6 @@
-﻿var isPopupOpened = false;
+﻿var allowMarketingPromotions = false;
+
+var isPopupOpened = false;
 var VerificationResult = {
 	SUCCESS: "SUCCESS",							// 발송 성공 시
 	FAILURE: "FAILURE",							// 발송 실패 시
@@ -227,6 +229,21 @@ function ChangePasswordCallback(model)
 		alert("잘못된 비밀번호입니다.\n이전 비밀번호를 다시 확인해주세요.");
 		$("#old-password").val("");
 		$("#old-password").focus();
+	}
+}
+
+// 광고성 정보 수신 동의
+function ChangeTermsAgreementCallback(model)
+{
+	if (model)
+	{
+		alert("마케팅 정보 수신에 대한 동의가 변경되었습니다.");
+		location.reload(true);
+	}
+	else
+	{
+		alert("존재하지 않는 사용자입니다.");
+		location.reload(true);
 	}
 }
 
@@ -564,6 +581,19 @@ $(document).ready(function ()
 		}, ChangePasswordCallback);
 	});
 
+	// 광고성 정보 수신 동의
+	$("#allow-marketing-promotions").on("click", function ()
+	{
+		allowMarketingPromotions = !allowMarketingPromotions;
+		$("#change-agreement").prop("disabled", false);
+	});
+	$("#change-agreement").on("click", function ()
+	{
+		Ajax("/User/ChangeTermsAgreement", {
+			agreement: allowMarketingPromotions
+		}, ChangeTermsAgreementCallback);
+	});
+
 	// 회원 탈퇴
 	$("#unregister-username").on("keyup", function ()
 	{
@@ -583,4 +613,6 @@ $(document).ready(function ()
 			Password: password
 		}, UnregisterCallback);
 	});
+
+	allowMarketingPromotions = $("#allow-marketing-promotions").is(":checked");
 });

@@ -182,7 +182,7 @@ namespace RomanceTour.Controllers
 				if (IsAdministrator)
 				{
 					var db = new RomanceTourDbContext();
-					ViewBag.Users = await db.User.ToListAsync();
+					ViewBag.Users = await db.User.Where(x => x.AllowMarketingPromotions).ToListAsync();
 					return View();
 				}
 				else return RedirectToAction("AccessDenied", "Home");

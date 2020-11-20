@@ -384,7 +384,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="tool-box-container col-12 col-md-7 col-xl-5">
+						<div class="tool-box-container col-12 col-md-7 col-xl-4">
 							<div id="password" class="tool-box">
 								<span class="menu-title">비밀번호</span>
 								<div class="form-group my-page-form-group">
@@ -408,7 +408,25 @@
 								</div>
 							</div>
 						</div>
-						<div class="tool-box-container col-12 col-xl-7">
+						<div class="tool-box-container col-12 col-xl-4">
+							<div id="terms-agreement" class="tool-box">
+								<span class="menu-title">광고성 정보 수신 동의</span>
+								<div class="form-group my-page-form-group">
+									<div class="form-check">
+										<input type="checkbox" class="form-check-input" id="allow-marketing-promotions" @(user.AllowMarketingPromotions ? "checked" : "")>
+										<label class="form-check-label" for="allow-marketing-promotions">광고성 정보 수신에 동의합니다.</label>
+									</div>
+								</div>
+								<div class="form-group my-page-form-group">
+									<button id="change-agreement" class="btn" disabled>
+										<span class="btn-text">
+											저장하기
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="tool-box-container col-12 col-xl-4">
 							<div id="unregister" class="tool-box">
 								<span class="menu-title">회원 탈퇴</span>
 								<div class="form-group my-page-form-group">

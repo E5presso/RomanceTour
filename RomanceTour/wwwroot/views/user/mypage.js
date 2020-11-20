@@ -5,7 +5,9 @@ var VerificationResult = {
 	SUCCESS: "SUCCESS",							// 발송 성공 시
 	FAILURE: "FAILURE",							// 발송 실패 시
 	TOO_MUCH_REQUEST: "TOO_MUCH_REQUEST",		// 너무 빠른 요청
-	MAX_REQUEST_REACHED: "MAX_REQUEST_REACHED"	// 일일 요청한도 도달
+	MAX_REQUEST_REACHED: "MAX_REQUEST_REACHED",	// 일일 요청한도 도달
+	USER_ALREADY_EXISTS: "USER_ALREADY_EXISTS",	// 이미 존재하는 사용자
+	USER_NOT_FOUND: "USER_NOT_FOUND"			// 존재하지 않는 사용자
 };
 var token = "";
 var timeLimit = 3 * 60;
@@ -135,6 +137,14 @@ function VerifyPhoneCallback(model)
 		}
 		case VerificationResult.MAX_REQUEST_REACHED: {
 			alert("일일 인증요청한도에 도달했습니다.");
+			break;
+		}
+		case VerificationResult.USER_ALREADY_EXISTS: {
+			alert("이미 사용 중인 번호입니다.");
+			break;
+		}
+		case VerificationResult.USER_NOT_FOUND: {
+			alert("등록되지 않은 번호입니다.");
 			break;
 		}
 	}

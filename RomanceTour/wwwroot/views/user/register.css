@@ -63,9 +63,9 @@
 .form-area
 {
 	width: 90%;
-	height: calc(100% - 140px);
+	height: calc(100% - 100px);
 	position: absolute;
-	top: 90px;
+	top: 70px;
 }
 
 .step-indicator
@@ -217,8 +217,6 @@
 	overflow-y: auto;
 	display: flex;
 	flex-flow: column;
-	justify-content: flex-start;
-	align-items: flex-start;
 	border: 1px solid #023859;
 	border-radius: 0.25rem;
 	padding: 5px;
@@ -227,8 +225,10 @@
 #terms > span
 {
 	width: 100%;
+	height: auto;
 	font-family: 'Dohyun', 'sans-serif';
 	letter-spacing: -1px;
+	flex-shrink: 0;
 }
 
 #terms > .head-text
@@ -299,13 +299,48 @@
 
 .form-check-input
 {
-	appearance: checkbox !important;
-	-webkit-appearance: checkbox !important;
-	-moz-appearance: checkbox !important;
-	width: 15px;
-	height: 15px;
-	margin-top: -10px;
-	margin-left: -20px;
+	width: 18px;
+	height: 18px;
+	margin-top: -0.5rem;
+	margin-left: -1.3rem;
+	background: #FCFCFC;
+	border: 1px solid #023859;
+	border-radius: 0.25rem;
+	transition: background 0.3s;
+	outline: none;
+}
+
+.form-check-input:checked
+{
+	background: #0378A6;
+	border: none;
+}
+
+.form-check-input:checked::after
+{
+	position: relative;
+	content: "\2713";
+	color: #FCFCFC;
+	font-size: 0.8rem;
+	font-weight: bold;
+	top: 0rem;
+	left: 0.21rem;
+}
+
+@supports (-webkit-touch-callout: none)
+{
+	.form-check-input
+	{
+		margin-top: -0.25rem;
+		margin-left: -1.3rem;
+	}
+
+	.form-check-input:checked::after
+	{
+		font-size: 1.1rem;
+		top: 0.08rem;
+		left: 0.26rem;
+	}
 }
 
 .form-check-label

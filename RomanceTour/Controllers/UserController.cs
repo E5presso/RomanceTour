@@ -764,20 +764,29 @@ namespace RomanceTour.Controllers
 				int count = db.Verification.Count(x => x.TimeStamp.Date == DateTime.Now.Date && x.IpAddress == IPAddress);
 				if (count <= XmlConfiguration.Verification.MaxRequest)
 				{
-					var result = await PhoneVerifier.CreateVerification(phone);
-					if (result == VerificationResult.SUCCESS)
+					var matched = await db.User.SingleOrDefaultAsync(x => x.Phone == phone);
+					if (matched == null)
 					{
-						db.Verification.Add(new Models.Verification
+						var result = await PhoneVerifier.CreateVerification(phone);
+						if (result == VerificationResult.SUCCESS)
 						{
-							IpAddress = IPAddress,
-							TimeStamp = DateTime.Now
+							db.Verification.Add(new Models.Verification
+							{
+								IpAddress = IPAddress,
+								TimeStamp = DateTime.Now
+							});
+							await db.SaveChangesAsync();
+						}
+						return Json(new Response
+						{
+							Result = ResultType.SUCCESS,
+							Model = result
 						});
-						await db.SaveChangesAsync();
 					}
-					return Json(new Response
+					else return Json(new Response
 					{
 						Result = ResultType.SUCCESS,
-						Model = result
+						Model = VerificationResult.USER_ALREADY_EXISTS
 					});
 				}
 				else return Json(new Response

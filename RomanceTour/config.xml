@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <domain>https://www.romancetour.ml/</domain>
-  <secret-key>2PPFl8hC9IyHilm2blr0CIJhIoGAFERg9s78mRjsJRw=</secret-key>
+  <secret-key>NrDohIn2maN81Xu/Zw9Uh9LllF64wjsIObAAMDp2/bw=</secret-key>
   <directories>
     <root>D:\RomanceTour</root>
     <form>D:\RomanceTour\Forms</form>

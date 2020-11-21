@@ -96,7 +96,7 @@
 			</div>
 			<div class="swiper-container product-list">
 				<div class="swiper-wrapper">
-					@foreach (var product in products.Where(x => x.CategoryId == 1).Take(10))
+					@foreach (var product in products.Where(x => x.CategoryId == 1))
 					{
 						<div id="product-@product.Id" class="swiper-slide product-item">
 							<input type="hidden" value="@product.Id" />
@@ -132,7 +132,7 @@
 			</div>
 			<div class="swiper-container product-list">
 				<div class="swiper-wrapper">
-					@foreach (var product in products.Where(x => x.CategoryId == 2).Take(10))
+					@foreach (var product in products.Where(x => x.CategoryId == 2))
 					{
 						<div id="product-@product.Id" class="swiper-slide product-item">
 							<input type="hidden" value="@product.Id" />
@@ -168,7 +168,7 @@
 			</div>
 			<div class="swiper-container product-list">
 				<div class="swiper-wrapper">
-					@foreach (var product in products.Where(x => x.CategoryId == 3).Take(10))
+					@foreach (var product in products.Where(x => x.CategoryId == 3))
 					{
 						<div id="product-@product.Id" class="swiper-slide product-item">
 							<input type="hidden" value="@product.Id" />
@@ -203,7 +203,7 @@
 				</div>
 				<div class="swiper-container product-list">
 					<div class="swiper-wrapper">
-						@foreach (var product in products.Where(x => x.CategoryId == 4).Take(10))
+						@foreach (var product in products.Where(x => x.CategoryId == 4))
 						{
 							<div id="product-@product.Id" class="swiper-slide product-item">
 								<input type="hidden" value="@product.Id" />

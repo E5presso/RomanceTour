@@ -8,20 +8,8 @@ function InitContainer()
 	var article = parseFloat($("article").height()) + parseFloat($("article").css("paddingTop")) * 2;
 	var footer = parseFloat($("footer").height()) + parseFloat($("footer").css("paddingTop")) * 2;
 
-	if (parseInt($("#is-administrator").val()) == 1)
-	{
-		$("footer").css("top", 0);
-		$("footer").css("height", 0);
-		$("footer").css("padding", 0);
-	}
-	else
-	{
-		if (header + article <= window.innerHeight)
-			$("footer").css("top", window.innerHeight - footer);
-		else $("footer").css("top", header + article - collapse);
-	}
-
 	$("article").css("top", header - collapse);
+	$("footer").css("top", header + article - collapse);
 	$("#loading").css("top", header - collapse);
 	$("#loading").height(window.innerHeight - header + collapse - (padding * 2));
 	$(window).resize(function ()
@@ -32,20 +20,8 @@ function InitContainer()
 		var article = parseFloat($("article").height()) + parseFloat($("article").css("paddingTop")) * 2;
 		var footer = parseFloat($("footer").height()) + parseFloat($("footer").css("paddingTop")) * 2;
 
-		if (parseInt($("#is-administrator").val()) == 1)
-		{
-			$("footer").css("top", 0);
-			$("footer").css("height", 0);
-			$("footer").css("padding", 0);
-		}
-		else
-		{
-			if (header + article <= window.innerHeight)
-				$("footer").css("top", window.innerHeight - footer);
-			else $("footer").css("top", header + article - collapse);
-		}
-
 		$("article").css("top", header - collapse);
+		$("footer").css("top", header + article - collapse);
 		$("#loading").css("top", header - collapse);
 		$("#loading").height(window.innerHeight - header + collapse - (padding * 2));
 	});

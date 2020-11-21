@@ -394,7 +394,9 @@ namespace RomanceTour.Controllers
 						ProductHost = hosts,
 						ProductBilling = billings,
 						DateSession = appointments,
-						Form = formPath
+						Form = formPath,
+						Visible = true,
+						Expose = false
 					});
 					await db.SaveChangesAsync();
 					return Json(new Response

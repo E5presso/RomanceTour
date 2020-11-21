@@ -410,3 +410,12 @@ footer > .container-fluid > .row > span
 	color: #F2B705;
 	text-shadow: 0 0 10px #F2B705;
 }
+
+a[href^=tel]
+{
+	color: inherit;
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	text-decoration: underline;
+}

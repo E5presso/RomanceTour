@@ -357,3 +357,56 @@ button[type=submit]:not(:disabled):hover .btn-text
 {
 	border-color: #dc3545 !important;
 }
+
+footer
+{
+	position: absolute;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	background: #808080;
+	width: 100%;
+	padding: 20px;
+	z-index: 100;
+}
+
+footer .footer-logo
+{
+	width: 300px;
+	height: 100px;
+}
+
+@media all and (max-width: 575px)
+{
+	footer > .footer-logo
+	{
+		display: none;
+	}
+}
+
+footer > .container-fluid > .row > span
+{
+	color: #FCFCFC;
+	white-space: nowrap;
+	font-family: 'Dohyun', 'sans-serif';
+	letter-spacing: -1px;
+	font-size: 1.0rem;
+	margin-bottom: 5px;
+}
+
+#link-agreement
+{
+	font-family: 'Dohyun', 'sans-serif';
+	font-size: 1.0rem;
+	font-weight: bold;
+	text-decoration: underline;
+	cursor: pointer;
+	transition: color 0.3s, text-shadow 0.3s;
+}
+
+#link-agreement:hover
+{
+	color: #F2B705;
+	text-shadow: 0 0 10px #F2B705;
+}

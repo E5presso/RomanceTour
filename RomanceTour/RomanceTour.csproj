@@ -29,6 +29,9 @@
 	  <ProjectReference Include="..\Core\Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Update="company-info.xml">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="config.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

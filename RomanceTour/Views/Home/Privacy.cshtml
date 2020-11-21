@@ -1,0 +1,27 @@
+﻿@{
+	ViewData["DATA"] = "Privacy";
+	ViewData["TITLE"] = "개인정보";
+
+	Layout = null;
+}
+
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="
+		width=device-width,
+		initial-scale=1.0,
+		maximum-scale=1.0,
+		minimum-scale=1.0,
+		user-scalable=no" />
+	<title>낭만투어 - @ViewData["TITLE"]</title>
+
+	<link rel="stylesheet" href="~/shared/css/full-screen.css" />
+	<link rel="stylesheet" href="~/views/home/privacy.css" />
+</head>
+<body>
+	<div id="terms">
+		@(Html.Raw(TermsAndConditions.Document))
+	</div>
+</body>
+</html>

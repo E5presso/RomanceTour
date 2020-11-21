@@ -13,6 +13,10 @@ function Initialize()
 	AjaxWithoutLoading("/Product/GetForm", {
 		fileName: fileName
 	}, GetFormCallback);
+
+	$("footer").css("top", 0);
+	$("footer").css("height", 0);
+	$("footer").css("padding", 0);
 }
 
 $(document).ready(function ()

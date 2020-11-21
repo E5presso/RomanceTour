@@ -80,6 +80,18 @@ namespace RomanceTour.Controllers
 				return RedirectToAction("Index", "Home");
 			}
 		}
+		public async Task<IActionResult> Privacy()
+		{
+			try
+			{
+				return View();
+			}
+			catch (Exception e)
+			{
+				await LogManager.ErrorAsync(e);
+				return RedirectToAction("Error", "Home");
+			}
+		}
 
 		public async Task<IActionResult> ExtendSessionTime()
 		{

@@ -369,6 +369,7 @@ footer
 	width: 100%;
 	padding: 20px;
 	z-index: 100;
+	overflow: hidden;
 }
 
 footer .footer-logo

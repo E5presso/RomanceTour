@@ -50,7 +50,6 @@ $(document).ready(function ()
 
 		window.location.href = `/Product/ListProduct?category=${category}&date=${fromDate}&keyword=${keyword}`;
 	});
-
 	new Swiper(".swiper-container", {
 		direction: "horizontal",
 		slidesPerView: "auto",

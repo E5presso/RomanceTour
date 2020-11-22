@@ -23,6 +23,7 @@ function FilterProductCallback(model)
 	$(".product-list").html('');
 	if (model.length > 0) $.each(model, function (index, item)
 	{
+		$(".product-list").css("display", "grid");
 		var keyword = $("#product-keyword").val();
 		var product = `
 			<li id="product-${item.Id}" class="product-item">
@@ -74,7 +75,11 @@ function FilterProductCallback(model)
 		$("img").attr("draggable", false);
 		$("img").on("dragstart", function (e) { e.preventDefault(); });
 	});
-	else $(".product-list").append(`<span>검색조건에 맞는 상품을 찾을 수 없습니다.</span>`);
+	else
+	{
+		$(".product-list").css("display", "flex");
+		$(".product-list").append(`<span>검색조건에 맞는 상품을 찾을 수 없습니다.</span>`);
+	}
 }
 function FilterProduct()
 {

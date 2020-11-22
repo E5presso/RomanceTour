@@ -28,6 +28,43 @@
 	width: 100%;
 }
 
+.form-group > .input-bundle
+{
+	display: flex;
+	flex-flow: row nowrap;
+	width: 100%;
+}
+
+.form-group > .input-bundle > .btn
+{
+	width: 100px;
+	height: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	background: #023859;
+	margin-left: 10px;
+	transition: background 0.3s, border 0.3s;
+}
+
+.form-group > .input-bundle > .btn > .btn-text
+{
+	color: #FCFCFC;
+	transition: color 0.3s;
+}
+
+.form-group > .input-bundle > .btn:hover
+{
+	background: #FCFCFC;
+	border: 1px solid #023859;
+}
+
+.form-group > .input-bundle > .btn:hover > .btn-text
+{
+	color: #023859;
+}
+
 .form-group > .form-control
 {
 	width: 100%;
@@ -35,7 +72,19 @@
 	transition: box-shadow 0.3s, border 0.3s;
 }
 
+.form-group > .input-bundle > .form-control
+{
+	width: 100%;
+	border: 1px solid #023859 !important;
+	transition: box-shadow 0.3s, border 0.3s;
+}
+
 .form-group > .form-control:focus
+{
+	border: 1px solid #F2B705 !important;
+}
+
+.form-group > .input-bundle > .form-control:focus
 {
 	border: 1px solid #F2B705 !important;
 }

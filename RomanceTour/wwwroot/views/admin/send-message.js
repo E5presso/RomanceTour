@@ -1,4 +1,6 @@
 ﻿var contacts = [];
+var isSelectedAll = false;
+var selectPicker;
 
 function SendCustomMessageCallback(model)
 {
@@ -30,7 +32,7 @@ function ValidateForm()
 
 $(document).ready(function ()
 {
-	$("#message-contact").selectpicker({
+	selectPicker = $("#message-contact").selectpicker({
 		noneSelectedText: "선택된 연락처가 없습니다.",
 		countSelectedText: "{0}개의 연락처 선택됨"
 	});
@@ -57,5 +59,11 @@ $(document).ready(function ()
 			subject: subject,
 			content: content
 		}, SendCustomMessageCallback);
+	});
+	$("#select-all-users").on("click", function ()
+	{
+		if (!isSelectedAll) selectPicker.selectpicker('selectAll');
+		else selectPicker.selectpicker('deselectAll');
+		isSelectedAll = !isSelectedAll;
 	});
 });

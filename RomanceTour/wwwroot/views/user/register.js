@@ -476,6 +476,7 @@ $(document).ready(function ()
 		$("#personal-info").fadeOut(DURATION).removeClass("enabled");
 		$("#payment-info-step").addClass("activated");
 		$("#payment-info").fadeIn(DURATION).addClass("enabled");
+		$("#billing-bank").trigger("change");
 		$("#billing-name").focus();
 	});
 

@@ -62,8 +62,16 @@ $(document).ready(function ()
 	});
 	$("#select-all-users").on("click", function ()
 	{
-		if (!isSelectedAll) selectPicker.selectpicker('selectAll');
-		else selectPicker.selectpicker('deselectAll');
+		if (!isSelectedAll)
+		{
+			selectPicker.selectpicker('selectAll');
+			$("#select-all-users").find(".btn-text").text("선택해제");
+		}
+		else
+		{
+			selectPicker.selectpicker('deselectAll');
+			$("#select-all-users").find(".btn-text").text("전체선택");
+		}
 		isSelectedAll = !isSelectedAll;
 	});
 });

@@ -37,14 +37,14 @@
 
 .form-group > .input-bundle > .btn
 {
-	width: 100px;
-	height: 100%;
+	width: 90px;
+	height: 47px;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
 	align-items: center;
 	background: #023859;
-	margin-left: 10px;
+	margin-left: 5px;
 	transition: background 0.3s, border 0.3s;
 }
 
@@ -127,7 +127,13 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	margin: 0 !important;
-	font-size: 1.2rem;
+	font-size: 1.0rem;
+}
+
+.dropdown-item > .check-mark
+{
+	font-size: 1.0rem;
+	top: 3px !important;
 }
 
 .dropdown-item:hover

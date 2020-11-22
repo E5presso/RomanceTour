@@ -175,8 +175,8 @@
 .product-list
 {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 360px);
-	grid-gap: 10px;
+	grid-template-columns: repeat(auto-fill, 340px);
+	grid-gap: 60px;
 	justify-content: space-evenly;
 	align-content: flex-start;
 	flex-flow: row wrap;
@@ -185,8 +185,8 @@
 
 .product-item
 {
-	width: 360px;
-	height: 300px;
+	width: 340px;
+	height: 280px;
 	border-radius: 0.25rem;
 	overflow: hidden;
 	box-shadow: 3px 3px 5px rgba(13, 13, 13, 0.5);

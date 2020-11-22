@@ -40,8 +40,16 @@
 {
 	display: flex;
 	flex-flow: row;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-items: center;
+}
+
+@supports not (-ms-ime-align: auto)
+{
+	.user-area
+	{
+		justify-content: space-evenly
+	}
 }
 
 .user-area > .btn

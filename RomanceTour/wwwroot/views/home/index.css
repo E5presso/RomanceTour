@@ -86,6 +86,22 @@ label
 	-webkit-backdrop-filter: blur(10px);
 }
 
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)))
+{
+	.search-area-body
+	{
+		width: 80%;
+		padding: 20px;
+		border-radius: 0.25rem;
+		border: 1px solid #FCFCFC;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+		background: rgba(18, 18, 18, 0.4);
+	}
+}
+
 .form-group
 {
 	display: flex;
@@ -156,6 +172,11 @@ label
 .form-group > .form-control, .third
 {
 	background: rgba(2, 56, 89, 0.1);
+}
+
+.form-group > .form-control::placeholder, .third::placeholder
+{
+	color: #FCFCFC;
 }
 
 .form-group > .btn

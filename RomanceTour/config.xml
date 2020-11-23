@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <domain>https://www.romancetour.ml/</domain>
-  <secret-key>T2DbDp03TTyjAByaA56OxXcuCh9ckQaAKkwSku8G0ac=</secret-key>
+  <secret-key>Qes/7E/FWvjBDBeQewUezX+7D+uCMqXcs2m5nlXuLAs=</secret-key>
   <directories>
     <root>D:\RomanceTour</root>
     <form>D:\RomanceTour\Forms</form>
@@ -11,8 +11,8 @@
   <administrator>
     <session-id>0</session-id>
     <username>root</username>
-    <hashsalt>N3vRAWIaIwYH2oxpkoF7qGTI/YS1fTz9AzSj6eDvGQU=</hashsalt>
-    <password>/zsd6Ze2yKgdmhAofbe5bsmBCHiPenUEohidSzm9j48=</password>
+    <hashsalt>wQ0Mm2cTNOl/VcdirdHqu7gKpbDZHpH+U96oo2ouOrA=</hashsalt>
+    <password>uoi6v5dP5tnsOVJRAKatU+CswI1T42u7vJNcf5MMcVM=</password>
     <name>루트 관리자 계정</name>
   </administrator>
   <ncloud>

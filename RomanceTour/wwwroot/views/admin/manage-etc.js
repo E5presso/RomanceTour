@@ -1,4 +1,12 @@
 ﻿var isPopupOpened = false;
+var PriceRuleType =
+{
+	PERCENT_AS: "PERCENT_AS",
+	PERCENT_PLUS: "PERCENT_PLUS",
+	PERCENT_MINUS: "PERCENT_MINUS",
+	STATIC_PLUS: "STATIC_PLUS",
+	STATIC_MINUS: "STATIC_MINUS"
+};
 
 function ListCategory()
 {
@@ -241,7 +249,13 @@ function ListPriceRuleCallback(model)
 			<tr id="price-rule-${item.Id}">
 				<td>
 					<span class="table-body">
-						${item.RuleType}
+						${item.RuleType == PriceRuleType.PERCENT_AS ? "요금 옵션" :
+							item.RuleType == PriceRuleType.PERCENT_PLUS ? "유동가 추가옵션" : 
+							item.RuleType == PriceRuleType.PERCENT_MINUS ? "유동가 할인옵션" :
+							item.RuleType == PriceRuleType.STATIC_PLUS ? "고정가 추가옵션" :
+							item.RuleType == PriceRuleType.STATIC_MINUS ? "고정가 할인옵션" :
+							"?????"
+						}
 					</span>
 				</td>
 				<td>

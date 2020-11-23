@@ -177,8 +177,7 @@ namespace RomanceTour.Models
 
                 entity.Property(e => e.HostBank)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.HostBillingNumber)
                     .IsRequired()
@@ -186,18 +185,15 @@ namespace RomanceTour.Models
 
                 entity.Property(e => e.HostName)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.HostPhone)
                     .IsRequired()
-                    .HasMaxLength(11)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(max)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(max)");
             });
             modelBuilder.Entity<Log>(entity =>
             {

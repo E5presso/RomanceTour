@@ -1,4 +1,6 @@
-﻿function SetVisibleCallback(model)
+﻿var productKeyword = "";
+
+function SetVisibleCallback(model)
 {
 
 }
@@ -12,7 +14,7 @@ function FilterProductCallback(model)
 	$(".product-list").html('');
 	$.each(model, function (_index, item)
 	{
-		$(".product-list").append(`
+		var row = `
 			<tr id="product-${item.Id}">
 				<td class="d-none d-xl-table-cell">
 					<span class="table-body">
@@ -59,7 +61,8 @@ function FilterProductCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		$(".product-list").append(row);
 		$(`#product-${item.Id} .edit-product`).on("click", function ()
 		{
 			var id = $(this).parent().parent().parent().attr("id").split("-")[1];
@@ -144,7 +147,7 @@ $(document).ready(function ()
 	$("#search-keyword").on("keyup", function ()
 	{
 		var category = parseInt($("#category option:selected").val());
-		var keyword = $(this).val();
+		productKeyword = $(this).val();
 		var option = parseInt($("#option").children("option:selected").val());
 		switch (option)
 		{
@@ -152,7 +155,7 @@ $(document).ready(function ()
 				AjaxWithoutLoading("/Product/AdminFilterProduct", {
 					category: category,
 					filter: {
-						Keyword: keyword
+						Keyword: productKeyword
 					}
 				}, FilterProductCallback);
 				break;
@@ -161,7 +164,7 @@ $(document).ready(function ()
 				AjaxWithoutLoading("/Product/AdminFilterProduct", {
 					category: category,
 					filter: {
-						FromPrice: parseInt(keyword),
+						FromPrice: parseInt(productKeyword),
 						ToPrice: 10000000
 					}
 				}, FilterProductCallback);

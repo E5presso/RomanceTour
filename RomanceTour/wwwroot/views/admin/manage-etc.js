@@ -1,4 +1,10 @@
-﻿var isPopupOpened = false;
+﻿var categoryKeyword = "";
+var billingKeyword = "";
+var departureKeyword = "";
+var priceRuleKeyword = "";
+var hostKeyword = "";
+
+var isPopupOpened = false;
 var PriceRuleType =
 {
 	PERCENT_AS: "PERCENT_AS",
@@ -31,32 +37,37 @@ function ListHost()
 
 function FilterCategory()
 {
+	categoryKeyword = $("#category-keyword").val();
 	AjaxWithoutLoading("/Etc/FilterCategory", {
-		keyword: $("#category-keyword").val()
+		keyword: categoryKeyword
 	}, ListCategoryCallback);
 }
 function FilterBilling()
 {
+	billingKeyword = $("#billing-keyword").val();
 	AjaxWithoutLoading("/Etc/FilterBilling", {
-		keyword: $("#billing-keyword").val()
+		keyword: billingKeyword
 	}, ListBillingCallback);
 }
 function FilterDeparture()
 {
+	departureKeyword = $("#departure-keyword").val();
 	AjaxWithoutLoading("/Etc/FilterDeparture", {
-		keyword: $("#departure-keyword").val()
+		keyword: departureKeyword
 	}, ListDepartureCallback);
 }
 function FilterPriceRule()
 {
+	priceRuleKeyword = $("#price-rule-keyword").val();
 	AjaxWithoutLoading("/Etc/FilterPriceRule", {
-		keyword: $("#price-rule-keyword").val()
+		keyword: priceRuleKeyword
 	}, ListPriceRuleCallback);
 }
 function FilterHost()
 {
+	hostKeyword = $("#host-keyword").val();
 	AjaxWithoutLoading("/Etc/FilterHost", {
-		keyword: $("#host-keyword").val()
+		keyword: hostKeyword
 	}, ListHostCallback);
 }
 
@@ -91,7 +102,7 @@ function ListCategoryCallback(model)
 	$("#category-list").html('');
 	$.each(model, function (_, item)
 	{
-		$("#category-list").append(`
+		var row = `
 			<tr id="category-${item.Id}">
 				<td>
 					<span class="table-body">
@@ -114,7 +125,9 @@ function ListCategoryCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		if (categoryKeyword) row = row.replaceAll(categoryKeyword, `<span class="highlighted">${categoryKeyword}</span>`);
+		$("#category-list").append(row);
 		$(`#category-${item.Id} .config-btn`).on("click", function ()
 		{
 			var id = parseInt($(this).parent().parent().parent().attr("id").split("-")[1]);
@@ -139,7 +152,7 @@ function ListBillingCallback(model)
 	$("#billing-list").html('');
 	$.each(model, function (_, item)
 	{
-		$("#billing-list").append(`
+		var row = `
 			<tr id="billing-${item.Id}">
 				<td>
 					<span class="table-body">
@@ -167,7 +180,9 @@ function ListBillingCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		if (billingKeyword) row = row.replaceAll(billingKeyword, `<span class="highlighted">${billingKeyword}</span>`);
+		$("#billing-list").append(row);
 		$(`#billing-${item.Id} .config-btn`).on("click", function ()
 		{
 			var id = parseInt($(this).parent().parent().parent().attr("id").split("-")[1]);
@@ -192,7 +207,7 @@ function ListDepartureCallback(model)
 	$("#departure-list").html('');
 	$.each(model, function (_, item)
 	{
-		$("#departure-list").append(`
+		var row = `
 			<tr id="departure-${item.Id}">
 				<td>
 					<span class="table-body">
@@ -220,7 +235,9 @@ function ListDepartureCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		if (departureKeyword) row = row.replaceAll(departureKeyword, `<span class="highlighted">${departureKeyword}</span>`);
+		$("#departure-list").append(row);
 		$(`#departure-${item.Id} .config-btn`).on("click", function ()
 		{
 			var id = parseInt($(this).parent().parent().parent().attr("id").split("-")[1]);
@@ -245,12 +262,12 @@ function ListPriceRuleCallback(model)
 	$("#price-rule-list").html('');
 	$.each(model, function (_, item)
 	{
-		$("#price-rule-list").append(`
+		var row = `
 			<tr id="price-rule-${item.Id}">
 				<td>
 					<span class="table-body">
 						${item.RuleType == PriceRuleType.PERCENT_AS ? "요금 옵션" :
-							item.RuleType == PriceRuleType.PERCENT_PLUS ? "유동가 추가옵션" : 
+							item.RuleType == PriceRuleType.PERCENT_PLUS ? "유동가 추가옵션" :
 							item.RuleType == PriceRuleType.PERCENT_MINUS ? "유동가 할인옵션" :
 							item.RuleType == PriceRuleType.STATIC_PLUS ? "고정가 추가옵션" :
 							item.RuleType == PriceRuleType.STATIC_MINUS ? "고정가 할인옵션" :
@@ -284,7 +301,9 @@ function ListPriceRuleCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		if (priceRuleKeyword) row = row.replaceAll(priceRuleKeyword, `<span class="highlighted">${priceRuleKeyword}</span>`);
+		$("#price-rule-list").append(row);
 		$(`#price-rule-${item.Id} .config-btn`).on("click", function ()
 		{
 			var id = parseInt($(this).parent().parent().parent().attr("id").split("-")[2]);
@@ -309,7 +328,7 @@ function ListHostCallback(model)
 	$("#host-list").html('');
 	$.each(model, function (_, item)
 	{
-		$("#host-list").append(`
+		var row = `
 			<tr id="host-${item.Id}">
 				<td>
 					<span class="table-body">
@@ -357,7 +376,9 @@ function ListHostCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		if (hostKeyword) row = row.replaceAll(hostKeyword, `<span class="highlighted">${hostKeyword}</span>`);
+		$("#host-list").append(row);
 		$(`#host-${item.Id} .config-btn`).on("click", function ()
 		{
 			var id = parseInt($(this).parent().parent().parent().attr("id").split("-")[1]);

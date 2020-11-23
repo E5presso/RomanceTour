@@ -1,4 +1,5 @@
 ﻿var isPopupOpened = false;
+var userKeyword = "";
 var UserStatus =
 {
 	GREEN: "GREEN",
@@ -17,7 +18,7 @@ function FilterUserCallback(model)
 	$(".user-list").html('');
 	$.each(model, function (index, item)
 	{
-		$(".user-list").append(`
+		var row = `
 			<tr id="user-${item.Id}">
 				<td class="d-table-cell">
 					<span class="table-body">
@@ -76,7 +77,9 @@ function FilterUserCallback(model)
 					</span>
 				</td>
 			</tr>
-		`);
+		`;
+		if (userKeyword) row = row.replaceAll(userKeyword, `<span class="highlighted">${userKeyword}</span>`);
+		$(".user-list").append(row);
 		$(`#user-${item.Id} .user-status`).on("change", function ()
 		{
 			var id = $(this).parent().parent().attr("id").split("-")[1];
@@ -294,10 +297,10 @@ function Initialize()
 	$(".search-bar-second .search-text-admin").on("keyup", function ()
 	{
 		var option = $(".search-option option:selected").val();
-		var keyword = $(this).val();
+		userKeyword = $(this).val();
 		AjaxWithoutLoading("/User/SearchUser", {
 			option: option,
-			keyword: keyword
+			keyword: userKeyword
 		}, FilterUserCallback);
 	});
 

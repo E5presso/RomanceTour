@@ -297,16 +297,15 @@ namespace RomanceTour.Controllers
 				if (IsAdministrator)
 				{
 					var db = new RomanceTourDbContext();
-					var matched = await db.Host
-						.Where(x =>
-							EF.Functions.Like(x.Name, $"%{keyword}%") ||
-							EF.Functions.Like(x.Address, $"%{keyword}%") ||
-							EF.Functions.Like(x.HostName, $"%{keyword}%") ||
-							EF.Functions.Like(x.HostPhone, $"%{keyword}%") ||
-							EF.Functions.Like(x.HostBank, $"%{keyword}%") ||
-							EF.Functions.Like(x.HostBillingNumber, $"%{keyword}%")
-						)
-						.ToArrayAsync();
+					var matched = await db.Host.ToArrayAsync();
+					matched = matched.Where(x =>
+						x.Name.Contains($"{keyword}") ||
+						x.Address.Contains($"{keyword}") ||
+						x.HostName.Contains($"{keyword}") ||
+						x.HostPhone.Contains($"{keyword}") ||
+						x.HostBank.Contains($"{keyword}") ||
+						x.HostBillingNumber.Contains($"{keyword}")
+					).ToArray();
 					return Json(new Response
 					{
 						Result = ResultType.SUCCESS,

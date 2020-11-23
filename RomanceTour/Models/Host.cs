@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RomanceTour.Middlewares.DataEncryption.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace RomanceTour.Models
@@ -12,12 +13,12 @@ namespace RomanceTour.Models
 
         public int Id { get; set; }
         public int Type { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string HostName { get; set; }
-        public string HostPhone { get; set; }
-        public string HostBank { get; set; }
-        public string HostBillingNumber { get; set; }
+        [Encrypted] public string Name { get; set; }
+        [Encrypted] public string Address { get; set; }
+        [Encrypted] public string HostName { get; set; }
+        [Encrypted] public string HostPhone { get; set; }
+        [Encrypted] public string HostBank { get; set; }
+        [Encrypted] public string HostBillingNumber { get; set; }
 
         public virtual ICollection<ProductHost> ProductHost { get; set; }
     }

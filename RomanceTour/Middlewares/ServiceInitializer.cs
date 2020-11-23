@@ -47,10 +47,12 @@ namespace RomanceTour.Middlewares
 				var db = new RomanceTourDbContext();
 				var users = db.User.ToList();
 				var appointments = db.Appointment.ToList();
+				var hosts = db.Host.ToList();
 				XmlConfiguration.SecretKey = KeyGenerator.GenerateString(32);
 				XmlConfiguration.SaveChanges();
 				db.User.UpdateRange(users);
 				db.Appointment.UpdateRange(appointments);
+				db.Host.UpdateRange(hosts);
 				db.SaveChanges();
 			}, TimeSpan.FromDays(15));
 		}

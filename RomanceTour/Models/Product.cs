@@ -12,7 +12,6 @@ namespace RomanceTour.Models
             ProductDeparture = new HashSet<ProductDeparture>();
             ProductHost = new HashSet<ProductHost>();
             ProductPriceRule = new HashSet<ProductPriceRule>();
-            Review = new HashSet<Review>();
         }
 
         public int Id { get; set; }
@@ -32,6 +31,5 @@ namespace RomanceTour.Models
         public virtual ICollection<ProductDeparture> ProductDeparture { get; set; }
         public virtual ICollection<ProductHost> ProductHost { get; set; }
         public virtual ICollection<ProductPriceRule> ProductPriceRule { get; set; }
-        public virtual ICollection<Review> Review { get; set; }
     }
 }

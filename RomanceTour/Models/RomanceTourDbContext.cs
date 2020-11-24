@@ -20,7 +20,6 @@ namespace RomanceTour.Models
         public virtual DbSet<DateSession> DateSession { get; set; }
         public virtual DbSet<Departure> Departure { get; set; }
         public virtual DbSet<Error> Error { get; set; }
-        public virtual DbSet<Help> Help { get; set; }
         public virtual DbSet<Host> Host { get; set; }
         public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<Option> Option { get; set; }
@@ -31,403 +30,605 @@ namespace RomanceTour.Models
         public virtual DbSet<ProductDeparture> ProductDeparture { get; set; }
         public virtual DbSet<ProductHost> ProductHost { get; set; }
         public virtual DbSet<ProductPriceRule> ProductPriceRule { get; set; }
-        public virtual DbSet<Push> Push { get; set; }
-        public virtual DbSet<Review> Review { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Verification> Verification { get; set; }
 
-        public RomanceTourDbContext() { }
-        public RomanceTourDbContext(DbContextOptions<RomanceTourDbContext> options) : base(options) { }
+        public RomanceTourDbContext()
+        {
+        }
+        public RomanceTourDbContext(DbContextOptions<RomanceTourDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("RomanceTourDb"));
+                optionsBuilder.UseMySql(configuration.GetConnectionString("RomanceTourDb"));
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.Property(e => e.Address).HasColumnType("varchar(max)");
+                entity.ToTable("appointment");
 
-                entity.Property(e => e.BillingBank).HasColumnType("varchar(max)");
+                entity.HasIndex(e => e.DateSessionId)
+                    .HasName("DateSessionId");
 
-                entity.Property(e => e.BillingName).HasColumnType("varchar(max)");
+                entity.HasIndex(e => e.UserId)
+                    .HasName("UserId");
 
-                entity.Property(e => e.BillingNumber).HasColumnType("varchar(max)");
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.Address)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Ammount).HasColumnType("int(11)");
+
+                entity.Property(e => e.BillingBank)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.BillingName)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.BillingNumber)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.DateSessionId).HasColumnType("int(11)");
 
                 entity.Property(e => e.HashSalt)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.Link).HasColumnType("varchar(max)");
+                entity.Property(e => e.Link)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.Name).HasColumnType("varchar(max)");
+                entity.Property(e => e.Name)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Password)
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.Phone).HasColumnType("varchar(max)");
+                entity.Property(e => e.Phone)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Price).HasColumnType("int(11)");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci")
                     .HasConversion(new EnumToStringConverter<AppointmentStatus>());
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
 
+                entity.Property(e => e.UserId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.DateSession)
                     .WithMany(p => p.Appointment)
                     .HasForeignKey(d => d.DateSessionId)
-                    .HasConstraintName("FK__Appointme__DateS__06CD04F7");
+                    .HasConstraintName("appointment_ibfk_1");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Appointment)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Appointme__UserI__07C12930");
+                    .HasConstraintName("appointment_ibfk_2");
             });
             modelBuilder.Entity<Billing>(entity =>
             {
+                entity.ToTable("billing");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
                 entity.Property(e => e.Bank)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Name)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.Number).HasColumnType("varchar(max)");
+                entity.Property(e => e.Number)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.Property(e => e.Description).HasColumnType("varchar(max)");
+                entity.ToTable("category");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.Description)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
             modelBuilder.Entity<DateSession>(entity =>
             {
+                entity.ToTable("datesession");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
                 entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.Paid).HasColumnType("int(11)");
+
+                entity.Property(e => e.ProductId).HasColumnType("int(11)");
+
+                entity.Property(e => e.Reserved).HasColumnType("int(11)");
+
+                entity.Property(e => e.Sales).HasColumnType("int(11)");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci")
                     .HasConversion(new EnumToStringConverter<DateSessionStatus>());
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.DateSession)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__DateSessi__Produ__00200768");
+                    .HasConstraintName("datesession_ibfk_1");
             });
             modelBuilder.Entity<Departure>(entity =>
             {
+                entity.ToTable("departure");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
             modelBuilder.Entity<Error>(entity =>
             {
+                entity.ToTable("error");
+
+                entity.Property(e => e.Id).HasColumnType("bigint(20)");
+
+                entity.Property(e => e.Code).HasColumnType("int(11)");
+
                 entity.Property(e => e.Message)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.StackTrace)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
-            });
-            modelBuilder.Entity<Help>(entity =>
-            {
-                entity.Property(e => e.Command)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Data).HasColumnType("varchar(max)");
-
-                entity.Property(e => e.Ipaddress)
-                    .IsRequired()
-                    .HasColumnName("IPAddress")
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TimeStamp).HasColumnType("datetime");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Help)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Help__UserId__395884C4");
             });
             modelBuilder.Entity<Host>(entity =>
             {
+                entity.ToTable("host");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
                 entity.Property(e => e.Address)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.HostBank)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.HostBillingNumber)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.HostName)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.HostPhone)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Type).HasColumnType("int(11)");
             });
             modelBuilder.Entity<Log>(entity =>
             {
+                entity.ToTable("log");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("UserId");
+
+                entity.Property(e => e.Id).HasColumnType("bigint(20)");
+
                 entity.Property(e => e.Action)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Controller)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.IpAddress)
                     .IsRequired()
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(64)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.Parameter).HasColumnType("varchar(max)");
+                entity.Property(e => e.Parameter)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
+
+                entity.Property(e => e.UserId).HasColumnType("int(11)");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Log)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Log__UserId__3C34F16F");
+                    .HasConstraintName("log_ibfk_1");
             });
             modelBuilder.Entity<Option>(entity =>
             {
+                entity.ToTable("option");
+
+                entity.HasIndex(e => e.PersonId)
+                    .HasName("PersonId");
+
+                entity.HasIndex(e => e.PriceRuleId)
+                    .HasName("PriceRuleId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.PersonId).HasColumnType("int(11)");
+
+                entity.Property(e => e.PriceRuleId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.Option)
                     .HasForeignKey(d => d.PersonId)
-                    .HasConstraintName("FK__Option__PersonId__0E6E26BF");
+                    .HasConstraintName("option_ibfk_1");
 
                 entity.HasOne(d => d.PriceRule)
                     .WithMany(p => p.Option)
                     .HasForeignKey(d => d.PriceRuleId)
-                    .HasConstraintName("FK__Option__PriceRul__0F624AF8");
+                    .HasConstraintName("option_ibfk_2");
             });
             modelBuilder.Entity<Person>(entity =>
             {
+                entity.ToTable("person");
+
+                entity.HasIndex(e => e.AppointmentId)
+                    .HasName("AppointmentId");
+
+                entity.HasIndex(e => e.DepartureId)
+                    .HasName("DepartureId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.Ammount).HasColumnType("int(11)");
+
+                entity.Property(e => e.AppointmentId).HasColumnType("int(11)");
+
+                entity.Property(e => e.DepartureId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.Appointment)
                     .WithMany(p => p.Person)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__Person__Appointm__0A9D95DB");
+                    .HasConstraintName("person_ibfk_1");
 
                 entity.HasOne(d => d.Departure)
                     .WithMany(p => p.Person)
                     .HasForeignKey(d => d.DepartureId)
-                    .HasConstraintName("FK__Person__Departur__0B91BA14");
+                    .HasConstraintName("person_ibfk_2");
             });
             modelBuilder.Entity<PriceRule>(entity =>
             {
-                entity.Property(e => e.Description).HasColumnType("varchar(max)");
+                entity.ToTable("pricerule");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.Description)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Price).HasColumnType("int(11)");
 
                 entity.Property(e => e.RuleName)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.RuleType)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci")
                     .HasConversion(new EnumToStringConverter<PriceRuleType>());
             });
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.ToTable("product");
+
+                entity.HasIndex(e => e.CategoryId)
+                    .HasName("CategoryId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.CategoryId).HasColumnType("int(11)");
+
                 entity.Property(e => e.Form)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.SubTitle).HasColumnType("varchar(max)");
+                entity.Property(e => e.Price).HasColumnType("int(11)");
+
+                entity.Property(e => e.Rating).HasColumnType("int(11)");
+
+                entity.Property(e => e.SubTitle)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Thumbnail)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.CategoryId)
-                    .HasConstraintName("FK__Product__Expose__66603565");
+                    .HasConstraintName("product_ibfk_1");
             });
             modelBuilder.Entity<ProductBilling>(entity =>
             {
+                entity.ToTable("productbilling");
+
+                entity.HasIndex(e => e.BillingId)
+                    .HasName("BillingId");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.BillingId).HasColumnType("int(11)");
+
+                entity.Property(e => e.ProductId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.Billing)
                     .WithMany(p => p.ProductBilling)
                     .HasForeignKey(d => d.BillingId)
-                    .HasConstraintName("FK__ProductBi__Billi__6C190EBB");
+                    .HasConstraintName("productbilling_ibfk_2");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductBilling)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ProductBi__Produ__6B24EA82");
+                    .HasConstraintName("productbilling_ibfk_1");
             });
             modelBuilder.Entity<ProductDeparture>(entity =>
             {
+                entity.ToTable("productdeparture");
+
+                entity.HasIndex(e => e.DepartureId)
+                    .HasName("DepartureId");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.DepartureId).HasColumnType("int(11)");
+
+                entity.Property(e => e.ProductId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.Departure)
                     .WithMany(p => p.ProductDeparture)
                     .HasForeignKey(d => d.DepartureId)
-                    .HasConstraintName("FK__ProductDe__Depar__7D439ABD");
+                    .HasConstraintName("productdeparture_ibfk_2");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductDeparture)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ProductDe__Produ__7C4F7684");
+                    .HasConstraintName("productdeparture_ibfk_1");
             });
             modelBuilder.Entity<ProductHost>(entity =>
             {
+                entity.ToTable("producthost");
+
+                entity.HasIndex(e => e.HostId)
+                    .HasName("HostId");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.HostId).HasColumnType("int(11)");
+
+                entity.Property(e => e.ProductId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.Host)
                     .WithMany(p => p.ProductHost)
                     .HasForeignKey(d => d.HostId)
-                    .HasConstraintName("FK__ProductHo__HostI__778AC167");
+                    .HasConstraintName("producthost_ibfk_2");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductHost)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ProductHo__Produ__76969D2E");
+                    .HasConstraintName("producthost_ibfk_1");
             });
             modelBuilder.Entity<ProductPriceRule>(entity =>
             {
+                entity.ToTable("productpricerule");
+
+                entity.HasIndex(e => e.PriceRuleId)
+                    .HasName("PriceRuleId");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.PriceRuleId).HasColumnType("int(11)");
+
+                entity.Property(e => e.ProductId).HasColumnType("int(11)");
+
                 entity.HasOne(d => d.PriceRule)
                     .WithMany(p => p.ProductPriceRule)
                     .HasForeignKey(d => d.PriceRuleId)
-                    .HasConstraintName("FK__ProductPr__Price__71D1E811");
+                    .HasConstraintName("productpricerule_ibfk_2");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductPriceRule)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ProductPr__Produ__70DDC3D8");
-            });
-            modelBuilder.Entity<Push>(entity =>
-            {
-                entity.Property(e => e.Group)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Message)
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TimeStamp).HasColumnType("datetime");
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-            });
-            modelBuilder.Entity<Review>(entity =>
-            {
-                entity.Property(e => e.Comment)
-                    .IsRequired()
-                    .HasColumnType("varchar(max)");
-
-                entity.Property(e => e.TimeStamp).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Review)
-                    .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Review__ProductI__02FC7413");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Review)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Review__UserId__03F0984C");
+                    .HasConstraintName("productpricerule_ibfk_1");
             });
             modelBuilder.Entity<User>(entity =>
             {
+                entity.ToTable("user");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
                 entity.Property(e => e.Address)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.AllowMarketingPromotions)
-                    .IsRequired();
+                entity.Property(e => e.BillingBank)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.AllowTermsAndConditions)
-                    .IsRequired();
+                entity.Property(e => e.BillingName)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.BillingBank).HasColumnType("varchar(max)");
-
-                entity.Property(e => e.BillingName).HasColumnType("varchar(max)");
-
-                entity.Property(e => e.BillingNumber).HasColumnType("varchar(max)");
+                entity.Property(e => e.BillingNumber)
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Birthday).HasColumnType("datetime");
 
                 entity.Property(e => e.HashSalt)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
-                entity.Property(e => e.LastLogin)
-                    .IsRequired()
-                    .HasColumnType("datetime");
+                entity.Property(e => e.LastLogin).HasColumnType("datetime");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Phone)
                     .IsRequired()
-                    .HasColumnType("varchar(max)");
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Status)
                     .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci")
                     .HasConversion(new EnumToStringConverter<UserStatus>());
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(64)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
             modelBuilder.Entity<Verification>(entity =>
             {
+                entity.ToTable("verification");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
                 entity.Property(e => e.IpAddress)
                     .IsRequired()
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasColumnType("varchar(64)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.TimeStamp).HasColumnType("datetime");
             });

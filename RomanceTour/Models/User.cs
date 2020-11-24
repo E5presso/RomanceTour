@@ -16,9 +16,7 @@ namespace RomanceTour.Models
         public User()
         {
             Appointment = new HashSet<Appointment>();
-            Help = new HashSet<Help>();
             Log = new HashSet<Log>();
-            Review = new HashSet<Review>();
         }
 
         public int Id { get; set; }
@@ -38,8 +36,6 @@ namespace RomanceTour.Models
         [Encrypted] public string BillingNumber { get; set; }
 
         public virtual ICollection<Appointment> Appointment { get; set; }
-        public virtual ICollection<Help> Help { get; set; }
         public virtual ICollection<Log> Log { get; set; }
-        public virtual ICollection<Review> Review { get; set; }
     }
 }
